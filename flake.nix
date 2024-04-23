@@ -115,13 +115,10 @@
               release = false;
               mode = "test";
             });
-<<<<<<< HEAD
-=======
           msrv = naerskMsrv.buildPackage (nearskOpt
             // {
               mode = "check";
             });
->>>>>>> ab87b34de8b6f7186befe1619c0d0fb81bf77529
           default = demostf-parser;
         };
 
@@ -161,11 +158,7 @@
     // {
       overlays.default = import ./overlay.nix;
       hydraJobs = eachSystem ["x86_64-linux" "aarch64-linux"] (system: {
-<<<<<<< HEAD
-        parser = self.packages.${system}.tf-demo-parser;
-=======
         parser = self.packages.${system}.demostf-parser;
->>>>>>> ab87b34de8b6f7186befe1619c0d0fb81bf77529
       });
     });
 }
