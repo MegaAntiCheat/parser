@@ -52,15 +52,18 @@ impl Parse<'_> for GameEventMessage {
 }
 
 impl Encode for GameEventMessage {
-    fn encode(
-        &self,
-        stream: &mut BitWriteStream<LittleEndian>,
-        _state: &ParserState,
-    ) -> Result<()> {
-        Ok(stream.reserve_length(11, |stream| {
+    fn encode(&self, stream: &mut BitWriteStream<LittleEndian>, state: &ParserState) -> Result<()> {
+        let definition = state
+            .event_definitions
+            .iter()
+            .find(|def| def.event_type == self.event_type)
+            .ok_or(ParseError::MalformedGameEvent(GameEventError::UnknownType(
+                self.event_type_id,
+            )))?;
+        stream.reserve_length(11, |stream| {
             self.event_type_id.write(stream)?;
-            self.event.write(stream)
-        })?)
+            self.event.write(stream, definition)
+        })
     }
 }
 

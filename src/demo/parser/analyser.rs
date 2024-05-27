@@ -3,7 +3,9 @@ use crate::demo::gameevent_gen::{
     GameEvent, PlayerDeathEvent, PlayerSpawnEvent, TeamPlayRoundWinEvent,
 };
 use crate::demo::message::packetentities::EntityId;
-use crate::demo::message::usermessage::{ChatMessageKind, SayText2Message, UserMessage};
+use crate::demo::message::usermessage::{
+    ChatMessageKind, HudTextLocation, SayText2Message, TextMessage, UserMessage,
+};
 use crate::demo::message::{Message, MessageType};
 use crate::demo::packet::stringtable::StringTableEntry;
 use crate::demo::parser::handler::{BorrowMessageHandler, MessageHandler};
@@ -16,7 +18,6 @@ use serde::de::Error;
 use serde::{ser::SerializeMap, Deserialize, Deserializer, Serialize, Serializer};
 use std::collections::{BTreeMap, HashMap};
 use std::convert::TryFrom;
-use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ChatMessage {
@@ -35,6 +36,15 @@ impl ChatMessage {
                 .as_ref()
                 .map(|s| s.to_string())
                 .unwrap_or_default(),
+            text: message.plain_text(),
+            tick,
+        }
+    }
+
+    pub fn from_text(message: &TextMessage, tick: DemoTick) -> Self {
+        ChatMessage {
+            kind: ChatMessageKind::Empty,
+            from: String::new(),
             text: message.plain_text(),
             tick,
         }
@@ -138,12 +148,12 @@ impl Class {
 }
 
 #[derive(Default, Debug, Eq, PartialEq, Deserialize, Clone)]
-#[serde(from = "HashMap<Class, u8>")]
-pub struct ClassList([u8; 10]);
+#[serde(from = "HashMap<Class, u16>")]
+pub struct ClassList([u16; 10]);
 
 impl ClassList {
     /// Get an iterator for all classes played and the number of spawn on the class
-    pub fn iter(&self) -> impl Iterator<Item = (Class, u8)> + '_ {
+    pub fn iter(&self) -> impl Iterator<Item = (Class, u16)> + '_ {
         self.0
             .iter()
             .copied()
@@ -153,10 +163,22 @@ impl ClassList {
     }
 
     /// Get an iterator for all classes played and the number of spawn on the class, sorted by the number of spawns
-    pub fn sorted(&self) -> impl Iterator<Item = (Class, u8)> {
-        let mut classes = self.iter().collect::<Vec<(Class, u8)>>();
+    pub fn sorted(&self) -> impl Iterator<Item = (Class, u16)> {
+        let mut classes = self.iter().collect::<Vec<(Class, u16)>>();
         classes.sort_by(|a, b| a.1.cmp(&b.1).reverse());
         classes.into_iter()
+    }
+
+    pub fn get(&self, class: Class) -> u16 {
+        // class number is always in bounds
+        #[allow(clippy::indexing_slicing)]
+        self.0[class as u8 as usize]
+    }
+
+    pub fn get_mut(&mut self, class: Class) -> &mut u16 {
+        // class number is always in bounds
+        #[allow(clippy::indexing_slicing)]
+        &mut self.0[class as u8 as usize]
     }
 }
 
@@ -167,22 +189,6 @@ fn test_classlist_sorted() {
         list.sorted().collect::<Vec<_>>(),
         &[(Class::Sniper, 5), (Class::Medic, 3), (Class::Scout, 1)]
     )
-}
-
-impl Index<Class> for ClassList {
-    type Output = u8;
-
-    #[cfg_attr(feature = "no-panic", no_panic::no_panic)]
-    fn index(&self, class: Class) -> &Self::Output {
-        &self.0[class as u8 as usize]
-    }
-}
-
-impl IndexMut<Class> for ClassList {
-    #[cfg_attr(feature = "no-panic", no_panic::no_panic)]
-    fn index_mut(&mut self, class: Class) -> &mut Self::Output {
-        &mut self.0[class as u8 as usize]
-    }
 }
 
 impl Serialize for ClassList {
@@ -202,12 +208,12 @@ impl Serialize for ClassList {
     }
 }
 
-impl From<HashMap<Class, u8>> for ClassList {
-    fn from(map: HashMap<Class, u8>) -> Self {
+impl From<HashMap<Class, u16>> for ClassList {
+    fn from(map: HashMap<Class, u16>) -> Self {
         let mut classes = ClassList::default();
 
         for (class, count) in map.into_iter() {
-            classes[class] = count;
+            *classes.get_mut(class) = count;
         }
 
         classes
@@ -457,16 +463,26 @@ impl Analyser {
     }
 
     fn handle_user_message(&mut self, message: &UserMessage, tick: DemoTick) {
-        if let UserMessage::SayText2(text_message) = message {
-            if text_message.kind == ChatMessageKind::NameChange {
-                if let Some(from) = text_message.from.clone() {
-                    self.change_name(from.into(), text_message.plain_text());
+        match message {
+            UserMessage::SayText2(text_message) => {
+                if text_message.kind == ChatMessageKind::NameChange {
+                    if let Some(from) = text_message.from.clone() {
+                        self.change_name(from.into(), text_message.plain_text());
+                    }
+                } else {
+                    self.state
+                        .chat
+                        .push(ChatMessage::from_message(text_message, tick));
                 }
-            } else {
-                self.state
-                    .chat
-                    .push(ChatMessage::from_message(text_message, tick));
             }
+            UserMessage::Text(text_message) => {
+                if text_message.location == HudTextLocation::PrintTalk {
+                    self.state
+                        .chat
+                        .push(ChatMessage::from_text(text_message, tick));
+                }
+            }
+            _ => {}
         }
     }
 
@@ -484,7 +500,7 @@ impl Analyser {
             GameEvent::PlayerSpawn(event) => {
                 let spawn = Spawn::from_event(event, tick);
                 if let Some(user_state) = self.state.users.get_mut(&spawn.user) {
-                    user_state.classes[spawn.class] += 1;
+                    *user_state.classes.get_mut(spawn.class) += 1;
                     user_state.team = spawn.team;
                 }
             }

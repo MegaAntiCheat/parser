@@ -24,12 +24,13 @@
   in (eachDefaultSystem (system: let
       overlays = [
         (import rust-overlay)
-        (import ./overlay.nix)
+        (import ./nix/overlay.nix)
       ];
       pkgs = (import nixpkgs) {
         inherit system overlays;
       };
       lib = pkgs.lib;
+      inherit (builtins) listToAttrs fromTOML readFile;
 
       hostTarget = pkgs.hostPlatform.config;
       targets = [
@@ -62,6 +63,16 @@
       };
       hostNaersk = cross-naersk'.hostNaersk;
 
+      msrv = (fromTOML (readFile ./Cargo.toml)).package.rust-version;
+      msrvToolchain = pkgs.rust-bin.stable."${msrv}".default;
+      naerskMsrv = let
+        toolchain = msrvToolchain;
+      in
+        pkgs.callPackage naersk {
+          cargo = toolchain;
+          rustc = toolchain;
+        };
+
       mkHydraJobs = system: {
         parser = derivation {
           name = "parser";
@@ -76,6 +87,7 @@
           };
         };
       };
+      overlayPackages = builtins.attrNames ((import ./nix/overlay.nix) {} {});
     in rec {
       packages =
         lib.attrsets.genAttrs targets (target:
@@ -90,7 +102,7 @@
                 };
             }))
         // rec {
-          inherit (pkgs) demostf-parser demostf-parser-codegen demostf-parser-codegen-events demostf-parser-codegen-props;
+          inherit (pkgs) demostf-parser demostf-parser-codegen demostf-parser-codegen-events demostf-parser-codegen-props demostf-parser-schema;
           check = hostNaersk.buildPackage (nearskOpt
             // {
               mode = "check";
@@ -103,6 +115,10 @@
             // {
               release = false;
               mode = "test";
+            });
+          msrv = naerskMsrv.buildPackage (nearskOpt
+            // {
+              mode = "check";
             });
           default = demostf-parser;
         };
@@ -136,14 +152,16 @@
         };
       };
 
+      formatter = pkgs.alejandra;
+
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [rust-bin.stable.latest.default bacon cargo-edit cargo-outdated rustfmt clippy cargo-audit hyperfine valgrind cargo-insta cargo-semver-checks];
       };
     })
     // {
-      overlays.default = import ./overlay.nix;
+      overlays.default = import ./nix/overlay.nix;
       hydraJobs = eachSystem ["x86_64-linux" "aarch64-linux"] (system: {
-        parser = self.packages.${system}.tf-demo-parser;
+        parser = self.packages.${system}.demostf-parser;
       });
     });
 }
