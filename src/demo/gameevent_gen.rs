@@ -1,6 +1,6 @@
 use crate::demo::data::MaybeUtf8String;
 use super::gamevent::{
-    EventValue, GameEventDefinition, GameEventEntry, RawGameEvent, GameEventValue,
+    EventValue, GameEventDefinition, GameEventEntry, GameEventValue, RawGameEvent,
 };
 use crate::demo::Stream;
 use crate::{ParseError, Result};
@@ -44,34 +44,37 @@ impl ServerSpawnEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerSpawnEvent {
-            hostname: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("hostname"), "hostname")?,
-            address: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("address"), "address")?,
+            hostname: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("hostname"),
+                "hostname",
+            )?,
+            address: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("address"),
+                "address",
+            )?,
             ip: read_value::<u32>(stream, definition.get_entry("ip"), "ip")?,
             port: read_value::<u16>(stream, definition.get_entry("port"), "port")?,
-            game: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("game"), "game")?,
-            map_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("mapname"), "map_name")?,
-            max_players: read_value::<
-                u32,
-            >(stream, definition.get_entry("maxplayers"), "max_players")?,
+            game: read_value::<MaybeUtf8String>(stream, definition.get_entry("game"), "game")?,
+            map_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("mapname"),
+                "map_name",
+            )?,
+            max_players: read_value::<u32>(
+                stream,
+                definition.get_entry("maxplayers"),
+                "max_players",
+            )?,
             os: read_value::<MaybeUtf8String>(stream, definition.get_entry("os"), "os")?,
-            dedicated: read_value::<
-                bool,
-            >(stream, definition.get_entry("dedicated"), "dedicated")?,
-            password: read_value::<
-                bool,
-            >(stream, definition.get_entry("password"), "password")?,
+            dedicated: read_value::<bool>(stream, definition.get_entry("dedicated"), "dedicated")?,
+            password: read_value::<bool>(stream, definition.get_entry("password"), "password")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "hostname" => Ok(self.hostname.clone().into()),
             "address" => Ok(self.address.clone().into()),
@@ -83,12 +86,10 @@ impl ServerSpawnEvent {
             "os" => Ok(self.os.clone().into()),
             "dedicated" => Ok(self.dedicated.clone().into()),
             "password" => Ok(self.password.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerSpawn",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerSpawn",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -115,21 +116,22 @@ impl ServerChangeLevelFailedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerChangeLevelFailedEvent {
-            level_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("levelname"), "level_name")?,
+            level_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("levelname"),
+                "level_name",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "levelname" => Ok(self.level_name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerChangeLevelFailed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerChangeLevelFailed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -156,21 +158,22 @@ impl ServerShutdownEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerShutdownEvent {
-            reason: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("reason"), "reason")?,
+            reason: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("reason"),
+                "reason",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "reason" => Ok(self.reason.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerShutdown",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerShutdown",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -198,25 +201,28 @@ impl ServerCvarEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerCvarEvent {
-            cvar_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cvarname"), "cvar_name")?,
-            cvar_value: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cvarvalue"), "cvar_value")?,
+            cvar_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cvarname"),
+                "cvar_name",
+            )?,
+            cvar_value: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cvarvalue"),
+                "cvar_value",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cvarname" => Ok(self.cvar_name.clone().into()),
             "cvarvalue" => Ok(self.cvar_value.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerCvar",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerCvar",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -243,21 +249,18 @@ impl ServerMessageEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerMessageEvent {
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerMessage",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerMessage",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -290,25 +293,26 @@ impl ServerAddBanEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerAddBanEvent {
-            name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("name"), "name")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            network_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("networkid"), "network_id")?,
+            name: read_value::<MaybeUtf8String>(stream, definition.get_entry("name"), "name")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            network_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("networkid"),
+                "network_id",
+            )?,
             ip: read_value::<MaybeUtf8String>(stream, definition.get_entry("ip"), "ip")?,
-            duration: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("duration"), "duration")?,
+            duration: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("duration"),
+                "duration",
+            )?,
             by: read_value::<MaybeUtf8String>(stream, definition.get_entry("by"), "by")?,
             kicked: read_value::<bool>(stream, definition.get_entry("kicked"), "kicked")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "name" => Ok(self.name.clone().into()),
             "userid" => Ok(self.user_id.clone().into()),
@@ -317,12 +321,10 @@ impl ServerAddBanEvent {
             "duration" => Ok(self.duration.clone().into()),
             "by" => Ok(self.by.clone().into()),
             "kicked" => Ok(self.kicked.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerAddBan",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerAddBan",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -351,25 +353,26 @@ impl ServerRemoveBanEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ServerRemoveBanEvent {
-            network_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("networkid"), "network_id")?,
+            network_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("networkid"),
+                "network_id",
+            )?,
             ip: read_value::<MaybeUtf8String>(stream, definition.get_entry("ip"), "ip")?,
             by: read_value::<MaybeUtf8String>(stream, definition.get_entry("by"), "by")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "networkid" => Ok(self.network_id.clone().into()),
             "ip" => Ok(self.ip.clone().into()),
             "by" => Ok(self.by.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ServerRemoveBan",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ServerRemoveBan",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -401,24 +404,25 @@ impl PlayerConnectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerConnectEvent {
-            name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("name"), "name")?,
+            name: read_value::<MaybeUtf8String>(stream, definition.get_entry("name"), "name")?,
             index: read_value::<u8>(stream, definition.get_entry("index"), "index")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            network_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("networkid"), "network_id")?,
-            address: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("address"), "address")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            network_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("networkid"),
+                "network_id",
+            )?,
+            address: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("address"),
+                "address",
+            )?,
             bot: read_value::<u16>(stream, definition.get_entry("bot"), "bot")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "name" => Ok(self.name.clone().into()),
             "index" => Ok(self.index.clone().into()),
@@ -426,12 +430,10 @@ impl PlayerConnectEvent {
             "networkid" => Ok(self.network_id.clone().into()),
             "address" => Ok(self.address.clone().into()),
             "bot" => Ok(self.bot.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerConnect",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerConnect",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -462,33 +464,30 @@ impl PlayerConnectClientEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerConnectClientEvent {
-            name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("name"), "name")?,
+            name: read_value::<MaybeUtf8String>(stream, definition.get_entry("name"), "name")?,
             index: read_value::<u8>(stream, definition.get_entry("index"), "index")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            network_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("networkid"), "network_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            network_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("networkid"),
+                "network_id",
+            )?,
             bot: read_value::<u16>(stream, definition.get_entry("bot"), "bot")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "name" => Ok(self.name.clone().into()),
             "index" => Ok(self.index.clone().into()),
             "userid" => Ok(self.user_id.clone().into()),
             "networkid" => Ok(self.network_id.clone().into()),
             "bot" => Ok(self.bot.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerConnectClient",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerConnectClient",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -519,33 +518,30 @@ impl PlayerInfoEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerInfoEvent {
-            name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("name"), "name")?,
+            name: read_value::<MaybeUtf8String>(stream, definition.get_entry("name"), "name")?,
             index: read_value::<u8>(stream, definition.get_entry("index"), "index")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            network_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("networkid"), "network_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            network_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("networkid"),
+                "network_id",
+            )?,
             bot: read_value::<bool>(stream, definition.get_entry("bot"), "bot")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "name" => Ok(self.name.clone().into()),
             "index" => Ok(self.index.clone().into()),
             "userid" => Ok(self.user_id.clone().into()),
             "networkid" => Ok(self.network_id.clone().into()),
             "bot" => Ok(self.bot.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerInfo",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerInfo",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -576,35 +572,34 @@ impl PlayerDisconnectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerDisconnectEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            reason: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("reason"), "reason")?,
-            name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("name"), "name")?,
-            network_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("networkid"), "network_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            reason: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("reason"),
+                "reason",
+            )?,
+            name: read_value::<MaybeUtf8String>(stream, definition.get_entry("name"), "name")?,
+            network_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("networkid"),
+                "network_id",
+            )?,
             bot: read_value::<u16>(stream, definition.get_entry("bot"), "bot")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "reason" => Ok(self.reason.clone().into()),
             "name" => Ok(self.name.clone().into()),
             "networkid" => Ok(self.network_id.clone().into()),
             "bot" => Ok(self.bot.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDisconnect",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDisconnect",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -631,21 +626,18 @@ impl PlayerActivateEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerActivateEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerActivate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerActivate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -673,25 +665,20 @@ impl PlayerSayEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerSayEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerSay",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerSay",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -718,21 +705,22 @@ impl ClientDisconnectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ClientDisconnectEvent {
-            message: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("message"), "message")?,
+            message: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("message"),
+                "message",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "message" => Ok(self.message.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ClientDisconnect",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ClientDisconnect",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -762,29 +750,32 @@ impl ClientBeginConnectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ClientBeginConnectEvent {
-            address: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("address"), "address")?,
+            address: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("address"),
+                "address",
+            )?,
             ip: read_value::<u32>(stream, definition.get_entry("ip"), "ip")?,
             port: read_value::<u16>(stream, definition.get_entry("port"), "port")?,
-            source: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("source"), "source")?,
+            source: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("source"),
+                "source",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "address" => Ok(self.address.clone().into()),
             "ip" => Ok(self.ip.clone().into()),
             "port" => Ok(self.port.clone().into()),
             "source" => Ok(self.source.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ClientBeginConnect",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ClientBeginConnect",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -813,25 +804,26 @@ impl ClientConnectedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ClientConnectedEvent {
-            address: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("address"), "address")?,
+            address: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("address"),
+                "address",
+            )?,
             ip: read_value::<u32>(stream, definition.get_entry("ip"), "ip")?,
             port: read_value::<u16>(stream, definition.get_entry("port"), "port")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "address" => Ok(self.address.clone().into()),
             "ip" => Ok(self.ip.clone().into()),
             "port" => Ok(self.port.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ClientConnected",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ClientConnected",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -860,25 +852,26 @@ impl ClientFullConnectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ClientFullConnectEvent {
-            address: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("address"), "address")?,
+            address: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("address"),
+                "address",
+            )?,
             ip: read_value::<u32>(stream, definition.get_entry("ip"), "ip")?,
             port: read_value::<u16>(stream, definition.get_entry("port"), "port")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "address" => Ok(self.address.clone().into()),
             "ip" => Ok(self.ip.clone().into()),
             "port" => Ok(self.port.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ClientFullConnect",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ClientFullConnect",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -906,13 +899,12 @@ impl HostQuitEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HostQuit",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HostQuit",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -940,25 +932,24 @@ impl TeamInfoEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamInfoEvent {
-            team_id: read_value::<
-                u8,
-            >(stream, definition.get_entry("teamid"), "team_id")?,
-            team_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("teamname"), "team_name")?,
+            team_id: read_value::<u8>(stream, definition.get_entry("teamid"), "team_id")?,
+            team_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("teamname"),
+                "team_name",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "teamid" => Ok(self.team_id.clone().into()),
             "teamname" => Ok(self.team_name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamInfo",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamInfo",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -986,23 +977,20 @@ impl TeamScoreEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamScoreEvent {
-            team_id: read_value::<
-                u8,
-            >(stream, definition.get_entry("teamid"), "team_id")?,
+            team_id: read_value::<u8>(stream, definition.get_entry("teamid"), "team_id")?,
             score: read_value::<u16>(stream, definition.get_entry("score"), "score")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "teamid" => Ok(self.team_id.clone().into()),
             "score" => Ok(self.score.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamScore",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamScore",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1033,28 +1021,27 @@ impl TeamPlayBroadcastAudioEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayBroadcastAudioEvent {
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            sound: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("sound"), "sound")?,
-            additional_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("additional_flags"), "additional_flags")?,
+            sound: read_value::<MaybeUtf8String>(stream, definition.get_entry("sound"), "sound")?,
+            additional_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("additional_flags"),
+                "additional_flags",
+            )?,
             player: read_value::<u16>(stream, definition.get_entry("player"), "player")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "sound" => Ok(self.sound.clone().into()),
             "additional_flags" => Ok(self.additional_flags.clone().into()),
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayBroadcastAudio",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayBroadcastAudio",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1087,29 +1074,22 @@ impl PlayerTeamEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerTeamEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            old_team: read_value::<
-                u8,
-            >(stream, definition.get_entry("oldteam"), "old_team")?,
-            disconnect: read_value::<
-                bool,
-            >(stream, definition.get_entry("disconnect"), "disconnect")?,
-            auto_team: read_value::<
-                bool,
-            >(stream, definition.get_entry("autoteam"), "auto_team")?,
-            silent: read_value::<
-                bool,
-            >(stream, definition.get_entry("silent"), "silent")?,
-            name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("name"), "name")?,
+            old_team: read_value::<u8>(stream, definition.get_entry("oldteam"), "old_team")?,
+            disconnect: read_value::<bool>(
+                stream,
+                definition.get_entry("disconnect"),
+                "disconnect",
+            )?,
+            auto_team: read_value::<bool>(stream, definition.get_entry("autoteam"), "auto_team")?,
+            silent: read_value::<bool>(stream, definition.get_entry("silent"), "silent")?,
+            name: read_value::<MaybeUtf8String>(stream, definition.get_entry("name"), "name")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "team" => Ok(self.team.clone().into()),
@@ -1118,12 +1098,10 @@ impl PlayerTeamEvent {
             "autoteam" => Ok(self.auto_team.clone().into()),
             "silent" => Ok(self.silent.clone().into()),
             "name" => Ok(self.name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerTeam",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerTeam",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1151,25 +1129,20 @@ impl PlayerClassEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerClassEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            class: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("class"), "class")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            class: read_value::<MaybeUtf8String>(stream, definition.get_entry("class"), "class")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "class" => Ok(self.class.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerClass",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerClass",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1221,100 +1194,121 @@ impl PlayerDeathEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerDeathEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            victim_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            inflictor_ent_index: read_value::<
-                u32,
-            >(
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            victim_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            inflictor_ent_index: read_value::<u32>(
                 stream,
                 definition.get_entry("inflictor_entindex"),
                 "inflictor_ent_index",
             )?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
-            custom_kill: read_value::<
-                u16,
-            >(stream, definition.get_entry("customkill"), "custom_kill")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
-            weapon_log_class_name: read_value::<
-                MaybeUtf8String,
-            >(
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
+            custom_kill: read_value::<u16>(
+                stream,
+                definition.get_entry("customkill"),
+                "custom_kill",
+            )?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
+            weapon_log_class_name: read_value::<MaybeUtf8String>(
                 stream,
                 definition.get_entry("weapon_logclassname"),
                 "weapon_log_class_name",
             )?,
-            stun_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("stun_flags"), "stun_flags")?,
-            death_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("death_flags"), "death_flags")?,
-            silent_kill: read_value::<
-                bool,
-            >(stream, definition.get_entry("silent_kill"), "silent_kill")?,
-            player_penetrate_count: read_value::<
-                u16,
-            >(
+            stun_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("stun_flags"),
+                "stun_flags",
+            )?,
+            death_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("death_flags"),
+                "death_flags",
+            )?,
+            silent_kill: read_value::<bool>(
+                stream,
+                definition.get_entry("silent_kill"),
+                "silent_kill",
+            )?,
+            player_penetrate_count: read_value::<u16>(
                 stream,
                 definition.get_entry("playerpenetratecount"),
                 "player_penetrate_count",
             )?,
-            assister_fallback: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("assister_fallback"), "assister_fallback")?,
-            kill_streak_total: read_value::<
-                u16,
-            >(stream, definition.get_entry("kill_streak_total"), "kill_streak_total")?,
-            kill_streak_wep: read_value::<
-                u16,
-            >(stream, definition.get_entry("kill_streak_wep"), "kill_streak_wep")?,
-            kill_streak_assist: read_value::<
-                u16,
-            >(stream, definition.get_entry("kill_streak_assist"), "kill_streak_assist")?,
-            kill_streak_victim: read_value::<
-                u16,
-            >(stream, definition.get_entry("kill_streak_victim"), "kill_streak_victim")?,
-            ducks_streaked: read_value::<
-                u16,
-            >(stream, definition.get_entry("ducks_streaked"), "ducks_streaked")?,
-            duck_streak_total: read_value::<
-                u16,
-            >(stream, definition.get_entry("duck_streak_total"), "duck_streak_total")?,
-            duck_streak_assist: read_value::<
-                u16,
-            >(stream, definition.get_entry("duck_streak_assist"), "duck_streak_assist")?,
-            duck_streak_victim: read_value::<
-                u16,
-            >(stream, definition.get_entry("duck_streak_victim"), "duck_streak_victim")?,
-            rocket_jump: read_value::<
-                bool,
-            >(stream, definition.get_entry("rocket_jump"), "rocket_jump")?,
-            weapon_def_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("weapon_def_index"), "weapon_def_index")?,
-            crit_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("crit_type"), "crit_type")?,
+            assister_fallback: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("assister_fallback"),
+                "assister_fallback",
+            )?,
+            kill_streak_total: read_value::<u16>(
+                stream,
+                definition.get_entry("kill_streak_total"),
+                "kill_streak_total",
+            )?,
+            kill_streak_wep: read_value::<u16>(
+                stream,
+                definition.get_entry("kill_streak_wep"),
+                "kill_streak_wep",
+            )?,
+            kill_streak_assist: read_value::<u16>(
+                stream,
+                definition.get_entry("kill_streak_assist"),
+                "kill_streak_assist",
+            )?,
+            kill_streak_victim: read_value::<u16>(
+                stream,
+                definition.get_entry("kill_streak_victim"),
+                "kill_streak_victim",
+            )?,
+            ducks_streaked: read_value::<u16>(
+                stream,
+                definition.get_entry("ducks_streaked"),
+                "ducks_streaked",
+            )?,
+            duck_streak_total: read_value::<u16>(
+                stream,
+                definition.get_entry("duck_streak_total"),
+                "duck_streak_total",
+            )?,
+            duck_streak_assist: read_value::<u16>(
+                stream,
+                definition.get_entry("duck_streak_assist"),
+                "duck_streak_assist",
+            )?,
+            duck_streak_victim: read_value::<u16>(
+                stream,
+                definition.get_entry("duck_streak_victim"),
+                "duck_streak_victim",
+            )?,
+            rocket_jump: read_value::<bool>(
+                stream,
+                definition.get_entry("rocket_jump"),
+                "rocket_jump",
+            )?,
+            weapon_def_index: read_value::<u32>(
+                stream,
+                definition.get_entry("weapon_def_index"),
+                "weapon_def_index",
+            )?,
+            crit_type: read_value::<u16>(stream, definition.get_entry("crit_type"), "crit_type")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
@@ -1342,12 +1336,10 @@ impl PlayerDeathEvent {
             "rocket_jump" => Ok(self.rocket_jump.clone().into()),
             "weapon_def_index" => Ok(self.weapon_def_index.clone().into()),
             "crit_type" => Ok(self.crit_type.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDeath",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDeath",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1384,37 +1376,38 @@ impl PlayerHurtEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHurtEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             health: read_value::<u16>(stream, definition.get_entry("health"), "health")?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            damage_amount: read_value::<
-                u16,
-            >(stream, definition.get_entry("damageamount"), "damage_amount")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            damage_amount: read_value::<u16>(
+                stream,
+                definition.get_entry("damageamount"),
+                "damage_amount",
+            )?,
             custom: read_value::<u16>(stream, definition.get_entry("custom"), "custom")?,
-            show_disguised_crit: read_value::<
-                bool,
-            >(stream, definition.get_entry("showdisguisedcrit"), "show_disguised_crit")?,
+            show_disguised_crit: read_value::<bool>(
+                stream,
+                definition.get_entry("showdisguisedcrit"),
+                "show_disguised_crit",
+            )?,
             crit: read_value::<bool>(stream, definition.get_entry("crit"), "crit")?,
-            mini_crit: read_value::<
-                bool,
-            >(stream, definition.get_entry("minicrit"), "mini_crit")?,
-            all_see_crit: read_value::<
-                bool,
-            >(stream, definition.get_entry("allseecrit"), "all_see_crit")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            bonus_effect: read_value::<
-                u8,
-            >(stream, definition.get_entry("bonuseffect"), "bonus_effect")?,
+            mini_crit: read_value::<bool>(stream, definition.get_entry("minicrit"), "mini_crit")?,
+            all_see_crit: read_value::<bool>(
+                stream,
+                definition.get_entry("allseecrit"),
+                "all_see_crit",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            bonus_effect: read_value::<u8>(
+                stream,
+                definition.get_entry("bonuseffect"),
+                "bonus_effect",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "health" => Ok(self.health.clone().into()),
@@ -1427,12 +1420,10 @@ impl PlayerHurtEvent {
             "allseecrit" => Ok(self.all_see_crit.clone().into()),
             "weaponid" => Ok(self.weapon_id.clone().into()),
             "bonuseffect" => Ok(self.bonus_effect.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHurt",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHurt",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1461,29 +1452,22 @@ impl PlayerChatEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerChatEvent {
-            team_only: read_value::<
-                bool,
-            >(stream, definition.get_entry("teamonly"), "team_only")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            team_only: read_value::<bool>(stream, definition.get_entry("teamonly"), "team_only")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "teamonly" => Ok(self.team_only.clone().into()),
             "userid" => Ok(self.user_id.clone().into()),
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerChat",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerChat",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1513,9 +1497,7 @@ impl PlayerScoreEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerScoreEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             kills: read_value::<u16>(stream, definition.get_entry("kills"), "kills")?,
             deaths: read_value::<u16>(stream, definition.get_entry("deaths"), "deaths")?,
             score: read_value::<u16>(stream, definition.get_entry("score"), "score")?,
@@ -1523,17 +1505,16 @@ impl PlayerScoreEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "kills" => Ok(self.kills.clone().into()),
             "deaths" => Ok(self.deaths.clone().into()),
             "score" => Ok(self.score.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerScore",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerScore",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1562,25 +1543,22 @@ impl PlayerSpawnEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerSpawnEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             team: read_value::<u16>(stream, definition.get_entry("team"), "team")?,
             class: read_value::<u16>(stream, definition.get_entry("class"), "class")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "team" => Ok(self.team.clone().into()),
             "class" => Ok(self.class.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerSpawn",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerSpawn",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1609,25 +1587,22 @@ impl PlayerShootEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerShootEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             weapon: read_value::<u8>(stream, definition.get_entry("weapon"), "weapon")?,
             mode: read_value::<u8>(stream, definition.get_entry("mode"), "mode")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "weapon" => Ok(self.weapon.clone().into()),
             "mode" => Ok(self.mode.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerShoot",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerShoot",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1655,23 +1630,20 @@ impl PlayerUseEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerUseEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             entity: read_value::<u16>(stream, definition.get_entry("entity"), "entity")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "entity" => Ok(self.entity.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerUse",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerUse",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1700,29 +1672,30 @@ impl PlayerChangeNameEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerChangeNameEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            old_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("oldname"), "old_name")?,
-            new_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("newname"), "new_name")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            old_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("oldname"),
+                "old_name",
+            )?,
+            new_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("newname"),
+                "new_name",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "oldname" => Ok(self.old_name.clone().into()),
             "newname" => Ok(self.new_name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerChangeName",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerChangeName",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1749,21 +1722,22 @@ impl PlayerHintMessageEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHintMessageEvent {
-            hint_message: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("hintmessage"), "hint_message")?,
+            hint_message: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("hintmessage"),
+                "hint_message",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "hintmessage" => Ok(self.hint_message.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHintMessage",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHintMessage",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1790,21 +1764,18 @@ impl BasePlayerTeleportedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(BasePlayerTeleportedEvent {
-            ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u16>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BasePlayerTeleported",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BasePlayerTeleported",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1832,13 +1803,12 @@ impl GameInitEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameInit",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameInit",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1865,21 +1835,22 @@ impl GameNewMapEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(GameNewMapEvent {
-            map_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("mapname"), "map_name")?,
+            map_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("mapname"),
+                "map_name",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "mapname" => Ok(self.map_name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameNewMap",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameNewMap",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1909,33 +1880,32 @@ impl GameStartEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(GameStartEvent {
-            rounds_limit: read_value::<
-                u32,
-            >(stream, definition.get_entry("roundslimit"), "rounds_limit")?,
-            time_limit: read_value::<
-                u32,
-            >(stream, definition.get_entry("timelimit"), "time_limit")?,
-            frag_limit: read_value::<
-                u32,
-            >(stream, definition.get_entry("fraglimit"), "frag_limit")?,
-            objective: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("objective"), "objective")?,
+            rounds_limit: read_value::<u32>(
+                stream,
+                definition.get_entry("roundslimit"),
+                "rounds_limit",
+            )?,
+            time_limit: read_value::<u32>(stream, definition.get_entry("timelimit"), "time_limit")?,
+            frag_limit: read_value::<u32>(stream, definition.get_entry("fraglimit"), "frag_limit")?,
+            objective: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("objective"),
+                "objective",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "roundslimit" => Ok(self.rounds_limit.clone().into()),
             "timelimit" => Ok(self.time_limit.clone().into()),
             "fraglimit" => Ok(self.frag_limit.clone().into()),
             "objective" => Ok(self.objective.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameStart",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameStart",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -1967,14 +1937,13 @@ impl GameEndEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "winner" => Ok(self.winner.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameEnd",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameEnd",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2003,29 +1972,26 @@ impl RoundStartEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RoundStartEvent {
-            time_limit: read_value::<
-                u32,
-            >(stream, definition.get_entry("timelimit"), "time_limit")?,
-            frag_limit: read_value::<
-                u32,
-            >(stream, definition.get_entry("fraglimit"), "frag_limit")?,
-            objective: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("objective"), "objective")?,
+            time_limit: read_value::<u32>(stream, definition.get_entry("timelimit"), "time_limit")?,
+            frag_limit: read_value::<u32>(stream, definition.get_entry("fraglimit"), "frag_limit")?,
+            objective: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("objective"),
+                "objective",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "timelimit" => Ok(self.time_limit.clone().into()),
             "fraglimit" => Ok(self.frag_limit.clone().into()),
             "objective" => Ok(self.objective.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RoundStart",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RoundStart",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2056,23 +2022,24 @@ impl RoundEndEvent {
         Ok(RoundEndEvent {
             winner: read_value::<u8>(stream, definition.get_entry("winner"), "winner")?,
             reason: read_value::<u8>(stream, definition.get_entry("reason"), "reason")?,
-            message: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("message"), "message")?,
+            message: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("message"),
+                "message",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "winner" => Ok(self.winner.clone().into()),
             "reason" => Ok(self.reason.clone().into()),
             "message" => Ok(self.message.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RoundEnd",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RoundEnd",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2101,22 +2068,19 @@ impl GameMessageEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(GameMessageEvent {
             target: read_value::<u8>(stream, definition.get_entry("target"), "target")?,
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "target" => Ok(self.target.clone().into()),
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameMessage",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameMessage",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2145,29 +2109,22 @@ impl BreakBreakableEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(BreakBreakableEvent {
-            ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            material: read_value::<
-                u8,
-            >(stream, definition.get_entry("material"), "material")?,
+            ent_index: read_value::<u32>(stream, definition.get_entry("entindex"), "ent_index")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            material: read_value::<u8>(stream, definition.get_entry("material"), "material")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
             "userid" => Ok(self.user_id.clone().into()),
             "material" => Ok(self.material.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BreakBreakable",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BreakBreakable",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2195,25 +2152,20 @@ impl BreakPropEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(BreakPropEvent {
-            ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            ent_index: read_value::<u32>(stream, definition.get_entry("entindex"), "ent_index")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BreakProp",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BreakProp",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2243,37 +2195,40 @@ impl EntityKilledEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(EntityKilledEvent {
-            ent_index_killed: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex_killed"), "ent_index_killed")?,
-            ent_index_attacker: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex_attacker"), "ent_index_attacker")?,
-            ent_index_inflictor: read_value::<
-                u32,
-            >(
+            ent_index_killed: read_value::<u32>(
+                stream,
+                definition.get_entry("entindex_killed"),
+                "ent_index_killed",
+            )?,
+            ent_index_attacker: read_value::<u32>(
+                stream,
+                definition.get_entry("entindex_attacker"),
+                "ent_index_attacker",
+            )?,
+            ent_index_inflictor: read_value::<u32>(
                 stream,
                 definition.get_entry("entindex_inflictor"),
                 "ent_index_inflictor",
             )?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex_killed" => Ok(self.ent_index_killed.clone().into()),
             "entindex_attacker" => Ok(self.ent_index_attacker.clone().into()),
             "entindex_inflictor" => Ok(self.ent_index_inflictor.clone().into()),
             "damagebits" => Ok(self.damage_bits.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EntityKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EntityKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2303,33 +2258,28 @@ impl BonusUpdatedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(BonusUpdatedEvent {
-            num_advanced: read_value::<
-                u16,
-            >(stream, definition.get_entry("numadvanced"), "num_advanced")?,
-            num_bronze: read_value::<
-                u16,
-            >(stream, definition.get_entry("numbronze"), "num_bronze")?,
-            num_silver: read_value::<
-                u16,
-            >(stream, definition.get_entry("numsilver"), "num_silver")?,
-            num_gold: read_value::<
-                u16,
-            >(stream, definition.get_entry("numgold"), "num_gold")?,
+            num_advanced: read_value::<u16>(
+                stream,
+                definition.get_entry("numadvanced"),
+                "num_advanced",
+            )?,
+            num_bronze: read_value::<u16>(stream, definition.get_entry("numbronze"), "num_bronze")?,
+            num_silver: read_value::<u16>(stream, definition.get_entry("numsilver"), "num_silver")?,
+            num_gold: read_value::<u16>(stream, definition.get_entry("numgold"), "num_gold")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "numadvanced" => Ok(self.num_advanced.clone().into()),
             "numbronze" => Ok(self.num_bronze.clone().into()),
             "numsilver" => Ok(self.num_silver.clone().into()),
             "numgold" => Ok(self.num_gold.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BonusUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BonusUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2358,29 +2308,26 @@ impl AchievementEventEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(AchievementEventEvent {
-            achievement_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("achievement_name"), "achievement_name")?,
-            cur_val: read_value::<
-                u16,
-            >(stream, definition.get_entry("cur_val"), "cur_val")?,
-            max_val: read_value::<
-                u16,
-            >(stream, definition.get_entry("max_val"), "max_val")?,
+            achievement_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("achievement_name"),
+                "achievement_name",
+            )?,
+            cur_val: read_value::<u16>(stream, definition.get_entry("cur_val"), "cur_val")?,
+            max_val: read_value::<u16>(stream, definition.get_entry("max_val"), "max_val")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "achievement_name" => Ok(self.achievement_name.clone().into()),
             "cur_val" => Ok(self.cur_val.clone().into()),
             "max_val" => Ok(self.max_val.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "AchievementEvent",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "AchievementEvent",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2409,29 +2356,26 @@ impl AchievementIncrementEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(AchievementIncrementEvent {
-            achievement_id: read_value::<
-                u32,
-            >(stream, definition.get_entry("achievement_id"), "achievement_id")?,
-            cur_val: read_value::<
-                u16,
-            >(stream, definition.get_entry("cur_val"), "cur_val")?,
-            max_val: read_value::<
-                u16,
-            >(stream, definition.get_entry("max_val"), "max_val")?,
+            achievement_id: read_value::<u32>(
+                stream,
+                definition.get_entry("achievement_id"),
+                "achievement_id",
+            )?,
+            cur_val: read_value::<u16>(stream, definition.get_entry("cur_val"), "cur_val")?,
+            max_val: read_value::<u16>(stream, definition.get_entry("max_val"), "max_val")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "achievement_id" => Ok(self.achievement_id.clone().into()),
             "cur_val" => Ok(self.cur_val.clone().into()),
             "max_val" => Ok(self.max_val.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "AchievementIncrement",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "AchievementIncrement",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2458,21 +2402,18 @@ impl PhysgunPickupEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PhysgunPickupEvent {
-            ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u32>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PhysgunPickup",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PhysgunPickup",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2499,21 +2440,18 @@ impl FlareIgniteNpcEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(FlareIgniteNpcEvent {
-            ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u32>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "FlareIgniteNpc",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "FlareIgniteNpc",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2541,13 +2479,12 @@ impl HelicopterGrenadePuntMissEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HelicopterGrenadePuntMiss",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HelicopterGrenadePuntMiss",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2575,13 +2512,12 @@ impl UserDataDownloadedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "UserDataDownloaded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "UserDataDownloaded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2608,21 +2544,18 @@ impl RagdollDissolvedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RagdollDissolvedEvent {
-            ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u32>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RagdollDissolved",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RagdollDissolved",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2651,29 +2584,26 @@ impl HLTVChangedModeEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVChangedModeEvent {
-            old_mode: read_value::<
-                u16,
-            >(stream, definition.get_entry("oldmode"), "old_mode")?,
-            new_mode: read_value::<
-                u16,
-            >(stream, definition.get_entry("newmode"), "new_mode")?,
-            obs_target: read_value::<
-                u16,
-            >(stream, definition.get_entry("obs_target"), "obs_target")?,
+            old_mode: read_value::<u16>(stream, definition.get_entry("oldmode"), "old_mode")?,
+            new_mode: read_value::<u16>(stream, definition.get_entry("newmode"), "new_mode")?,
+            obs_target: read_value::<u16>(
+                stream,
+                definition.get_entry("obs_target"),
+                "obs_target",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "oldmode" => Ok(self.old_mode.clone().into()),
             "newmode" => Ok(self.new_mode.clone().into()),
             "obs_target" => Ok(self.obs_target.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVChangedMode",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVChangedMode",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2703,26 +2633,29 @@ impl HLTVChangedTargetEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVChangedTargetEvent {
             mode: read_value::<u16>(stream, definition.get_entry("mode"), "mode")?,
-            old_target: read_value::<
-                u16,
-            >(stream, definition.get_entry("old_target"), "old_target")?,
-            obs_target: read_value::<
-                u16,
-            >(stream, definition.get_entry("obs_target"), "obs_target")?,
+            old_target: read_value::<u16>(
+                stream,
+                definition.get_entry("old_target"),
+                "old_target",
+            )?,
+            obs_target: read_value::<u16>(
+                stream,
+                definition.get_entry("obs_target"),
+                "obs_target",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "mode" => Ok(self.mode.clone().into()),
             "old_target" => Ok(self.old_target.clone().into()),
             "obs_target" => Ok(self.obs_target.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVChangedTarget",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVChangedTarget",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2750,13 +2683,12 @@ impl VoteEndedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteEnded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteEnded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2787,35 +2719,30 @@ impl VoteStartedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(VoteStartedEvent {
-            issue: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("issue"), "issue")?,
-            param_1: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("param1"), "param_1")?,
+            issue: read_value::<MaybeUtf8String>(stream, definition.get_entry("issue"), "issue")?,
+            param_1: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("param1"),
+                "param_1",
+            )?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            initiator: read_value::<
-                u32,
-            >(stream, definition.get_entry("initiator"), "initiator")?,
-            voteidx: read_value::<
-                u32,
-            >(stream, definition.get_entry("voteidx"), "voteidx")?,
+            initiator: read_value::<u32>(stream, definition.get_entry("initiator"), "initiator")?,
+            voteidx: read_value::<u32>(stream, definition.get_entry("voteidx"), "voteidx")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "issue" => Ok(self.issue.clone().into()),
             "param1" => Ok(self.param_1.clone().into()),
             "team" => Ok(self.team.clone().into()),
             "initiator" => Ok(self.initiator.clone().into()),
             "voteidx" => Ok(self.voteidx.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteStarted",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteStarted",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2848,31 +2775,42 @@ impl VoteChangedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(VoteChangedEvent {
-            vote_option_1: read_value::<
-                u8,
-            >(stream, definition.get_entry("vote_option1"), "vote_option_1")?,
-            vote_option_2: read_value::<
-                u8,
-            >(stream, definition.get_entry("vote_option2"), "vote_option_2")?,
-            vote_option_3: read_value::<
-                u8,
-            >(stream, definition.get_entry("vote_option3"), "vote_option_3")?,
-            vote_option_4: read_value::<
-                u8,
-            >(stream, definition.get_entry("vote_option4"), "vote_option_4")?,
-            vote_option_5: read_value::<
-                u8,
-            >(stream, definition.get_entry("vote_option5"), "vote_option_5")?,
-            potential_votes: read_value::<
-                u8,
-            >(stream, definition.get_entry("potentialVotes"), "potential_votes")?,
-            voteidx: read_value::<
-                u32,
-            >(stream, definition.get_entry("voteidx"), "voteidx")?,
+            vote_option_1: read_value::<u8>(
+                stream,
+                definition.get_entry("vote_option1"),
+                "vote_option_1",
+            )?,
+            vote_option_2: read_value::<u8>(
+                stream,
+                definition.get_entry("vote_option2"),
+                "vote_option_2",
+            )?,
+            vote_option_3: read_value::<u8>(
+                stream,
+                definition.get_entry("vote_option3"),
+                "vote_option_3",
+            )?,
+            vote_option_4: read_value::<u8>(
+                stream,
+                definition.get_entry("vote_option4"),
+                "vote_option_4",
+            )?,
+            vote_option_5: read_value::<u8>(
+                stream,
+                definition.get_entry("vote_option5"),
+                "vote_option_5",
+            )?,
+            potential_votes: read_value::<u8>(
+                stream,
+                definition.get_entry("potentialVotes"),
+                "potential_votes",
+            )?,
+            voteidx: read_value::<u32>(stream, definition.get_entry("voteidx"), "voteidx")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "vote_option1" => Ok(self.vote_option_1.clone().into()),
             "vote_option2" => Ok(self.vote_option_2.clone().into()),
@@ -2881,12 +2819,10 @@ impl VoteChangedEvent {
             "vote_option5" => Ok(self.vote_option_5.clone().into()),
             "potentialVotes" => Ok(self.potential_votes.clone().into()),
             "voteidx" => Ok(self.voteidx.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2916,31 +2852,32 @@ impl VotePassedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(VotePassedEvent {
-            details: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("details"), "details")?,
-            param_1: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("param1"), "param_1")?,
+            details: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("details"),
+                "details",
+            )?,
+            param_1: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("param1"),
+                "param_1",
+            )?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            voteidx: read_value::<
-                u32,
-            >(stream, definition.get_entry("voteidx"), "voteidx")?,
+            voteidx: read_value::<u32>(stream, definition.get_entry("voteidx"), "voteidx")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "details" => Ok(self.details.clone().into()),
             "param1" => Ok(self.param_1.clone().into()),
             "team" => Ok(self.team.clone().into()),
             "voteidx" => Ok(self.voteidx.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VotePassed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VotePassed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -2969,22 +2906,19 @@ impl VoteFailedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(VoteFailedEvent {
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            voteidx: read_value::<
-                u32,
-            >(stream, definition.get_entry("voteidx"), "voteidx")?,
+            voteidx: read_value::<u32>(stream, definition.get_entry("voteidx"), "voteidx")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "voteidx" => Ok(self.voteidx.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteFailed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteFailed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3014,31 +2948,28 @@ impl VoteCastEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(VoteCastEvent {
-            vote_option: read_value::<
-                u8,
-            >(stream, definition.get_entry("vote_option"), "vote_option")?,
+            vote_option: read_value::<u8>(
+                stream,
+                definition.get_entry("vote_option"),
+                "vote_option",
+            )?,
             team: read_value::<u16>(stream, definition.get_entry("team"), "team")?,
-            entity_id: read_value::<
-                u32,
-            >(stream, definition.get_entry("entityid"), "entity_id")?,
-            voteidx: read_value::<
-                u32,
-            >(stream, definition.get_entry("voteidx"), "voteidx")?,
+            entity_id: read_value::<u32>(stream, definition.get_entry("entityid"), "entity_id")?,
+            voteidx: read_value::<u32>(stream, definition.get_entry("voteidx"), "voteidx")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "vote_option" => Ok(self.vote_option.clone().into()),
             "team" => Ok(self.team.clone().into()),
             "entityid" => Ok(self.entity_id.clone().into()),
             "voteidx" => Ok(self.voteidx.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteCast",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteCast",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3072,28 +3003,37 @@ impl VoteOptionsEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(VoteOptionsEvent {
             count: read_value::<u8>(stream, definition.get_entry("count"), "count")?,
-            option_1: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("option1"), "option_1")?,
-            option_2: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("option2"), "option_2")?,
-            option_3: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("option3"), "option_3")?,
-            option_4: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("option4"), "option_4")?,
-            option_5: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("option5"), "option_5")?,
-            voteidx: read_value::<
-                u32,
-            >(stream, definition.get_entry("voteidx"), "voteidx")?,
+            option_1: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("option1"),
+                "option_1",
+            )?,
+            option_2: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("option2"),
+                "option_2",
+            )?,
+            option_3: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("option3"),
+                "option_3",
+            )?,
+            option_4: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("option4"),
+                "option_4",
+            )?,
+            option_5: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("option5"),
+                "option_5",
+            )?,
+            voteidx: read_value::<u32>(stream, definition.get_entry("voteidx"), "voteidx")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "count" => Ok(self.count.clone().into()),
             "option1" => Ok(self.option_1.clone().into()),
@@ -3102,12 +3042,10 @@ impl VoteOptionsEvent {
             "option4" => Ok(self.option_4.clone().into()),
             "option5" => Ok(self.option_5.clone().into()),
             "voteidx" => Ok(self.voteidx.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteOptions",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteOptions",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3135,13 +3073,12 @@ impl ReplaySavedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplaySaved",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplaySaved",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3169,13 +3106,12 @@ impl EnteredPerformanceModeEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EnteredPerformanceMode",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EnteredPerformanceMode",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3203,13 +3139,12 @@ impl BrowseReplaysEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BrowseReplays",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BrowseReplays",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3240,23 +3175,20 @@ impl ReplayYoutubeStatsEvent {
         Ok(ReplayYoutubeStatsEvent {
             views: read_value::<u32>(stream, definition.get_entry("views"), "views")?,
             likes: read_value::<u32>(stream, definition.get_entry("likes"), "likes")?,
-            favorited: read_value::<
-                u32,
-            >(stream, definition.get_entry("favorited"), "favorited")?,
+            favorited: read_value::<u32>(stream, definition.get_entry("favorited"), "favorited")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "views" => Ok(self.views.clone().into()),
             "likes" => Ok(self.likes.clone().into()),
             "favorited" => Ok(self.favorited.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplayYoutubeStats",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplayYoutubeStats",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3284,13 +3216,12 @@ impl InventoryUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "InventoryUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "InventoryUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3318,13 +3249,12 @@ impl CartUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CartUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CartUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3352,13 +3282,12 @@ impl StorePriceSheetUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "StorePriceSheetUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "StorePriceSheetUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3386,13 +3315,12 @@ impl EconInventoryConnectedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EconInventoryConnected",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EconInventoryConnected",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3420,13 +3348,12 @@ impl ItemSchemaInitializedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ItemSchemaInitialized",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ItemSchemaInitialized",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3454,13 +3381,12 @@ impl GcNewSessionEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GcNewSession",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GcNewSession",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3488,13 +3414,12 @@ impl GcLostSessionEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GcLostSession",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GcLostSession",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3526,14 +3451,13 @@ impl IntroFinishEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "IntroFinish",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "IntroFinish",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3565,14 +3489,13 @@ impl IntroNextCameraEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "IntroNextCamera",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "IntroNextCamera",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3600,23 +3523,20 @@ impl PlayerChangeClassEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerChangeClassEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             class: read_value::<u16>(stream, definition.get_entry("class"), "class")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "class" => Ok(self.class.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerChangeClass",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerChangeClass",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3643,21 +3563,18 @@ impl TfMapTimeRemainingEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TfMapTimeRemainingEvent {
-            seconds: read_value::<
-                u32,
-            >(stream, definition.get_entry("seconds"), "seconds")?,
+            seconds: read_value::<u32>(stream, definition.get_entry("seconds"), "seconds")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "seconds" => Ok(self.seconds.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TfMapTimeRemaining",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TfMapTimeRemaining",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3684,21 +3601,22 @@ impl TfGameOverEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TfGameOverEvent {
-            reason: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("reason"), "reason")?,
+            reason: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("reason"),
+                "reason",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "reason" => Ok(self.reason.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TfGameOver",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TfGameOver",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3726,25 +3644,28 @@ impl CtfFlagCapturedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(CtfFlagCapturedEvent {
-            capping_team: read_value::<
-                u16,
-            >(stream, definition.get_entry("capping_team"), "capping_team")?,
-            capping_team_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("capping_team_score"), "capping_team_score")?,
+            capping_team: read_value::<u16>(
+                stream,
+                definition.get_entry("capping_team"),
+                "capping_team",
+            )?,
+            capping_team_score: read_value::<u16>(
+                stream,
+                definition.get_entry("capping_team_score"),
+                "capping_team_score",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "capping_team" => Ok(self.capping_team.clone().into()),
             "capping_team_score" => Ok(self.capping_team_score.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CtfFlagCaptured",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CtfFlagCaptured",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3772,13 +3693,12 @@ impl ControlPointInitializedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointInitialized",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointInitialized",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3810,14 +3730,13 @@ impl ControlPointUpdateImagesEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointUpdateImages",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointUpdateImages",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3849,14 +3768,13 @@ impl ControlPointUpdateLayoutEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointUpdateLayout",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointUpdateLayout",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3888,14 +3806,13 @@ impl ControlPointUpdateCappingEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointUpdateCapping",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointUpdateCapping",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3927,14 +3844,13 @@ impl ControlPointUpdateOwnerEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointUpdateOwner",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointUpdateOwner",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -3968,15 +3884,14 @@ impl ControlPointStartTouchEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "area" => Ok(self.area.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointStartTouch",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointStartTouch",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4010,15 +3925,14 @@ impl ControlPointEndTouchEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "area" => Ok(self.area.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointEndTouch",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointEndTouch",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4050,14 +3964,13 @@ impl ControlPointPulseElementEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointPulseElement",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointPulseElement",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4086,22 +3999,19 @@ impl ControlPointFakeCaptureEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ControlPointFakeCaptureEvent {
             player: read_value::<u16>(stream, definition.get_entry("player"), "player")?,
-            int_data: read_value::<
-                u16,
-            >(stream, definition.get_entry("int_data"), "int_data")?,
+            int_data: read_value::<u16>(stream, definition.get_entry("int_data"), "int_data")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "int_data" => Ok(self.int_data.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointFakeCapture",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointFakeCapture",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4130,22 +4040,19 @@ impl ControlPointFakeCaptureMultiplierEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ControlPointFakeCaptureMultiplierEvent {
             player: read_value::<u16>(stream, definition.get_entry("player"), "player")?,
-            int_data: read_value::<
-                u16,
-            >(stream, definition.get_entry("int_data"), "int_data")?,
+            int_data: read_value::<u16>(stream, definition.get_entry("int_data"), "int_data")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "int_data" => Ok(self.int_data.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointFakeCaptureMultiplier",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointFakeCaptureMultiplier",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4172,21 +4079,18 @@ impl TeamPlayRoundSelectedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayRoundSelectedEvent {
-            round: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("round"), "round")?,
+            round: read_value::<MaybeUtf8String>(stream, definition.get_entry("round"), "round")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "round" => Ok(self.round.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRoundSelected",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRoundSelected",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4213,21 +4117,22 @@ impl TeamPlayRoundStartEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayRoundStartEvent {
-            full_reset: read_value::<
-                bool,
-            >(stream, definition.get_entry("full_reset"), "full_reset")?,
+            full_reset: read_value::<bool>(
+                stream,
+                definition.get_entry("full_reset"),
+                "full_reset",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "full_reset" => Ok(self.full_reset.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRoundStart",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRoundStart",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4255,13 +4160,12 @@ impl TeamPlayRoundActiveEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRoundActive",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRoundActive",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4289,13 +4193,12 @@ impl TeamPlayWaitingBeginsEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayWaitingBegins",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayWaitingBegins",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4323,13 +4226,12 @@ impl TeamPlayWaitingEndsEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayWaitingEnds",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayWaitingEnds",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4357,13 +4259,12 @@ impl TeamPlayWaitingAboutToEndEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayWaitingAboutToEnd",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayWaitingAboutToEnd",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4391,13 +4292,12 @@ impl TeamPlayRestartRoundEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRestartRound",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRestartRound",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4425,13 +4325,12 @@ impl TeamPlayReadyRestartEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayReadyRestart",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayReadyRestart",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4458,21 +4357,18 @@ impl TeamPlayRoundRestartSecondsEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayRoundRestartSecondsEvent {
-            seconds: read_value::<
-                u16,
-            >(stream, definition.get_entry("seconds"), "seconds")?,
+            seconds: read_value::<u16>(stream, definition.get_entry("seconds"), "seconds")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "seconds" => Ok(self.seconds.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRoundRestartSeconds",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRoundRestartSeconds",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4504,14 +4400,13 @@ impl TeamPlayTeamReadyEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayTeamReady",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayTeamReady",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4545,32 +4440,37 @@ impl TeamPlayRoundWinEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayRoundWinEvent {
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            win_reason: read_value::<
-                u8,
-            >(stream, definition.get_entry("winreason"), "win_reason")?,
-            flag_cap_limit: read_value::<
-                u16,
-            >(stream, definition.get_entry("flagcaplimit"), "flag_cap_limit")?,
-            full_round: read_value::<
-                u16,
-            >(stream, definition.get_entry("full_round"), "full_round")?,
-            round_time: read_value::<
-                f32,
-            >(stream, definition.get_entry("round_time"), "round_time")?,
-            losing_team_num_caps: read_value::<
-                u16,
-            >(
+            win_reason: read_value::<u8>(stream, definition.get_entry("winreason"), "win_reason")?,
+            flag_cap_limit: read_value::<u16>(
+                stream,
+                definition.get_entry("flagcaplimit"),
+                "flag_cap_limit",
+            )?,
+            full_round: read_value::<u16>(
+                stream,
+                definition.get_entry("full_round"),
+                "full_round",
+            )?,
+            round_time: read_value::<f32>(
+                stream,
+                definition.get_entry("round_time"),
+                "round_time",
+            )?,
+            losing_team_num_caps: read_value::<u16>(
                 stream,
                 definition.get_entry("losing_team_num_caps"),
                 "losing_team_num_caps",
             )?,
-            was_sudden_death: read_value::<
-                u8,
-            >(stream, definition.get_entry("was_sudden_death"), "was_sudden_death")?,
+            was_sudden_death: read_value::<u8>(
+                stream,
+                definition.get_entry("was_sudden_death"),
+                "was_sudden_death",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "winreason" => Ok(self.win_reason.clone().into()),
@@ -4579,12 +4479,10 @@ impl TeamPlayRoundWinEvent {
             "round_time" => Ok(self.round_time.clone().into()),
             "losing_team_num_caps" => Ok(self.losing_team_num_caps.clone().into()),
             "was_sudden_death" => Ok(self.was_sudden_death.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRoundWin",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRoundWin",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4612,13 +4510,12 @@ impl TeamPlayUpdateTimerEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayUpdateTimer",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayUpdateTimer",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4650,14 +4547,13 @@ impl TeamPlayRoundStalemateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "reason" => Ok(self.reason.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayRoundStalemate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayRoundStalemate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4685,13 +4581,12 @@ impl TeamPlayOvertimeBeginEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayOvertimeBegin",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayOvertimeBegin",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4719,13 +4614,12 @@ impl TeamPlayOvertimeEndEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayOvertimeEnd",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayOvertimeEnd",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4753,13 +4647,12 @@ impl TeamPlaySuddenDeathBeginEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlaySuddenDeathBegin",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlaySuddenDeathBegin",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4787,13 +4680,12 @@ impl TeamPlaySuddenDeathEndEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlaySuddenDeathEnd",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlaySuddenDeathEnd",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4820,21 +4712,22 @@ impl TeamPlayGameOverEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayGameOverEvent {
-            reason: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("reason"), "reason")?,
+            reason: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("reason"),
+                "reason",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "reason" => Ok(self.reason.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayGameOver",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayGameOver",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4861,21 +4754,18 @@ impl TeamPlayMapTimeRemainingEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayMapTimeRemainingEvent {
-            seconds: read_value::<
-                u16,
-            >(stream, definition.get_entry("seconds"), "seconds")?,
+            seconds: read_value::<u16>(stream, definition.get_entry("seconds"), "seconds")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "seconds" => Ok(self.seconds.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayMapTimeRemaining",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayMapTimeRemaining",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4902,21 +4792,22 @@ impl TeamPlayTimerFlashEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayTimerFlashEvent {
-            time_remaining: read_value::<
-                u16,
-            >(stream, definition.get_entry("time_remaining"), "time_remaining")?,
+            time_remaining: read_value::<u16>(
+                stream,
+                definition.get_entry("time_remaining"),
+                "time_remaining",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "time_remaining" => Ok(self.time_remaining.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayTimerFlash",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayTimerFlash",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4945,22 +4836,23 @@ impl TeamPlayTimerTimeAddedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayTimerTimeAddedEvent {
             timer: read_value::<u16>(stream, definition.get_entry("timer"), "timer")?,
-            seconds_added: read_value::<
-                u16,
-            >(stream, definition.get_entry("seconds_added"), "seconds_added")?,
+            seconds_added: read_value::<u16>(
+                stream,
+                definition.get_entry("seconds_added"),
+                "seconds_added",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "timer" => Ok(self.timer.clone().into()),
             "seconds_added" => Ok(self.seconds_added.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayTimerTimeAdded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayTimerTimeAdded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -4993,23 +4885,24 @@ impl TeamPlayPointStartCaptureEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayPointStartCaptureEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
-            cp_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cpname"), "cp_name")?,
+            cp_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cpname"),
+                "cp_name",
+            )?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            cap_team: read_value::<
-                u8,
-            >(stream, definition.get_entry("capteam"), "cap_team")?,
-            cappers: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cappers"), "cappers")?,
-            cap_time: read_value::<
-                f32,
-            >(stream, definition.get_entry("captime"), "cap_time")?,
+            cap_team: read_value::<u8>(stream, definition.get_entry("capteam"), "cap_team")?,
+            cappers: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cappers"),
+                "cappers",
+            )?,
+            cap_time: read_value::<f32>(stream, definition.get_entry("captime"), "cap_time")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "cpname" => Ok(self.cp_name.clone().into()),
@@ -5017,12 +4910,10 @@ impl TeamPlayPointStartCaptureEvent {
             "capteam" => Ok(self.cap_team.clone().into()),
             "cappers" => Ok(self.cappers.clone().into()),
             "captime" => Ok(self.cap_time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayPointStartCapture",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayPointStartCapture",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5053,28 +4944,31 @@ impl TeamPlayPointCapturedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayPointCapturedEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
-            cp_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cpname"), "cp_name")?,
+            cp_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cpname"),
+                "cp_name",
+            )?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            cappers: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cappers"), "cappers")?,
+            cappers: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cappers"),
+                "cappers",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "cpname" => Ok(self.cp_name.clone().into()),
             "team" => Ok(self.team.clone().into()),
             "cappers" => Ok(self.cappers.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayPointCaptured",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayPointCaptured",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5104,24 +4998,25 @@ impl TeamPlayPointLockedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayPointLockedEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
-            cp_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cpname"), "cp_name")?,
+            cp_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cpname"),
+                "cp_name",
+            )?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "cpname" => Ok(self.cp_name.clone().into()),
             "team" => Ok(self.team.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayPointLocked",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayPointLocked",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5151,24 +5046,25 @@ impl TeamPlayPointUnlockedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayPointUnlockedEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
-            cp_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cpname"), "cp_name")?,
+            cp_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cpname"),
+                "cp_name",
+            )?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "cpname" => Ok(self.cp_name.clone().into()),
             "team" => Ok(self.team.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayPointUnlocked",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayPointUnlocked",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5198,26 +5094,29 @@ impl TeamPlayCaptureBrokenEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayCaptureBrokenEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
-            cp_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cpname"), "cp_name")?,
-            time_remaining: read_value::<
-                f32,
-            >(stream, definition.get_entry("time_remaining"), "time_remaining")?,
+            cp_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cpname"),
+                "cp_name",
+            )?,
+            time_remaining: read_value::<f32>(
+                stream,
+                definition.get_entry("time_remaining"),
+                "time_remaining",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "cpname" => Ok(self.cp_name.clone().into()),
             "time_remaining" => Ok(self.time_remaining.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayCaptureBroken",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayCaptureBroken",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5248,28 +5147,27 @@ impl TeamPlayCaptureBlockedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayCaptureBlockedEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
-            cp_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cpname"), "cp_name")?,
-            blocker: read_value::<
-                u8,
-            >(stream, definition.get_entry("blocker"), "blocker")?,
+            cp_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cpname"),
+                "cp_name",
+            )?,
+            blocker: read_value::<u8>(stream, definition.get_entry("blocker"), "blocker")?,
             victim: read_value::<u8>(stream, definition.get_entry("victim"), "victim")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "cpname" => Ok(self.cp_name.clone().into()),
             "blocker" => Ok(self.blocker.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayCaptureBlocked",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayCaptureBlocked",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5301,30 +5199,25 @@ impl TeamPlayFlagEventEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayFlagEventEvent {
             player: read_value::<u16>(stream, definition.get_entry("player"), "player")?,
-            carrier: read_value::<
-                u16,
-            >(stream, definition.get_entry("carrier"), "carrier")?,
-            event_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("eventtype"), "event_type")?,
+            carrier: read_value::<u16>(stream, definition.get_entry("carrier"), "carrier")?,
+            event_type: read_value::<u16>(stream, definition.get_entry("eventtype"), "event_type")?,
             home: read_value::<u8>(stream, definition.get_entry("home"), "home")?,
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "carrier" => Ok(self.carrier.clone().into()),
             "eventtype" => Ok(self.event_type.clone().into()),
             "home" => Ok(self.home.clone().into()),
             "team" => Ok(self.team.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayFlagEvent",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayFlagEvent",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5370,78 +5263,87 @@ impl TeamPlayWinPanelEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayWinPanelEvent {
-            panel_style: read_value::<
-                u8,
-            >(stream, definition.get_entry("panel_style"), "panel_style")?,
-            winning_team: read_value::<
-                u8,
-            >(stream, definition.get_entry("winning_team"), "winning_team")?,
-            win_reason: read_value::<
-                u8,
-            >(stream, definition.get_entry("winreason"), "win_reason")?,
-            cappers: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cappers"), "cappers")?,
-            flag_cap_limit: read_value::<
-                u16,
-            >(stream, definition.get_entry("flagcaplimit"), "flag_cap_limit")?,
-            blue_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("blue_score"), "blue_score")?,
-            red_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("red_score"), "red_score")?,
-            blue_score_prev: read_value::<
-                u16,
-            >(stream, definition.get_entry("blue_score_prev"), "blue_score_prev")?,
-            red_score_prev: read_value::<
-                u16,
-            >(stream, definition.get_entry("red_score_prev"), "red_score_prev")?,
-            round_complete: read_value::<
-                u16,
-            >(stream, definition.get_entry("round_complete"), "round_complete")?,
-            rounds_remaining: read_value::<
-                u16,
-            >(stream, definition.get_entry("rounds_remaining"), "rounds_remaining")?,
-            player_1: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1"), "player_1")?,
-            player_1_points: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1_points"), "player_1_points")?,
-            player_2: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2"), "player_2")?,
-            player_2_points: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2_points"), "player_2_points")?,
-            player_3: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3"), "player_3")?,
-            player_3_points: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3_points"), "player_3_points")?,
-            kill_stream_player_1: read_value::<
-                u16,
-            >(
+            panel_style: read_value::<u8>(
+                stream,
+                definition.get_entry("panel_style"),
+                "panel_style",
+            )?,
+            winning_team: read_value::<u8>(
+                stream,
+                definition.get_entry("winning_team"),
+                "winning_team",
+            )?,
+            win_reason: read_value::<u8>(stream, definition.get_entry("winreason"), "win_reason")?,
+            cappers: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cappers"),
+                "cappers",
+            )?,
+            flag_cap_limit: read_value::<u16>(
+                stream,
+                definition.get_entry("flagcaplimit"),
+                "flag_cap_limit",
+            )?,
+            blue_score: read_value::<u16>(
+                stream,
+                definition.get_entry("blue_score"),
+                "blue_score",
+            )?,
+            red_score: read_value::<u16>(stream, definition.get_entry("red_score"), "red_score")?,
+            blue_score_prev: read_value::<u16>(
+                stream,
+                definition.get_entry("blue_score_prev"),
+                "blue_score_prev",
+            )?,
+            red_score_prev: read_value::<u16>(
+                stream,
+                definition.get_entry("red_score_prev"),
+                "red_score_prev",
+            )?,
+            round_complete: read_value::<u16>(
+                stream,
+                definition.get_entry("round_complete"),
+                "round_complete",
+            )?,
+            rounds_remaining: read_value::<u16>(
+                stream,
+                definition.get_entry("rounds_remaining"),
+                "rounds_remaining",
+            )?,
+            player_1: read_value::<u16>(stream, definition.get_entry("player_1"), "player_1")?,
+            player_1_points: read_value::<u16>(
+                stream,
+                definition.get_entry("player_1_points"),
+                "player_1_points",
+            )?,
+            player_2: read_value::<u16>(stream, definition.get_entry("player_2"), "player_2")?,
+            player_2_points: read_value::<u16>(
+                stream,
+                definition.get_entry("player_2_points"),
+                "player_2_points",
+            )?,
+            player_3: read_value::<u16>(stream, definition.get_entry("player_3"), "player_3")?,
+            player_3_points: read_value::<u16>(
+                stream,
+                definition.get_entry("player_3_points"),
+                "player_3_points",
+            )?,
+            kill_stream_player_1: read_value::<u16>(
                 stream,
                 definition.get_entry("killstreak_player_1"),
                 "kill_stream_player_1",
             )?,
-            kill_stream_player_1_count: read_value::<
-                u16,
-            >(
+            kill_stream_player_1_count: read_value::<u16>(
                 stream,
                 definition.get_entry("killstreak_player_1_count"),
                 "kill_stream_player_1_count",
             )?,
-            game_over: read_value::<
-                u8,
-            >(stream, definition.get_entry("game_over"), "game_over")?,
+            game_over: read_value::<u8>(stream, definition.get_entry("game_over"), "game_over")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "panel_style" => Ok(self.panel_style.clone().into()),
             "winning_team" => Ok(self.winning_team.clone().into()),
@@ -5461,16 +5363,12 @@ impl TeamPlayWinPanelEvent {
             "player_3" => Ok(self.player_3.clone().into()),
             "player_3_points" => Ok(self.player_3_points.clone().into()),
             "killstreak_player_1" => Ok(self.kill_stream_player_1.clone().into()),
-            "killstreak_player_1_count" => {
-                Ok(self.kill_stream_player_1_count.clone().into())
-            }
+            "killstreak_player_1_count" => Ok(self.kill_stream_player_1_count.clone().into()),
             "game_over" => Ok(self.game_over.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayWinPanel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayWinPanel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5504,15 +5402,14 @@ impl TeamPlayTeamBalancedPlayerEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "team" => Ok(self.team.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayTeamBalancedPlayer",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayTeamBalancedPlayer",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5540,13 +5437,12 @@ impl TeamPlaySetupFinishedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlaySetupFinished",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlaySetupFinished",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5573,21 +5469,22 @@ impl TeamPlayAlertEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TeamPlayAlertEvent {
-            alert_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("alert_type"), "alert_type")?,
+            alert_type: read_value::<u16>(
+                stream,
+                definition.get_entry("alert_type"),
+                "alert_type",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "alert_type" => Ok(self.alert_type.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayAlert",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayAlert",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5616,29 +5513,26 @@ impl TrainingCompleteEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TrainingCompleteEvent {
-            next_map: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("next_map"), "next_map")?,
-            map: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("map"), "map")?,
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            next_map: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("next_map"),
+                "next_map",
+            )?,
+            map: read_value::<MaybeUtf8String>(stream, definition.get_entry("map"), "map")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "next_map" => Ok(self.next_map.clone().into()),
             "map" => Ok(self.map.clone().into()),
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TrainingComplete",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TrainingComplete",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5670,14 +5564,13 @@ impl ShowFreezePanelEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "killer" => Ok(self.killer.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ShowFreezePanel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ShowFreezePanel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5705,13 +5598,12 @@ impl HideFreezePanelEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HideFreezePanel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HideFreezePanel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5739,13 +5631,12 @@ impl FreezeCamStartedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "FreezeCamStarted",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "FreezeCamStarted",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5773,13 +5664,12 @@ impl LocalPlayerChangeTeamEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerChangeTeam",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerChangeTeam",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5811,14 +5701,13 @@ impl LocalPlayerScoreChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "score" => Ok(self.score.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerScoreChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerScoreChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5846,13 +5735,12 @@ impl LocalPlayerChangeClassEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerChangeClass",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerChangeClass",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5880,13 +5768,12 @@ impl LocalPlayerRespawnEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerRespawn",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerRespawn",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5915,27 +5802,30 @@ impl BuildingInfoChangedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(BuildingInfoChangedEvent {
-            building_type: read_value::<
-                u8,
-            >(stream, definition.get_entry("building_type"), "building_type")?,
-            object_mode: read_value::<
-                u8,
-            >(stream, definition.get_entry("object_mode"), "object_mode")?,
+            building_type: read_value::<u8>(
+                stream,
+                definition.get_entry("building_type"),
+                "building_type",
+            )?,
+            object_mode: read_value::<u8>(
+                stream,
+                definition.get_entry("object_mode"),
+                "object_mode",
+            )?,
             remove: read_value::<u8>(stream, definition.get_entry("remove"), "remove")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "building_type" => Ok(self.building_type.clone().into()),
             "object_mode" => Ok(self.object_mode.clone().into()),
             "remove" => Ok(self.remove.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BuildingInfoChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BuildingInfoChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -5962,21 +5852,18 @@ impl LocalPlayerChangeDisguiseEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(LocalPlayerChangeDisguiseEvent {
-            disguised: read_value::<
-                bool,
-            >(stream, definition.get_entry("disguised"), "disguised")?,
+            disguised: read_value::<bool>(stream, definition.get_entry("disguised"), "disguised")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "disguised" => Ok(self.disguised.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerChangeDisguise",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerChangeDisguise",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6004,25 +5891,20 @@ impl PlayerAccountChangedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerAccountChangedEvent {
-            old_value: read_value::<
-                u16,
-            >(stream, definition.get_entry("old_value"), "old_value")?,
-            new_value: read_value::<
-                u16,
-            >(stream, definition.get_entry("new_value"), "new_value")?,
+            old_value: read_value::<u16>(stream, definition.get_entry("old_value"), "old_value")?,
+            new_value: read_value::<u16>(stream, definition.get_entry("new_value"), "new_value")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "old_value" => Ok(self.old_value.clone().into()),
             "new_value" => Ok(self.new_value.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerAccountChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerAccountChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6050,13 +5932,12 @@ impl SpyPdaResetEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SpyPdaReset",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SpyPdaReset",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6084,25 +5965,20 @@ impl FlagStatusUpdateEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(FlagStatusUpdateEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            ent_index: read_value::<u32>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "FlagStatusUpdate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "FlagStatusUpdate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6129,21 +6005,22 @@ impl PlayerStatsUpdatedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerStatsUpdatedEvent {
-            force_upload: read_value::<
-                bool,
-            >(stream, definition.get_entry("forceupload"), "force_upload")?,
+            force_upload: read_value::<bool>(
+                stream,
+                definition.get_entry("forceupload"),
+                "force_upload",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "forceupload" => Ok(self.force_upload.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerStatsUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerStatsUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6171,13 +6048,12 @@ impl PlayingCommentaryEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayingCommentary",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayingCommentary",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6205,25 +6081,20 @@ impl PlayerChargeDeployedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerChargeDeployedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            target_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("targetid"), "target_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            target_id: read_value::<u16>(stream, definition.get_entry("targetid"), "target_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "targetid" => Ok(self.target_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerChargeDeployed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerChargeDeployed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6252,25 +6123,22 @@ impl PlayerBuiltObjectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerBuiltObjectEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             object: read_value::<u16>(stream, definition.get_entry("object"), "object")?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "object" => Ok(self.object.clone().into()),
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerBuiltObject",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerBuiltObject",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6300,29 +6168,28 @@ impl PlayerUpgradedObjectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerUpgradedObjectEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             object: read_value::<u16>(stream, definition.get_entry("object"), "object")?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
-            is_builder: read_value::<
-                bool,
-            >(stream, definition.get_entry("isbuilder"), "is_builder")?,
+            is_builder: read_value::<bool>(
+                stream,
+                definition.get_entry("isbuilder"),
+                "is_builder",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "object" => Ok(self.object.clone().into()),
             "index" => Ok(self.index.clone().into()),
             "isbuilder" => Ok(self.is_builder.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerUpgradedObject",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerUpgradedObject",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6351,25 +6218,22 @@ impl PlayerCarryObjectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerCarryObjectEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             object: read_value::<u16>(stream, definition.get_entry("object"), "object")?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "object" => Ok(self.object.clone().into()),
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerCarryObject",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerCarryObject",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6398,25 +6262,22 @@ impl PlayerDropObjectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerDropObjectEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             object: read_value::<u16>(stream, definition.get_entry("object"), "object")?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "object" => Ok(self.object.clone().into()),
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDropObject",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDropObject",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6445,27 +6306,26 @@ impl ObjectRemovedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ObjectRemovedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            object_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("objecttype"), "object_type")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            object_type: read_value::<u16>(
+                stream,
+                definition.get_entry("objecttype"),
+                "object_type",
+            )?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "objecttype" => Ok(self.object_type.clone().into()),
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ObjectRemoved",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ObjectRemoved",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6499,32 +6359,31 @@ impl ObjectDestroyedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ObjectDestroyedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            object_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("objecttype"), "object_type")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            object_type: read_value::<u16>(
+                stream,
+                definition.get_entry("objecttype"),
+                "object_type",
+            )?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
-            was_building: read_value::<
-                bool,
-            >(stream, definition.get_entry("was_building"), "was_building")?,
+            was_building: read_value::<bool>(
+                stream,
+                definition.get_entry("was_building"),
+                "was_building",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "attacker" => Ok(self.attacker.clone().into()),
@@ -6534,12 +6393,10 @@ impl ObjectDestroyedEvent {
             "objecttype" => Ok(self.object_type.clone().into()),
             "index" => Ok(self.index.clone().into()),
             "was_building" => Ok(self.was_building.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ObjectDestroyed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ObjectDestroyed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6568,27 +6425,26 @@ impl ObjectDetonatedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ObjectDetonatedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            object_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("objecttype"), "object_type")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            object_type: read_value::<u16>(
+                stream,
+                definition.get_entry("objecttype"),
+                "object_type",
+            )?,
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "objecttype" => Ok(self.object_type.clone().into()),
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ObjectDetonated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ObjectDetonated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6617,22 +6473,23 @@ impl AchievementEarnedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(AchievementEarnedEvent {
             player: read_value::<u8>(stream, definition.get_entry("player"), "player")?,
-            achievement: read_value::<
-                u16,
-            >(stream, definition.get_entry("achievement"), "achievement")?,
+            achievement: read_value::<u16>(
+                stream,
+                definition.get_entry("achievement"),
+                "achievement",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "achievement" => Ok(self.achievement.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "AchievementEarned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "AchievementEarned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6660,13 +6517,12 @@ impl SpecTargetUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SpecTargetUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SpecTargetUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6696,33 +6552,36 @@ impl TournamentStateUpdateEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(TournamentStateUpdateEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            name_change: read_value::<
-                bool,
-            >(stream, definition.get_entry("namechange"), "name_change")?,
-            ready_state: read_value::<
-                u16,
-            >(stream, definition.get_entry("readystate"), "ready_state")?,
-            new_name: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("newname"), "new_name")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            name_change: read_value::<bool>(
+                stream,
+                definition.get_entry("namechange"),
+                "name_change",
+            )?,
+            ready_state: read_value::<u16>(
+                stream,
+                definition.get_entry("readystate"),
+                "ready_state",
+            )?,
+            new_name: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("newname"),
+                "new_name",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "namechange" => Ok(self.name_change.clone().into()),
             "readystate" => Ok(self.ready_state.clone().into()),
             "newname" => Ok(self.new_name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TournamentStateUpdate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TournamentStateUpdate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6750,13 +6609,12 @@ impl TournamentEnableCountdownEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TournamentEnableCountdown",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TournamentEnableCountdown",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6783,21 +6641,18 @@ impl PlayerCalledForMedicEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerCalledForMedicEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerCalledForMedic",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerCalledForMedic",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6824,21 +6679,18 @@ impl PlayerAskedForBallEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerAskedForBallEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerAskedForBall",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerAskedForBall",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6866,13 +6718,12 @@ impl LocalPlayerBecameObserverEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerBecameObserver",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerBecameObserver",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6901,29 +6752,34 @@ impl PlayerIgnitedInvEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerIgnitedInvEvent {
-            pyro_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("pyro_entindex"), "pyro_ent_index")?,
-            victim_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            medic_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("medic_entindex"), "medic_ent_index")?,
+            pyro_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("pyro_entindex"),
+                "pyro_ent_index",
+            )?,
+            victim_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            medic_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("medic_entindex"),
+                "medic_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "pyro_entindex" => Ok(self.pyro_ent_index.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
             "medic_entindex" => Ok(self.medic_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerIgnitedInv",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerIgnitedInv",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -6952,29 +6808,30 @@ impl PlayerIgnitedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerIgnitedEvent {
-            pyro_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("pyro_entindex"), "pyro_ent_index")?,
-            victim_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            weapon_id: read_value::<
-                u8,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            pyro_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("pyro_entindex"),
+                "pyro_ent_index",
+            )?,
+            victim_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            weapon_id: read_value::<u8>(stream, definition.get_entry("weaponid"), "weapon_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "pyro_entindex" => Ok(self.pyro_ent_index.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
             "weaponid" => Ok(self.weapon_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerIgnited",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerIgnited",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7005,23 +6862,24 @@ impl PlayerExtinguishedEvent {
         Ok(PlayerExtinguishedEvent {
             victim: read_value::<u8>(stream, definition.get_entry("victim"), "victim")?,
             healer: read_value::<u8>(stream, definition.get_entry("healer"), "healer")?,
-            item_definition_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("itemdefindex"), "item_definition_index")?,
+            item_definition_index: read_value::<u16>(
+                stream,
+                definition.get_entry("itemdefindex"),
+                "item_definition_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "victim" => Ok(self.victim.clone().into()),
             "healer" => Ok(self.healer.clone().into()),
             "itemdefindex" => Ok(self.item_definition_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerExtinguished",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerExtinguished",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7050,27 +6908,22 @@ impl PlayerTeleportedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerTeleportedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            builder_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("builderid"), "builder_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            builder_id: read_value::<u16>(stream, definition.get_entry("builderid"), "builder_id")?,
             dist: read_value::<f32>(stream, definition.get_entry("dist"), "dist")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "builderid" => Ok(self.builder_id.clone().into()),
             "dist" => Ok(self.dist.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerTeleported",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerTeleported",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7097,21 +6950,18 @@ impl PlayerHealedMedicCallEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHealedMedicCallEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHealedMedicCall",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHealedMedicCall",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7139,13 +6989,12 @@ impl LocalPlayerChargeReadyEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerChargeReady",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerChargeReady",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7173,13 +7022,12 @@ impl LocalPlayerWindDownEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerWindDown",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerWindDown",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7207,25 +7055,24 @@ impl PlayerInvulnedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerInvulnedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            medic_user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("medic_userid"), "medic_user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            medic_user_id: read_value::<u16>(
+                stream,
+                definition.get_entry("medic_userid"),
+                "medic_user_id",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "medic_userid" => Ok(self.medic_user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerInvulned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerInvulned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7256,23 +7103,20 @@ impl EscortSpeedEvent {
         Ok(EscortSpeedEvent {
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
             speed: read_value::<u8>(stream, definition.get_entry("speed"), "speed")?,
-            players: read_value::<
-                u8,
-            >(stream, definition.get_entry("players"), "players")?,
+            players: read_value::<u8>(stream, definition.get_entry("players"), "players")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "speed" => Ok(self.speed.clone().into()),
             "players" => Ok(self.players.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EscortSpeed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EscortSpeed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7302,24 +7146,21 @@ impl EscortProgressEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(EscortProgressEvent {
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            progress: read_value::<
-                f32,
-            >(stream, definition.get_entry("progress"), "progress")?,
+            progress: read_value::<f32>(stream, definition.get_entry("progress"), "progress")?,
             reset: read_value::<bool>(stream, definition.get_entry("reset"), "reset")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "progress" => Ok(self.progress.clone().into()),
             "reset" => Ok(self.reset.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EscortProgress",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EscortProgress",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7348,22 +7189,23 @@ impl EscortRecedeEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(EscortRecedeEvent {
             team: read_value::<u8>(stream, definition.get_entry("team"), "team")?,
-            recede_time: read_value::<
-                f32,
-            >(stream, definition.get_entry("recedetime"), "recede_time")?,
+            recede_time: read_value::<f32>(
+                stream,
+                definition.get_entry("recedetime"),
+                "recede_time",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "recedetime" => Ok(self.recede_time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EscortRecede",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EscortRecede",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7391,13 +7233,12 @@ impl GameUIActivatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameUIActivated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameUIActivated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7425,13 +7266,12 @@ impl GameUIHiddenEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GameUIHidden",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GameUIHidden",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7465,15 +7305,14 @@ impl PlayerEscortScoreEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "points" => Ok(self.points.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerEscortScore",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerEscortScore",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7503,26 +7342,25 @@ impl PlayerHealOnHitEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHealOnHitEvent {
             amount: read_value::<u16>(stream, definition.get_entry("amount"), "amount")?,
-            ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
-            weapon_def_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("weapon_def_index"), "weapon_def_index")?,
+            ent_index: read_value::<u8>(stream, definition.get_entry("entindex"), "ent_index")?,
+            weapon_def_index: read_value::<u32>(
+                stream,
+                definition.get_entry("weapon_def_index"),
+                "weapon_def_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "amount" => Ok(self.amount.clone().into()),
             "entindex" => Ok(self.ent_index.clone().into()),
             "weapon_def_index" => Ok(self.weapon_def_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHealOnHit",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHealOnHit",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7556,15 +7394,14 @@ impl PlayerStealSandvichEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "owner" => Ok(self.owner.clone().into()),
             "target" => Ok(self.target.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerStealSandvich",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerStealSandvich",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7596,14 +7433,13 @@ impl ShowClassLayoutEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "show" => Ok(self.show.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ShowClassLayout",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ShowClassLayout",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7635,14 +7471,13 @@ impl ShowVsPanelEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "show" => Ok(self.show.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ShowVsPanel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ShowVsPanel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7676,15 +7511,14 @@ impl PlayerDamagedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "amount" => Ok(self.amount.clone().into()),
             "type" => Ok(self.kind.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDamaged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDamaged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7713,22 +7547,19 @@ impl ArenaPlayerNotificationEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ArenaPlayerNotificationEvent {
             player: read_value::<u8>(stream, definition.get_entry("player"), "player")?,
-            message: read_value::<
-                u8,
-            >(stream, definition.get_entry("message"), "message")?,
+            message: read_value::<u8>(stream, definition.get_entry("message"), "message")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "message" => Ok(self.message.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ArenaPlayerNotification",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ArenaPlayerNotification",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7762,15 +7593,14 @@ impl ArenaMatchMaxStreakEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "streak" => Ok(self.streak.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ArenaMatchMaxStreak",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ArenaMatchMaxStreak",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7798,13 +7628,12 @@ impl ArenaRoundStartEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ArenaRoundStart",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ArenaRoundStart",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -7870,130 +7699,179 @@ impl ArenaWinPanelEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ArenaWinPanelEvent {
-            panel_style: read_value::<
-                u8,
-            >(stream, definition.get_entry("panel_style"), "panel_style")?,
-            winning_team: read_value::<
-                u8,
-            >(stream, definition.get_entry("winning_team"), "winning_team")?,
-            win_reason: read_value::<
-                u8,
-            >(stream, definition.get_entry("winreason"), "win_reason")?,
-            cappers: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("cappers"), "cappers")?,
-            flag_cap_limit: read_value::<
-                u16,
-            >(stream, definition.get_entry("flagcaplimit"), "flag_cap_limit")?,
-            blue_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("blue_score"), "blue_score")?,
-            red_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("red_score"), "red_score")?,
-            blue_score_prev: read_value::<
-                u16,
-            >(stream, definition.get_entry("blue_score_prev"), "blue_score_prev")?,
-            red_score_prev: read_value::<
-                u16,
-            >(stream, definition.get_entry("red_score_prev"), "red_score_prev")?,
-            round_complete: read_value::<
-                u16,
-            >(stream, definition.get_entry("round_complete"), "round_complete")?,
-            player_1: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1"), "player_1")?,
-            player_1_damage: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1_damage"), "player_1_damage")?,
-            player_1_healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1_healing"), "player_1_healing")?,
-            player_1_lifetime: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1_lifetime"), "player_1_lifetime")?,
-            player_1_kills: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_1_kills"), "player_1_kills")?,
-            player_2: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2"), "player_2")?,
-            player_2_damage: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2_damage"), "player_2_damage")?,
-            player_2_healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2_healing"), "player_2_healing")?,
-            player_2_lifetime: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2_lifetime"), "player_2_lifetime")?,
-            player_2_kills: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_2_kills"), "player_2_kills")?,
-            player_3: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3"), "player_3")?,
-            player_3_damage: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3_damage"), "player_3_damage")?,
-            player_3_healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3_healing"), "player_3_healing")?,
-            player_3_lifetime: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3_lifetime"), "player_3_lifetime")?,
-            player_3_kills: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_3_kills"), "player_3_kills")?,
-            player_4: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_4"), "player_4")?,
-            player_4_damage: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_4_damage"), "player_4_damage")?,
-            player_4_healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_4_healing"), "player_4_healing")?,
-            player_4_lifetime: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_4_lifetime"), "player_4_lifetime")?,
-            player_4_kills: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_4_kills"), "player_4_kills")?,
-            player_5: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_5"), "player_5")?,
-            player_5_damage: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_5_damage"), "player_5_damage")?,
-            player_5_healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_5_healing"), "player_5_healing")?,
-            player_5_lifetime: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_5_lifetime"), "player_5_lifetime")?,
-            player_5_kills: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_5_kills"), "player_5_kills")?,
-            player_6: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_6"), "player_6")?,
-            player_6_damage: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_6_damage"), "player_6_damage")?,
-            player_6_healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_6_healing"), "player_6_healing")?,
-            player_6_lifetime: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_6_lifetime"), "player_6_lifetime")?,
-            player_6_kills: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_6_kills"), "player_6_kills")?,
+            panel_style: read_value::<u8>(
+                stream,
+                definition.get_entry("panel_style"),
+                "panel_style",
+            )?,
+            winning_team: read_value::<u8>(
+                stream,
+                definition.get_entry("winning_team"),
+                "winning_team",
+            )?,
+            win_reason: read_value::<u8>(stream, definition.get_entry("winreason"), "win_reason")?,
+            cappers: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("cappers"),
+                "cappers",
+            )?,
+            flag_cap_limit: read_value::<u16>(
+                stream,
+                definition.get_entry("flagcaplimit"),
+                "flag_cap_limit",
+            )?,
+            blue_score: read_value::<u16>(
+                stream,
+                definition.get_entry("blue_score"),
+                "blue_score",
+            )?,
+            red_score: read_value::<u16>(stream, definition.get_entry("red_score"), "red_score")?,
+            blue_score_prev: read_value::<u16>(
+                stream,
+                definition.get_entry("blue_score_prev"),
+                "blue_score_prev",
+            )?,
+            red_score_prev: read_value::<u16>(
+                stream,
+                definition.get_entry("red_score_prev"),
+                "red_score_prev",
+            )?,
+            round_complete: read_value::<u16>(
+                stream,
+                definition.get_entry("round_complete"),
+                "round_complete",
+            )?,
+            player_1: read_value::<u16>(stream, definition.get_entry("player_1"), "player_1")?,
+            player_1_damage: read_value::<u16>(
+                stream,
+                definition.get_entry("player_1_damage"),
+                "player_1_damage",
+            )?,
+            player_1_healing: read_value::<u16>(
+                stream,
+                definition.get_entry("player_1_healing"),
+                "player_1_healing",
+            )?,
+            player_1_lifetime: read_value::<u16>(
+                stream,
+                definition.get_entry("player_1_lifetime"),
+                "player_1_lifetime",
+            )?,
+            player_1_kills: read_value::<u16>(
+                stream,
+                definition.get_entry("player_1_kills"),
+                "player_1_kills",
+            )?,
+            player_2: read_value::<u16>(stream, definition.get_entry("player_2"), "player_2")?,
+            player_2_damage: read_value::<u16>(
+                stream,
+                definition.get_entry("player_2_damage"),
+                "player_2_damage",
+            )?,
+            player_2_healing: read_value::<u16>(
+                stream,
+                definition.get_entry("player_2_healing"),
+                "player_2_healing",
+            )?,
+            player_2_lifetime: read_value::<u16>(
+                stream,
+                definition.get_entry("player_2_lifetime"),
+                "player_2_lifetime",
+            )?,
+            player_2_kills: read_value::<u16>(
+                stream,
+                definition.get_entry("player_2_kills"),
+                "player_2_kills",
+            )?,
+            player_3: read_value::<u16>(stream, definition.get_entry("player_3"), "player_3")?,
+            player_3_damage: read_value::<u16>(
+                stream,
+                definition.get_entry("player_3_damage"),
+                "player_3_damage",
+            )?,
+            player_3_healing: read_value::<u16>(
+                stream,
+                definition.get_entry("player_3_healing"),
+                "player_3_healing",
+            )?,
+            player_3_lifetime: read_value::<u16>(
+                stream,
+                definition.get_entry("player_3_lifetime"),
+                "player_3_lifetime",
+            )?,
+            player_3_kills: read_value::<u16>(
+                stream,
+                definition.get_entry("player_3_kills"),
+                "player_3_kills",
+            )?,
+            player_4: read_value::<u16>(stream, definition.get_entry("player_4"), "player_4")?,
+            player_4_damage: read_value::<u16>(
+                stream,
+                definition.get_entry("player_4_damage"),
+                "player_4_damage",
+            )?,
+            player_4_healing: read_value::<u16>(
+                stream,
+                definition.get_entry("player_4_healing"),
+                "player_4_healing",
+            )?,
+            player_4_lifetime: read_value::<u16>(
+                stream,
+                definition.get_entry("player_4_lifetime"),
+                "player_4_lifetime",
+            )?,
+            player_4_kills: read_value::<u16>(
+                stream,
+                definition.get_entry("player_4_kills"),
+                "player_4_kills",
+            )?,
+            player_5: read_value::<u16>(stream, definition.get_entry("player_5"), "player_5")?,
+            player_5_damage: read_value::<u16>(
+                stream,
+                definition.get_entry("player_5_damage"),
+                "player_5_damage",
+            )?,
+            player_5_healing: read_value::<u16>(
+                stream,
+                definition.get_entry("player_5_healing"),
+                "player_5_healing",
+            )?,
+            player_5_lifetime: read_value::<u16>(
+                stream,
+                definition.get_entry("player_5_lifetime"),
+                "player_5_lifetime",
+            )?,
+            player_5_kills: read_value::<u16>(
+                stream,
+                definition.get_entry("player_5_kills"),
+                "player_5_kills",
+            )?,
+            player_6: read_value::<u16>(stream, definition.get_entry("player_6"), "player_6")?,
+            player_6_damage: read_value::<u16>(
+                stream,
+                definition.get_entry("player_6_damage"),
+                "player_6_damage",
+            )?,
+            player_6_healing: read_value::<u16>(
+                stream,
+                definition.get_entry("player_6_healing"),
+                "player_6_healing",
+            )?,
+            player_6_lifetime: read_value::<u16>(
+                stream,
+                definition.get_entry("player_6_lifetime"),
+                "player_6_lifetime",
+            )?,
+            player_6_kills: read_value::<u16>(
+                stream,
+                definition.get_entry("player_6_kills"),
+                "player_6_kills",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "panel_style" => Ok(self.panel_style.clone().into()),
             "winning_team" => Ok(self.winning_team.clone().into()),
@@ -8035,12 +7913,10 @@ impl ArenaWinPanelEvent {
             "player_6_healing" => Ok(self.player_6_healing.clone().into()),
             "player_6_lifetime" => Ok(self.player_6_lifetime.clone().into()),
             "player_6_kills" => Ok(self.player_6_kills.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ArenaWinPanel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ArenaWinPanel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8069,29 +7945,30 @@ impl PveWinPanelEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PveWinPanelEvent {
-            panel_style: read_value::<
-                u8,
-            >(stream, definition.get_entry("panel_style"), "panel_style")?,
-            winning_team: read_value::<
-                u8,
-            >(stream, definition.get_entry("winning_team"), "winning_team")?,
-            win_reason: read_value::<
-                u8,
-            >(stream, definition.get_entry("winreason"), "win_reason")?,
+            panel_style: read_value::<u8>(
+                stream,
+                definition.get_entry("panel_style"),
+                "panel_style",
+            )?,
+            winning_team: read_value::<u8>(
+                stream,
+                definition.get_entry("winning_team"),
+                "winning_team",
+            )?,
+            win_reason: read_value::<u8>(stream, definition.get_entry("winreason"), "win_reason")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "panel_style" => Ok(self.panel_style.clone().into()),
             "winning_team" => Ok(self.winning_team.clone().into()),
             "winreason" => Ok(self.win_reason.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PveWinPanel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PveWinPanel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8123,14 +8000,13 @@ impl AirDashEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "AirDash",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "AirDash",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8162,14 +8038,13 @@ impl LandedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "Landed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "Landed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8201,14 +8076,13 @@ impl PlayerDamageDodgedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "damage" => Ok(self.damage.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDamageDodged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDamageDodged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8238,31 +8112,28 @@ impl PlayerStunnedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerStunnedEvent {
-            stunner: read_value::<
-                u16,
-            >(stream, definition.get_entry("stunner"), "stunner")?,
+            stunner: read_value::<u16>(stream, definition.get_entry("stunner"), "stunner")?,
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
-            victim_capping: read_value::<
-                bool,
-            >(stream, definition.get_entry("victim_capping"), "victim_capping")?,
-            big_stun: read_value::<
-                bool,
-            >(stream, definition.get_entry("big_stun"), "big_stun")?,
+            victim_capping: read_value::<bool>(
+                stream,
+                definition.get_entry("victim_capping"),
+                "victim_capping",
+            )?,
+            big_stun: read_value::<bool>(stream, definition.get_entry("big_stun"), "big_stun")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "stunner" => Ok(self.stunner.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
             "victim_capping" => Ok(self.victim_capping.clone().into()),
             "big_stun" => Ok(self.big_stun.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerStunned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerStunned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8290,25 +8161,20 @@ impl ScoutGrandSlamEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ScoutGrandSlamEvent {
-            scout_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("scout_id"), "scout_id")?,
-            target_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("target_id"), "target_id")?,
+            scout_id: read_value::<u16>(stream, definition.get_entry("scout_id"), "scout_id")?,
+            target_id: read_value::<u16>(stream, definition.get_entry("target_id"), "target_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "scout_id" => Ok(self.scout_id.clone().into()),
             "target_id" => Ok(self.target_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ScoutGrandSlam",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ScoutGrandSlam",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8338,9 +8204,11 @@ impl ScoutSlamdollLandedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ScoutSlamdollLandedEvent {
-            target_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("target_index"), "target_index")?,
+            target_index: read_value::<u16>(
+                stream,
+                definition.get_entry("target_index"),
+                "target_index",
+            )?,
             x: read_value::<f32>(stream, definition.get_entry("x"), "x")?,
             y: read_value::<f32>(stream, definition.get_entry("y"), "y")?,
             z: read_value::<f32>(stream, definition.get_entry("z"), "z")?,
@@ -8348,17 +8216,16 @@ impl ScoutSlamdollLandedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "target_index" => Ok(self.target_index.clone().into()),
             "x" => Ok(self.x.clone().into()),
             "y" => Ok(self.y.clone().into()),
             "z" => Ok(self.z.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ScoutSlamdollLanded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ScoutSlamdollLanded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8395,43 +8262,58 @@ impl ArrowImpactEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ArrowImpactEvent {
-            attached_entity: read_value::<
-                u16,
-            >(stream, definition.get_entry("attachedEntity"), "attached_entity")?,
-            shooter: read_value::<
-                u16,
-            >(stream, definition.get_entry("shooter"), "shooter")?,
-            bone_index_attached: read_value::<
-                u16,
-            >(stream, definition.get_entry("boneIndexAttached"), "bone_index_attached")?,
-            bone_position_x: read_value::<
-                f32,
-            >(stream, definition.get_entry("bonePositionX"), "bone_position_x")?,
-            bone_position_y: read_value::<
-                f32,
-            >(stream, definition.get_entry("bonePositionY"), "bone_position_y")?,
-            bone_position_z: read_value::<
-                f32,
-            >(stream, definition.get_entry("bonePositionZ"), "bone_position_z")?,
-            bone_angles_x: read_value::<
-                f32,
-            >(stream, definition.get_entry("boneAnglesX"), "bone_angles_x")?,
-            bone_angles_y: read_value::<
-                f32,
-            >(stream, definition.get_entry("boneAnglesY"), "bone_angles_y")?,
-            bone_angles_z: read_value::<
-                f32,
-            >(stream, definition.get_entry("boneAnglesZ"), "bone_angles_z")?,
-            projectile_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("projectileType"), "projectile_type")?,
-            is_crit: read_value::<
-                bool,
-            >(stream, definition.get_entry("isCrit"), "is_crit")?,
+            attached_entity: read_value::<u16>(
+                stream,
+                definition.get_entry("attachedEntity"),
+                "attached_entity",
+            )?,
+            shooter: read_value::<u16>(stream, definition.get_entry("shooter"), "shooter")?,
+            bone_index_attached: read_value::<u16>(
+                stream,
+                definition.get_entry("boneIndexAttached"),
+                "bone_index_attached",
+            )?,
+            bone_position_x: read_value::<f32>(
+                stream,
+                definition.get_entry("bonePositionX"),
+                "bone_position_x",
+            )?,
+            bone_position_y: read_value::<f32>(
+                stream,
+                definition.get_entry("bonePositionY"),
+                "bone_position_y",
+            )?,
+            bone_position_z: read_value::<f32>(
+                stream,
+                definition.get_entry("bonePositionZ"),
+                "bone_position_z",
+            )?,
+            bone_angles_x: read_value::<f32>(
+                stream,
+                definition.get_entry("boneAnglesX"),
+                "bone_angles_x",
+            )?,
+            bone_angles_y: read_value::<f32>(
+                stream,
+                definition.get_entry("boneAnglesY"),
+                "bone_angles_y",
+            )?,
+            bone_angles_z: read_value::<f32>(
+                stream,
+                definition.get_entry("boneAnglesZ"),
+                "bone_angles_z",
+            )?,
+            projectile_type: read_value::<u16>(
+                stream,
+                definition.get_entry("projectileType"),
+                "projectile_type",
+            )?,
+            is_crit: read_value::<bool>(stream, definition.get_entry("isCrit"), "is_crit")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "attachedEntity" => Ok(self.attached_entity.clone().into()),
             "shooter" => Ok(self.shooter.clone().into()),
@@ -8444,12 +8326,10 @@ impl ArrowImpactEvent {
             "boneAnglesZ" => Ok(self.bone_angles_z.clone().into()),
             "projectileType" => Ok(self.projectile_type.clone().into()),
             "isCrit" => Ok(self.is_crit.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ArrowImpact",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ArrowImpact",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8477,25 +8357,28 @@ impl PlayerJaratedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerJaratedEvent {
-            thrower_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("thrower_entindex"), "thrower_ent_index")?,
-            victim_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
+            thrower_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("thrower_entindex"),
+                "thrower_ent_index",
+            )?,
+            victim_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "thrower_entindex" => Ok(self.thrower_ent_index.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerJarated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerJarated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8523,25 +8406,28 @@ impl PlayerJaratedFadeEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerJaratedFadeEvent {
-            thrower_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("thrower_entindex"), "thrower_ent_index")?,
-            victim_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
+            thrower_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("thrower_entindex"),
+                "thrower_ent_index",
+            )?,
+            victim_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "thrower_entindex" => Ok(self.thrower_ent_index.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerJaratedFade",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerJaratedFade",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8569,25 +8455,28 @@ impl PlayerShieldBlockedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerShieldBlockedEvent {
-            attacker_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("attacker_entindex"), "attacker_ent_index")?,
-            blocker_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("blocker_entindex"), "blocker_ent_index")?,
+            attacker_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("attacker_entindex"),
+                "attacker_ent_index",
+            )?,
+            blocker_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("blocker_entindex"),
+                "blocker_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "attacker_entindex" => Ok(self.attacker_ent_index.clone().into()),
             "blocker_entindex" => Ok(self.blocker_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerShieldBlocked",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerShieldBlocked",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8619,14 +8508,13 @@ impl PlayerPinnedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "pinned" => Ok(self.pinned.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerPinned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerPinned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8658,14 +8546,13 @@ impl PlayerHealedByMedicEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "medic" => Ok(self.medic.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHealedByMedic",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHealedByMedic",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8695,31 +8582,24 @@ impl PlayerSappedObjectEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerSappedObjectEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            owner_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("ownerid"), "owner_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            owner_id: read_value::<u16>(stream, definition.get_entry("ownerid"), "owner_id")?,
             object: read_value::<u8>(stream, definition.get_entry("object"), "object")?,
-            sapper_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("sapperid"), "sapper_id")?,
+            sapper_id: read_value::<u16>(stream, definition.get_entry("sapperid"), "sapper_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "ownerid" => Ok(self.owner_id.clone().into()),
             "object" => Ok(self.object.clone().into()),
             "sapperid" => Ok(self.sapper_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerSappedObject",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerSappedObject",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8753,24 +8633,17 @@ impl ItemFoundEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ItemFoundEvent {
             player: read_value::<u8>(stream, definition.get_entry("player"), "player")?,
-            quality: read_value::<
-                u8,
-            >(stream, definition.get_entry("quality"), "quality")?,
+            quality: read_value::<u8>(stream, definition.get_entry("quality"), "quality")?,
             method: read_value::<u8>(stream, definition.get_entry("method"), "method")?,
-            item_def: read_value::<
-                u32,
-            >(stream, definition.get_entry("itemdef"), "item_def")?,
-            is_strange: read_value::<
-                u8,
-            >(stream, definition.get_entry("isstrange"), "is_strange")?,
-            is_unusual: read_value::<
-                u8,
-            >(stream, definition.get_entry("isunusual"), "is_unusual")?,
+            item_def: read_value::<u32>(stream, definition.get_entry("itemdef"), "item_def")?,
+            is_strange: read_value::<u8>(stream, definition.get_entry("isstrange"), "is_strange")?,
+            is_unusual: read_value::<u8>(stream, definition.get_entry("isunusual"), "is_unusual")?,
             wear: read_value::<f32>(stream, definition.get_entry("wear"), "wear")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "quality" => Ok(self.quality.clone().into()),
@@ -8779,12 +8652,10 @@ impl ItemFoundEvent {
             "isstrange" => Ok(self.is_strange.clone().into()),
             "isunusual" => Ok(self.is_unusual.clone().into()),
             "wear" => Ok(self.wear.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ItemFound",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ItemFound",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8824,54 +8695,69 @@ impl ShowAnnotationEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ShowAnnotationEvent {
-            world_pos_x: read_value::<
-                f32,
-            >(stream, definition.get_entry("worldPosX"), "world_pos_x")?,
-            world_pos_y: read_value::<
-                f32,
-            >(stream, definition.get_entry("worldPosY"), "world_pos_y")?,
-            world_pos_z: read_value::<
-                f32,
-            >(stream, definition.get_entry("worldPosZ"), "world_pos_z")?,
-            world_normal_x: read_value::<
-                f32,
-            >(stream, definition.get_entry("worldNormalX"), "world_normal_x")?,
-            world_normal_y: read_value::<
-                f32,
-            >(stream, definition.get_entry("worldNormalY"), "world_normal_y")?,
-            world_normal_z: read_value::<
-                f32,
-            >(stream, definition.get_entry("worldNormalZ"), "world_normal_z")?,
+            world_pos_x: read_value::<f32>(
+                stream,
+                definition.get_entry("worldPosX"),
+                "world_pos_x",
+            )?,
+            world_pos_y: read_value::<f32>(
+                stream,
+                definition.get_entry("worldPosY"),
+                "world_pos_y",
+            )?,
+            world_pos_z: read_value::<f32>(
+                stream,
+                definition.get_entry("worldPosZ"),
+                "world_pos_z",
+            )?,
+            world_normal_x: read_value::<f32>(
+                stream,
+                definition.get_entry("worldNormalX"),
+                "world_normal_x",
+            )?,
+            world_normal_y: read_value::<f32>(
+                stream,
+                definition.get_entry("worldNormalY"),
+                "world_normal_y",
+            )?,
+            world_normal_z: read_value::<f32>(
+                stream,
+                definition.get_entry("worldNormalZ"),
+                "world_normal_z",
+            )?,
             id: read_value::<u32>(stream, definition.get_entry("id"), "id")?,
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
-            lifetime: read_value::<
-                f32,
-            >(stream, definition.get_entry("lifetime"), "lifetime")?,
-            visibility_bit_field: read_value::<
-                u32,
-            >(
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
+            lifetime: read_value::<f32>(stream, definition.get_entry("lifetime"), "lifetime")?,
+            visibility_bit_field: read_value::<u32>(
                 stream,
                 definition.get_entry("visibilityBitfield"),
                 "visibility_bit_field",
             )?,
-            follow_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("follow_entindex"), "follow_ent_index")?,
-            show_distance: read_value::<
-                bool,
-            >(stream, definition.get_entry("show_distance"), "show_distance")?,
-            play_sound: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("play_sound"), "play_sound")?,
-            show_effect: read_value::<
-                bool,
-            >(stream, definition.get_entry("show_effect"), "show_effect")?,
+            follow_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("follow_entindex"),
+                "follow_ent_index",
+            )?,
+            show_distance: read_value::<bool>(
+                stream,
+                definition.get_entry("show_distance"),
+                "show_distance",
+            )?,
+            play_sound: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("play_sound"),
+                "play_sound",
+            )?,
+            show_effect: read_value::<bool>(
+                stream,
+                definition.get_entry("show_effect"),
+                "show_effect",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "worldPosX" => Ok(self.world_pos_x.clone().into()),
             "worldPosY" => Ok(self.world_pos_y.clone().into()),
@@ -8887,12 +8773,10 @@ impl ShowAnnotationEvent {
             "show_distance" => Ok(self.show_distance.clone().into()),
             "play_sound" => Ok(self.play_sound.clone().into()),
             "show_effect" => Ok(self.show_effect.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ShowAnnotation",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ShowAnnotation",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8924,14 +8808,13 @@ impl HideAnnotationEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "id" => Ok(self.id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HideAnnotation",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HideAnnotation",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -8958,21 +8841,18 @@ impl PostInventoryApplicationEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PostInventoryApplicationEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PostInventoryApplication",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PostInventoryApplication",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9006,15 +8886,14 @@ impl ControlPointUnlockUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "time" => Ok(self.time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointUnlockUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointUnlockUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9042,25 +8921,24 @@ impl DeployBuffBannerEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(DeployBuffBannerEvent {
-            buff_type: read_value::<
-                u8,
-            >(stream, definition.get_entry("buff_type"), "buff_type")?,
-            buff_owner: read_value::<
-                u16,
-            >(stream, definition.get_entry("buff_owner"), "buff_owner")?,
+            buff_type: read_value::<u8>(stream, definition.get_entry("buff_type"), "buff_type")?,
+            buff_owner: read_value::<u16>(
+                stream,
+                definition.get_entry("buff_owner"),
+                "buff_owner",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "buff_type" => Ok(self.buff_type.clone().into()),
             "buff_owner" => Ok(self.buff_owner.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DeployBuffBanner",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DeployBuffBanner",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9089,29 +8967,26 @@ impl PlayerBuffEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerBuffEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            buff_owner: read_value::<
-                u16,
-            >(stream, definition.get_entry("buff_owner"), "buff_owner")?,
-            buff_type: read_value::<
-                u8,
-            >(stream, definition.get_entry("buff_type"), "buff_type")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            buff_owner: read_value::<u16>(
+                stream,
+                definition.get_entry("buff_owner"),
+                "buff_owner",
+            )?,
+            buff_type: read_value::<u8>(stream, definition.get_entry("buff_type"), "buff_type")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "buff_owner" => Ok(self.buff_owner.clone().into()),
             "buff_type" => Ok(self.buff_type.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerBuff",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerBuff",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9141,33 +9016,24 @@ impl MedicDeathEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MedicDeathEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            healing: read_value::<
-                u16,
-            >(stream, definition.get_entry("healing"), "healing")?,
-            charged: read_value::<
-                bool,
-            >(stream, definition.get_entry("charged"), "charged")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            healing: read_value::<u16>(stream, definition.get_entry("healing"), "healing")?,
+            charged: read_value::<bool>(stream, definition.get_entry("charged"), "charged")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "attacker" => Ok(self.attacker.clone().into()),
             "healing" => Ok(self.healing.clone().into()),
             "charged" => Ok(self.charged.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MedicDeath",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MedicDeath",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9195,13 +9061,12 @@ impl OvertimeNagEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "OvertimeNag",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "OvertimeNag",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9229,13 +9094,12 @@ impl TeamsChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamsChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamsChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9262,21 +9126,18 @@ impl HalloweenPumpkinGrabEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HalloweenPumpkinGrabEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HalloweenPumpkinGrab",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HalloweenPumpkinGrab",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9304,25 +9165,24 @@ impl RocketJumpEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RocketJumpEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            play_sound: read_value::<
-                bool,
-            >(stream, definition.get_entry("playsound"), "play_sound")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            play_sound: read_value::<bool>(
+                stream,
+                definition.get_entry("playsound"),
+                "play_sound",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "playsound" => Ok(self.play_sound.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RocketJump",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RocketJump",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9349,21 +9209,18 @@ impl RocketJumpLandedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RocketJumpLandedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RocketJumpLanded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RocketJumpLanded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9391,25 +9248,24 @@ impl StickyJumpEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(StickyJumpEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            play_sound: read_value::<
-                bool,
-            >(stream, definition.get_entry("playsound"), "play_sound")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            play_sound: read_value::<bool>(
+                stream,
+                definition.get_entry("playsound"),
+                "play_sound",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "playsound" => Ok(self.play_sound.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "StickyJump",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "StickyJump",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9436,21 +9292,18 @@ impl StickyJumpLandedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(StickyJumpLandedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "StickyJumpLanded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "StickyJumpLanded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9478,25 +9331,24 @@ impl RocketPackLaunchEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RocketPackLaunchEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            play_sound: read_value::<
-                bool,
-            >(stream, definition.get_entry("playsound"), "play_sound")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            play_sound: read_value::<bool>(
+                stream,
+                definition.get_entry("playsound"),
+                "play_sound",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "playsound" => Ok(self.play_sound.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RocketPackLaunch",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RocketPackLaunch",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9523,21 +9375,18 @@ impl RocketPackLandedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RocketPackLandedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RocketPackLanded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RocketPackLanded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9565,23 +9414,20 @@ impl MedicDefendedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MedicDefendedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             medic: read_value::<u16>(stream, definition.get_entry("medic"), "medic")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "medic" => Ok(self.medic.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MedicDefended",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MedicDefended",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9613,14 +9459,13 @@ impl LocalPlayerHealedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "amount" => Ok(self.amount.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerHealed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerHealed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9647,21 +9492,18 @@ impl PlayerDestroyedPipeBombEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerDestroyedPipeBombEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDestroyedPipeBomb",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDestroyedPipeBomb",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9691,33 +9533,28 @@ impl ObjectDeflectedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ObjectDeflectedEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            owner_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("ownerid"), "owner_id")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            object_ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("object_entindex"), "object_ent_index")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            owner_id: read_value::<u16>(stream, definition.get_entry("ownerid"), "owner_id")?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            object_ent_index: read_value::<u16>(
+                stream,
+                definition.get_entry("object_entindex"),
+                "object_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "ownerid" => Ok(self.owner_id.clone().into()),
             "weaponid" => Ok(self.weapon_id.clone().into()),
             "object_entindex" => Ok(self.object_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ObjectDeflected",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ObjectDeflected",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9749,14 +9586,13 @@ impl PlayerMvpEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerMvp",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerMvp",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9784,13 +9620,12 @@ impl RaidSpawnMobEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RaidSpawnMob",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RaidSpawnMob",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9818,13 +9653,12 @@ impl RaidSpawnSquadEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RaidSpawnSquad",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RaidSpawnSquad",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9853,22 +9687,19 @@ impl NavBlockedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(NavBlockedEvent {
             area: read_value::<u32>(stream, definition.get_entry("area"), "area")?,
-            blocked: read_value::<
-                bool,
-            >(stream, definition.get_entry("blocked"), "blocked")?,
+            blocked: read_value::<bool>(stream, definition.get_entry("blocked"), "blocked")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "area" => Ok(self.area.clone().into()),
             "blocked" => Ok(self.blocked.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "NavBlocked",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "NavBlocked",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9900,14 +9731,13 @@ impl PathTrackPassedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PathTrackPassed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PathTrackPassed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9941,15 +9771,14 @@ impl NumCappersChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "count" => Ok(self.count.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "NumCappersChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "NumCappersChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -9977,13 +9806,12 @@ impl PlayerRegenerateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerRegenerate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerRegenerate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10017,15 +9845,14 @@ impl UpdateStatusItemEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "object" => Ok(self.object.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "UpdateStatusItem",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "UpdateStatusItem",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10053,13 +9880,12 @@ impl StatsResetRoundEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "StatsResetRound",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "StatsResetRound",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10087,13 +9913,12 @@ impl ScoreStatsAccumulatedUpdateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ScoreStatsAccumulatedUpdate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ScoreStatsAccumulatedUpdate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10121,13 +9946,12 @@ impl ScoreStatsAccumulatedResetEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ScoreStatsAccumulatedReset",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ScoreStatsAccumulatedReset",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10154,21 +9978,22 @@ impl AchievementEarnedLocalEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(AchievementEarnedLocalEvent {
-            achievement: read_value::<
-                u16,
-            >(stream, definition.get_entry("achievement"), "achievement")?,
+            achievement: read_value::<u16>(
+                stream,
+                definition.get_entry("achievement"),
+                "achievement",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "achievement" => Ok(self.achievement.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "AchievementEarnedLocal",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "AchievementEarnedLocal",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10197,25 +10022,22 @@ impl PlayerHealedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHealedEvent {
-            patient: read_value::<
-                u16,
-            >(stream, definition.get_entry("patient"), "patient")?,
+            patient: read_value::<u16>(stream, definition.get_entry("patient"), "patient")?,
             healer: read_value::<u16>(stream, definition.get_entry("healer"), "healer")?,
             amount: read_value::<u16>(stream, definition.get_entry("amount"), "amount")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "patient" => Ok(self.patient.clone().into()),
             "healer" => Ok(self.healer.clone().into()),
             "amount" => Ok(self.amount.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHealed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHealed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10244,25 +10066,22 @@ impl BuildingHealedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(BuildingHealedEvent {
-            building: read_value::<
-                u16,
-            >(stream, definition.get_entry("building"), "building")?,
+            building: read_value::<u16>(stream, definition.get_entry("building"), "building")?,
             healer: read_value::<u16>(stream, definition.get_entry("healer"), "healer")?,
             amount: read_value::<u16>(stream, definition.get_entry("amount"), "amount")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "building" => Ok(self.building.clone().into()),
             "healer" => Ok(self.healer.clone().into()),
             "amount" => Ok(self.amount.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BuildingHealed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BuildingHealed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10290,25 +10109,20 @@ impl ItemPickupEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ItemPickupEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            item: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("item"), "item")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            item: read_value::<MaybeUtf8String>(stream, definition.get_entry("item"), "item")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "item" => Ok(self.item.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ItemPickup",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ItemPickup",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10341,23 +10155,28 @@ impl DuelStatusEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(DuelStatusEvent {
             killer: read_value::<u16>(stream, definition.get_entry("killer"), "killer")?,
-            score_type: read_value::<
-                u16,
-            >(stream, definition.get_entry("score_type"), "score_type")?,
-            initiator: read_value::<
-                u16,
-            >(stream, definition.get_entry("initiator"), "initiator")?,
+            score_type: read_value::<u16>(
+                stream,
+                definition.get_entry("score_type"),
+                "score_type",
+            )?,
+            initiator: read_value::<u16>(stream, definition.get_entry("initiator"), "initiator")?,
             target: read_value::<u16>(stream, definition.get_entry("target"), "target")?,
-            initiator_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("initiator_score"), "initiator_score")?,
-            target_score: read_value::<
-                u16,
-            >(stream, definition.get_entry("target_score"), "target_score")?,
+            initiator_score: read_value::<u16>(
+                stream,
+                definition.get_entry("initiator_score"),
+                "initiator_score",
+            )?,
+            target_score: read_value::<u16>(
+                stream,
+                definition.get_entry("target_score"),
+                "target_score",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "killer" => Ok(self.killer.clone().into()),
             "score_type" => Ok(self.score_type.clone().into()),
@@ -10365,12 +10184,10 @@ impl DuelStatusEvent {
             "target" => Ok(self.target.clone().into()),
             "initiator_score" => Ok(self.initiator_score.clone().into()),
             "target_score" => Ok(self.target_score.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DuelStatus",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DuelStatus",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10410,60 +10227,65 @@ impl FishNoticeEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(FishNoticeEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            victim_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            inflictor_ent_index: read_value::<
-                u32,
-            >(
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            victim_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            inflictor_ent_index: read_value::<u32>(
                 stream,
                 definition.get_entry("inflictor_entindex"),
                 "inflictor_ent_index",
             )?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
-            custom_kill: read_value::<
-                u16,
-            >(stream, definition.get_entry("customkill"), "custom_kill")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
-            weapon_log_class_name: read_value::<
-                MaybeUtf8String,
-            >(
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
+            custom_kill: read_value::<u16>(
+                stream,
+                definition.get_entry("customkill"),
+                "custom_kill",
+            )?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
+            weapon_log_class_name: read_value::<MaybeUtf8String>(
                 stream,
                 definition.get_entry("weapon_logclassname"),
                 "weapon_log_class_name",
             )?,
-            stun_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("stun_flags"), "stun_flags")?,
-            death_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("death_flags"), "death_flags")?,
-            silent_kill: read_value::<
-                bool,
-            >(stream, definition.get_entry("silent_kill"), "silent_kill")?,
-            assister_fallback: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("assister_fallback"), "assister_fallback")?,
+            stun_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("stun_flags"),
+                "stun_flags",
+            )?,
+            death_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("death_flags"),
+                "death_flags",
+            )?,
+            silent_kill: read_value::<bool>(
+                stream,
+                definition.get_entry("silent_kill"),
+                "silent_kill",
+            )?,
+            assister_fallback: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("assister_fallback"),
+                "assister_fallback",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
@@ -10479,12 +10301,10 @@ impl FishNoticeEvent {
             "death_flags" => Ok(self.death_flags.clone().into()),
             "silent_kill" => Ok(self.silent_kill.clone().into()),
             "assister_fallback" => Ok(self.assister_fallback.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "FishNotice",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "FishNotice",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10524,60 +10344,65 @@ impl FishNoticeArmEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(FishNoticeArmEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            victim_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            inflictor_ent_index: read_value::<
-                u32,
-            >(
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            victim_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            inflictor_ent_index: read_value::<u32>(
                 stream,
                 definition.get_entry("inflictor_entindex"),
                 "inflictor_ent_index",
             )?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
-            custom_kill: read_value::<
-                u16,
-            >(stream, definition.get_entry("customkill"), "custom_kill")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
-            weapon_log_class_name: read_value::<
-                MaybeUtf8String,
-            >(
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
+            custom_kill: read_value::<u16>(
+                stream,
+                definition.get_entry("customkill"),
+                "custom_kill",
+            )?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
+            weapon_log_class_name: read_value::<MaybeUtf8String>(
                 stream,
                 definition.get_entry("weapon_logclassname"),
                 "weapon_log_class_name",
             )?,
-            stun_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("stun_flags"), "stun_flags")?,
-            death_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("death_flags"), "death_flags")?,
-            silent_kill: read_value::<
-                bool,
-            >(stream, definition.get_entry("silent_kill"), "silent_kill")?,
-            assister_fallback: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("assister_fallback"), "assister_fallback")?,
+            stun_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("stun_flags"),
+                "stun_flags",
+            )?,
+            death_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("death_flags"),
+                "death_flags",
+            )?,
+            silent_kill: read_value::<bool>(
+                stream,
+                definition.get_entry("silent_kill"),
+                "silent_kill",
+            )?,
+            assister_fallback: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("assister_fallback"),
+                "assister_fallback",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
@@ -10593,12 +10418,10 @@ impl FishNoticeArmEvent {
             "death_flags" => Ok(self.death_flags.clone().into()),
             "silent_kill" => Ok(self.silent_kill.clone().into()),
             "assister_fallback" => Ok(self.assister_fallback.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "FishNoticeArm",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "FishNoticeArm",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10638,60 +10461,65 @@ impl SlapNoticeEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(SlapNoticeEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            victim_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            inflictor_ent_index: read_value::<
-                u32,
-            >(
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            victim_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            inflictor_ent_index: read_value::<u32>(
                 stream,
                 definition.get_entry("inflictor_entindex"),
                 "inflictor_ent_index",
             )?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
-            custom_kill: read_value::<
-                u16,
-            >(stream, definition.get_entry("customkill"), "custom_kill")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
-            weapon_log_class_name: read_value::<
-                MaybeUtf8String,
-            >(
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
+            custom_kill: read_value::<u16>(
+                stream,
+                definition.get_entry("customkill"),
+                "custom_kill",
+            )?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
+            weapon_log_class_name: read_value::<MaybeUtf8String>(
                 stream,
                 definition.get_entry("weapon_logclassname"),
                 "weapon_log_class_name",
             )?,
-            stun_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("stun_flags"), "stun_flags")?,
-            death_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("death_flags"), "death_flags")?,
-            silent_kill: read_value::<
-                bool,
-            >(stream, definition.get_entry("silent_kill"), "silent_kill")?,
-            assister_fallback: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("assister_fallback"), "assister_fallback")?,
+            stun_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("stun_flags"),
+                "stun_flags",
+            )?,
+            death_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("death_flags"),
+                "death_flags",
+            )?,
+            silent_kill: read_value::<bool>(
+                stream,
+                definition.get_entry("silent_kill"),
+                "silent_kill",
+            )?,
+            assister_fallback: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("assister_fallback"),
+                "assister_fallback",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
@@ -10707,12 +10535,10 @@ impl SlapNoticeEvent {
             "death_flags" => Ok(self.death_flags.clone().into()),
             "silent_kill" => Ok(self.silent_kill.clone().into()),
             "assister_fallback" => Ok(self.assister_fallback.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SlapNotice",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SlapNotice",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10753,63 +10579,66 @@ impl ThrowableHitEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ThrowableHitEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            victim_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            inflictor_ent_index: read_value::<
-                u32,
-            >(
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            victim_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            inflictor_ent_index: read_value::<u32>(
                 stream,
                 definition.get_entry("inflictor_entindex"),
                 "inflictor_ent_index",
             )?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
-            custom_kill: read_value::<
-                u16,
-            >(stream, definition.get_entry("customkill"), "custom_kill")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
-            weapon_log_class_name: read_value::<
-                MaybeUtf8String,
-            >(
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
+            custom_kill: read_value::<u16>(
+                stream,
+                definition.get_entry("customkill"),
+                "custom_kill",
+            )?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
+            weapon_log_class_name: read_value::<MaybeUtf8String>(
                 stream,
                 definition.get_entry("weapon_logclassname"),
                 "weapon_log_class_name",
             )?,
-            stun_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("stun_flags"), "stun_flags")?,
-            death_flags: read_value::<
-                u16,
-            >(stream, definition.get_entry("death_flags"), "death_flags")?,
-            silent_kill: read_value::<
-                bool,
-            >(stream, definition.get_entry("silent_kill"), "silent_kill")?,
-            assister_fallback: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("assister_fallback"), "assister_fallback")?,
-            total_hits: read_value::<
-                u16,
-            >(stream, definition.get_entry("totalhits"), "total_hits")?,
+            stun_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("stun_flags"),
+                "stun_flags",
+            )?,
+            death_flags: read_value::<u16>(
+                stream,
+                definition.get_entry("death_flags"),
+                "death_flags",
+            )?,
+            silent_kill: read_value::<bool>(
+                stream,
+                definition.get_entry("silent_kill"),
+                "silent_kill",
+            )?,
+            assister_fallback: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("assister_fallback"),
+                "assister_fallback",
+            )?,
+            total_hits: read_value::<u16>(stream, definition.get_entry("totalhits"), "total_hits")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
@@ -10826,12 +10655,10 @@ impl ThrowableHitEvent {
             "silent_kill" => Ok(self.silent_kill.clone().into()),
             "assister_fallback" => Ok(self.assister_fallback.clone().into()),
             "totalhits" => Ok(self.total_hits.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ThrowableHit",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ThrowableHit",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10859,13 +10686,12 @@ impl PumpkinLordSummonedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PumpkinLordSummoned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PumpkinLordSummoned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10893,13 +10719,12 @@ impl PumpkinLordKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PumpkinLordKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PumpkinLordKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10931,14 +10756,13 @@ impl MerasmusSummonedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MerasmusSummoned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MerasmusSummoned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -10970,14 +10794,13 @@ impl MerasmusKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MerasmusKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MerasmusKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11006,22 +10829,23 @@ impl MerasmusEscapeWarningEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MerasmusEscapeWarningEvent {
             level: read_value::<u16>(stream, definition.get_entry("level"), "level")?,
-            time_remaining: read_value::<
-                u8,
-            >(stream, definition.get_entry("time_remaining"), "time_remaining")?,
+            time_remaining: read_value::<u8>(
+                stream,
+                definition.get_entry("time_remaining"),
+                "time_remaining",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
             "time_remaining" => Ok(self.time_remaining.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MerasmusEscapeWarning",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MerasmusEscapeWarning",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11053,14 +10877,13 @@ impl MerasmusEscapedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MerasmusEscaped",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MerasmusEscaped",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11092,14 +10915,13 @@ impl EyeballBossSummonedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EyeballBossSummoned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EyeballBossSummoned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11128,22 +10950,23 @@ impl EyeballBossStunnedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(EyeballBossStunnedEvent {
             level: read_value::<u16>(stream, definition.get_entry("level"), "level")?,
-            player_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("player_entindex"), "player_ent_index")?,
+            player_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("player_entindex"),
+                "player_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
             "player_entindex" => Ok(self.player_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EyeballBossStunned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EyeballBossStunned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11175,14 +10998,13 @@ impl EyeballBossKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EyeballBossKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EyeballBossKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11211,22 +11033,23 @@ impl EyeballBossKillerEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(EyeballBossKillerEvent {
             level: read_value::<u16>(stream, definition.get_entry("level"), "level")?,
-            player_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("player_entindex"), "player_ent_index")?,
+            player_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("player_entindex"),
+                "player_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
             "player_entindex" => Ok(self.player_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EyeballBossKiller",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EyeballBossKiller",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11255,22 +11078,23 @@ impl EyeballBossEscapeImminentEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(EyeballBossEscapeImminentEvent {
             level: read_value::<u16>(stream, definition.get_entry("level"), "level")?,
-            time_remaining: read_value::<
-                u8,
-            >(stream, definition.get_entry("time_remaining"), "time_remaining")?,
+            time_remaining: read_value::<u8>(
+                stream,
+                definition.get_entry("time_remaining"),
+                "time_remaining",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
             "time_remaining" => Ok(self.time_remaining.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EyeballBossEscapeImminent",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EyeballBossEscapeImminent",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11302,14 +11126,13 @@ impl EyeballBossEscapedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EyeballBossEscaped",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EyeballBossEscaped",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11342,25 +11165,26 @@ impl NpcHurtEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(NpcHurtEvent {
-            ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u16>(stream, definition.get_entry("entindex"), "ent_index")?,
             health: read_value::<u16>(stream, definition.get_entry("health"), "health")?,
-            attacker_player: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker_player"), "attacker_player")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_amount: read_value::<
-                u16,
-            >(stream, definition.get_entry("damageamount"), "damage_amount")?,
+            attacker_player: read_value::<u16>(
+                stream,
+                definition.get_entry("attacker_player"),
+                "attacker_player",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_amount: read_value::<u16>(
+                stream,
+                definition.get_entry("damageamount"),
+                "damage_amount",
+            )?,
             crit: read_value::<bool>(stream, definition.get_entry("crit"), "crit")?,
             boss: read_value::<u16>(stream, definition.get_entry("boss"), "boss")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
             "health" => Ok(self.health.clone().into()),
@@ -11369,12 +11193,10 @@ impl NpcHurtEvent {
             "damageamount" => Ok(self.damage_amount.clone().into()),
             "crit" => Ok(self.crit.clone().into()),
             "boss" => Ok(self.boss.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "NpcHurt",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "NpcHurt",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11408,15 +11230,14 @@ impl ControlPointTimerUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "time" => Ok(self.time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ControlPointTimerUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ControlPointTimerUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11443,21 +11264,18 @@ impl PlayerHighFiveStartEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHighFiveStartEvent {
-            ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u8>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHighFiveStart",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHighFiveStart",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11484,21 +11302,18 @@ impl PlayerHighFiveCancelEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHighFiveCancelEvent {
-            ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u8>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHighFiveCancel",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHighFiveCancel",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11526,29 +11341,28 @@ impl PlayerHighFiveSuccessEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerHighFiveSuccessEvent {
-            initiator_ent_index: read_value::<
-                u8,
-            >(
+            initiator_ent_index: read_value::<u8>(
                 stream,
                 definition.get_entry("initiator_entindex"),
                 "initiator_ent_index",
             )?,
-            partner_ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("partner_entindex"), "partner_ent_index")?,
+            partner_ent_index: read_value::<u8>(
+                stream,
+                definition.get_entry("partner_entindex"),
+                "partner_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "initiator_entindex" => Ok(self.initiator_ent_index.clone().into()),
             "partner_entindex" => Ok(self.partner_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerHighFiveSuccess",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerHighFiveSuccess",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11578,26 +11392,29 @@ impl PlayerBonusPointsEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerBonusPointsEvent {
             points: read_value::<u16>(stream, definition.get_entry("points"), "points")?,
-            player_ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("player_entindex"), "player_ent_index")?,
-            source_ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("source_entindex"), "source_ent_index")?,
+            player_ent_index: read_value::<u16>(
+                stream,
+                definition.get_entry("player_entindex"),
+                "player_ent_index",
+            )?,
+            source_ent_index: read_value::<u16>(
+                stream,
+                definition.get_entry("source_entindex"),
+                "source_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "points" => Ok(self.points.clone().into()),
             "player_entindex" => Ok(self.player_ent_index.clone().into()),
             "source_entindex" => Ok(self.source_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerBonusPoints",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerBonusPoints",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11625,13 +11442,12 @@ impl PlayerUpgradedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerUpgraded",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerUpgraded",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11665,15 +11481,14 @@ impl PlayerBuybackEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "cost" => Ok(self.cost.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerBuyback",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerBuyback",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11709,16 +11524,15 @@ impl PlayerUsedPowerUpBottleEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "type" => Ok(self.kind.clone().into()),
             "time" => Ok(self.time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerUsedPowerUpBottle",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerUsedPowerUpBottle",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11745,21 +11559,18 @@ impl ChristmasGiftGrabEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ChristmasGiftGrabEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ChristmasGiftGrab",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ChristmasGiftGrab",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11788,27 +11599,22 @@ impl PlayerKilledAchievementZoneEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerKilledAchievementZoneEvent {
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
-            zone_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("zone_id"), "zone_id")?,
+            zone_id: read_value::<u16>(stream, definition.get_entry("zone_id"), "zone_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "attacker" => Ok(self.attacker.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
             "zone_id" => Ok(self.zone_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerKilledAchievementZone",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerKilledAchievementZone",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11836,13 +11642,12 @@ impl PartyUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11870,13 +11675,12 @@ impl PartyPrefChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyPrefChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyPrefChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11904,13 +11708,12 @@ impl PartyCriteriaChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyCriteriaChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyCriteriaChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11938,13 +11741,12 @@ impl PartyInvitesChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyInvitesChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyInvitesChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -11971,21 +11773,22 @@ impl PartyQueueStateChangedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PartyQueueStateChangedEvent {
-            match_group: read_value::<
-                u16,
-            >(stream, definition.get_entry("matchgroup"), "match_group")?,
+            match_group: read_value::<u16>(
+                stream,
+                definition.get_entry("matchgroup"),
+                "match_group",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "matchgroup" => Ok(self.match_group.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyQueueStateChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyQueueStateChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12014,27 +11817,26 @@ impl PartyChatEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PartyChatEvent {
-            steam_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("steamid"), "steam_id")?,
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            steam_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("steamid"),
+                "steam_id",
+            )?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
             kind: read_value::<u16>(stream, definition.get_entry("type"), "kind")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "steamid" => Ok(self.steam_id.clone().into()),
             "text" => Ok(self.text.clone().into()),
             "type" => Ok(self.kind.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyChat",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyChat",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12061,21 +11863,22 @@ impl PartyMemberJoinEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PartyMemberJoinEvent {
-            steam_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("steamid"), "steam_id")?,
+            steam_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("steamid"),
+                "steam_id",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "steamid" => Ok(self.steam_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyMemberJoin",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyMemberJoin",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12102,21 +11905,22 @@ impl PartyMemberLeaveEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PartyMemberLeaveEvent {
-            steam_id: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("steamid"), "steam_id")?,
+            steam_id: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("steamid"),
+                "steam_id",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "steamid" => Ok(self.steam_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PartyMemberLeave",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PartyMemberLeave",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12144,13 +11948,12 @@ impl MatchInvitesUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MatchInvitesUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MatchInvitesUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12178,13 +11981,12 @@ impl LobbyUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LobbyUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LobbyUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12218,15 +12020,14 @@ impl MvmMissionUpdateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "class" => Ok(self.class.clone().into()),
             "count" => Ok(self.count.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmMissionUpdate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmMissionUpdate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12254,13 +12055,12 @@ impl RecalculateHolidaysEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RecalculateHolidays",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RecalculateHolidays",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12287,21 +12087,18 @@ impl PlayerCurrencyChangedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerCurrencyChangedEvent {
-            currency: read_value::<
-                u16,
-            >(stream, definition.get_entry("currency"), "currency")?,
+            currency: read_value::<u16>(stream, definition.get_entry("currency"), "currency")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "currency" => Ok(self.currency.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerCurrencyChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerCurrencyChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12333,14 +12130,13 @@ impl DoomsdayRocketOpenEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DoomsdayRocketOpen",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DoomsdayRocketOpen",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12372,14 +12168,13 @@ impl RemoveNemesisRelationshipsEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RemoveNemesisRelationships",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RemoveNemesisRelationships",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12407,13 +12202,12 @@ impl MvmCreditBonusWaveEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmCreditBonusWave",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmCreditBonusWave",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12441,13 +12235,12 @@ impl MvmCreditBonusAllEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmCreditBonusAll",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmCreditBonusAll",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12475,13 +12268,12 @@ impl MvmCreditBonusAllAdvancedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmCreditBonusAllAdvanced",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmCreditBonusAllAdvanced",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12513,14 +12305,13 @@ impl MvmQuickSentryUpgradeEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmQuickSentryUpgrade",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmQuickSentryUpgrade",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12548,13 +12339,12 @@ impl MvmTankDestroyedByPlayersEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmTankDestroyedByPlayers",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmTankDestroyedByPlayers",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12586,14 +12376,13 @@ impl MvmKillRobotDeliveringBombEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmKillRobotDeliveringBomb",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmKillRobotDeliveringBomb",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12622,22 +12411,19 @@ impl MvmPickupCurrencyEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MvmPickupCurrencyEvent {
             player: read_value::<u16>(stream, definition.get_entry("player"), "player")?,
-            currency: read_value::<
-                u16,
-            >(stream, definition.get_entry("currency"), "currency")?,
+            currency: read_value::<u16>(stream, definition.get_entry("currency"), "currency")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "currency" => Ok(self.currency.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmPickupCurrency",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmPickupCurrency",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12669,14 +12455,13 @@ impl MvmBombCarrierKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmBombCarrierKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmBombCarrierKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12714,17 +12499,16 @@ impl MvmSentryBusterDetonateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "det_x" => Ok(self.det_x.clone().into()),
             "det_y" => Ok(self.det_y.clone().into()),
             "det_z" => Ok(self.det_z.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmSentryBusterDetonate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmSentryBusterDetonate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12756,14 +12540,13 @@ impl MvmScoutMarkedForDeathEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmScoutMarkedForDeath",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmScoutMarkedForDeath",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12795,14 +12578,13 @@ impl MvmMedicPowerUpSharedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmMedicPowerUpShared",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmMedicPowerUpShared",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12831,29 +12613,26 @@ impl MvmBeginWaveEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MvmBeginWaveEvent {
-            wave_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("wave_index"), "wave_index")?,
-            max_waves: read_value::<
-                u16,
-            >(stream, definition.get_entry("max_waves"), "max_waves")?,
-            advanced: read_value::<
-                u16,
-            >(stream, definition.get_entry("advanced"), "advanced")?,
+            wave_index: read_value::<u16>(
+                stream,
+                definition.get_entry("wave_index"),
+                "wave_index",
+            )?,
+            max_waves: read_value::<u16>(stream, definition.get_entry("max_waves"), "max_waves")?,
+            advanced: read_value::<u16>(stream, definition.get_entry("advanced"), "advanced")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "wave_index" => Ok(self.wave_index.clone().into()),
             "max_waves" => Ok(self.max_waves.clone().into()),
             "advanced" => Ok(self.advanced.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmBeginWave",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmBeginWave",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12880,21 +12659,18 @@ impl MvmWaveCompleteEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MvmWaveCompleteEvent {
-            advanced: read_value::<
-                bool,
-            >(stream, definition.get_entry("advanced"), "advanced")?,
+            advanced: read_value::<bool>(stream, definition.get_entry("advanced"), "advanced")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "advanced" => Ok(self.advanced.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmWaveComplete",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmWaveComplete",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12921,21 +12697,22 @@ impl MvmMissionCompleteEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MvmMissionCompleteEvent {
-            mission: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("mission"), "mission")?,
+            mission: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("mission"),
+                "mission",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "mission" => Ok(self.mission.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmMissionComplete",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmMissionComplete",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -12967,14 +12744,13 @@ impl MvmBombResetByPlayerEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmBombResetByPlayer",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmBombResetByPlayer",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13002,13 +12778,12 @@ impl MvmBombAlarmTriggeredEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmBombAlarmTriggered",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmBombAlarmTriggered",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13040,14 +12815,13 @@ impl MvmBombDeployResetByPlayerEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmBombDeployResetByPlayer",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmBombDeployResetByPlayer",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13075,13 +12849,12 @@ impl MvmWaveFailedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmWaveFailed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmWaveFailed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13109,13 +12882,12 @@ impl MvmResetStatsEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmResetStats",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmResetStats",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13142,21 +12914,18 @@ impl DamageResistedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(DamageResistedEvent {
-            ent_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u8>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DamageResisted",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DamageResisted",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13184,25 +12953,24 @@ impl RevivePlayerNotifyEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RevivePlayerNotifyEvent {
-            ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
-            marker_ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("marker_entindex"), "marker_ent_index")?,
+            ent_index: read_value::<u16>(stream, definition.get_entry("entindex"), "ent_index")?,
+            marker_ent_index: read_value::<u16>(
+                stream,
+                definition.get_entry("marker_entindex"),
+                "marker_ent_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
             "marker_entindex" => Ok(self.marker_ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RevivePlayerNotify",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RevivePlayerNotify",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13229,21 +12997,18 @@ impl RevivePlayerStoppedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RevivePlayerStoppedEvent {
-            ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u16>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RevivePlayerStopped",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RevivePlayerStopped",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13270,21 +13035,18 @@ impl RevivePlayerCompleteEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RevivePlayerCompleteEvent {
-            ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
+            ent_index: read_value::<u16>(stream, definition.get_entry("entindex"), "ent_index")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RevivePlayerComplete",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RevivePlayerComplete",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13311,21 +13073,18 @@ impl PlayerTurnedToGhostEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerTurnedToGhostEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerTurnedToGhost",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerTurnedToGhost",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13353,23 +13112,20 @@ impl MedigunShieldBlockedDamageEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MedigunShieldBlockedDamageEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
             damage: read_value::<f32>(stream, definition.get_entry("damage"), "damage")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "damage" => Ok(self.damage.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MedigunShieldBlockedDamage",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MedigunShieldBlockedDamage",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13401,14 +13157,13 @@ impl MvmAdvWaveCompleteNoGatesEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmAdvWaveCompleteNoGates",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmAdvWaveCompleteNoGates",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13436,25 +13191,20 @@ impl MvmSniperHeadshotCurrencyEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MvmSniperHeadshotCurrencyEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            currency: read_value::<
-                u16,
-            >(stream, definition.get_entry("currency"), "currency")?,
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            currency: read_value::<u16>(stream, definition.get_entry("currency"), "currency")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "currency" => Ok(self.currency.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmSniperHeadshotCurrency",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmSniperHeadshotCurrency",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13482,13 +13232,12 @@ impl MvmMannhattanPitEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmMannhattanPit",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmMannhattanPit",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13516,13 +13265,12 @@ impl FlagCarriedInDetectionZoneEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "FlagCarriedInDetectionZone",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "FlagCarriedInDetectionZone",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13550,13 +13298,12 @@ impl MvmAdvWaveKilledStunRadioEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmAdvWaveKilledStunRadio",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmAdvWaveKilledStunRadio",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13584,23 +13331,20 @@ impl PlayerDirectHitStunEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerDirectHitStunEvent {
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "attacker" => Ok(self.attacker.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDirectHitStun",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDirectHitStun",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13627,21 +13371,22 @@ impl MvmSentryBusterKilledEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(MvmSentryBusterKilledEvent {
-            sentry_buster: read_value::<
-                u16,
-            >(stream, definition.get_entry("sentry_buster"), "sentry_buster")?,
+            sentry_buster: read_value::<u16>(
+                stream,
+                definition.get_entry("sentry_buster"),
+                "sentry_buster",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "sentry_buster" => Ok(self.sentry_buster.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MvmSentryBusterKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MvmSentryBusterKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13668,21 +13413,18 @@ impl UpgradesFileChangedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(UpgradesFileChangedEvent {
-            path: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("path"), "path")?,
+            path: read_value::<MaybeUtf8String>(stream, definition.get_entry("path"), "path")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "path" => Ok(self.path.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "UpgradesFileChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "UpgradesFileChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13718,16 +13460,15 @@ impl RdTeamPointsChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "points" => Ok(self.points.clone().into()),
             "team" => Ok(self.team.clone().into()),
             "method" => Ok(self.method.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RdTeamPointsChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RdTeamPointsChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13755,13 +13496,12 @@ impl RdRulesStateChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RdRulesStateChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RdRulesStateChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13796,37 +13536,35 @@ impl RdRobotKilledEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RdRobotKilledEvent {
-            user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("userid"), "user_id")?,
-            victim_ent_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("victim_entindex"), "victim_ent_index")?,
-            inflictor_ent_index: read_value::<
-                u32,
-            >(
+            user_id: read_value::<u16>(stream, definition.get_entry("userid"), "user_id")?,
+            victim_ent_index: read_value::<u32>(
+                stream,
+                definition.get_entry("victim_entindex"),
+                "victim_ent_index",
+            )?,
+            inflictor_ent_index: read_value::<u32>(
                 stream,
                 definition.get_entry("inflictor_entindex"),
                 "inflictor_ent_index",
             )?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("weapon"), "weapon")?,
-            weapon_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("weaponid"), "weapon_id")?,
-            damage_bits: read_value::<
-                u32,
-            >(stream, definition.get_entry("damagebits"), "damage_bits")?,
-            custom_kill: read_value::<
-                u16,
-            >(stream, definition.get_entry("customkill"), "custom_kill")?,
-            weapon_log_class_name: read_value::<
-                MaybeUtf8String,
-            >(
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("weapon"),
+                "weapon",
+            )?,
+            weapon_id: read_value::<u16>(stream, definition.get_entry("weaponid"), "weapon_id")?,
+            damage_bits: read_value::<u32>(
+                stream,
+                definition.get_entry("damagebits"),
+                "damage_bits",
+            )?,
+            custom_kill: read_value::<u16>(
+                stream,
+                definition.get_entry("customkill"),
+                "custom_kill",
+            )?,
+            weapon_log_class_name: read_value::<MaybeUtf8String>(
                 stream,
                 definition.get_entry("weapon_logclassname"),
                 "weapon_log_class_name",
@@ -13835,6 +13573,7 @@ impl RdRobotKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "userid" => Ok(self.user_id.clone().into()),
             "victim_entindex" => Ok(self.victim_ent_index.clone().into()),
@@ -13845,12 +13584,10 @@ impl RdRobotKilledEvent {
             "damagebits" => Ok(self.damage_bits.clone().into()),
             "customkill" => Ok(self.custom_kill.clone().into()),
             "weapon_logclassname" => Ok(self.weapon_log_class_name.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RdRobotKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RdRobotKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13880,33 +13617,24 @@ impl RdRobotImpactEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RdRobotImpactEvent {
-            ent_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("entindex"), "ent_index")?,
-            impulse_x: read_value::<
-                f32,
-            >(stream, definition.get_entry("impulse_x"), "impulse_x")?,
-            impulse_y: read_value::<
-                f32,
-            >(stream, definition.get_entry("impulse_y"), "impulse_y")?,
-            impulse_z: read_value::<
-                f32,
-            >(stream, definition.get_entry("impulse_z"), "impulse_z")?,
+            ent_index: read_value::<u16>(stream, definition.get_entry("entindex"), "ent_index")?,
+            impulse_x: read_value::<f32>(stream, definition.get_entry("impulse_x"), "impulse_x")?,
+            impulse_y: read_value::<f32>(stream, definition.get_entry("impulse_y"), "impulse_y")?,
+            impulse_z: read_value::<f32>(stream, definition.get_entry("impulse_z"), "impulse_z")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "entindex" => Ok(self.ent_index.clone().into()),
             "impulse_x" => Ok(self.impulse_x.clone().into()),
             "impulse_y" => Ok(self.impulse_y.clone().into()),
             "impulse_z" => Ok(self.impulse_z.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RdRobotImpact",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RdRobotImpact",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13938,14 +13666,13 @@ impl TeamPlayPreRoundTimeLeftEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "time" => Ok(self.time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamPlayPreRoundTimeLeft",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamPlayPreRoundTimeLeft",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -13977,14 +13704,13 @@ impl ParachuteDeployEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ParachuteDeploy",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ParachuteDeploy",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14016,14 +13742,13 @@ impl ParachuteHolsterEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ParachuteHolster",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ParachuteHolster",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14055,14 +13780,13 @@ impl KillRefillsMeterEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "KillRefillsMeter",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "KillRefillsMeter",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14093,28 +13817,23 @@ impl RpsTauntEventEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RpsTauntEventEvent {
             winner: read_value::<u16>(stream, definition.get_entry("winner"), "winner")?,
-            winner_rps: read_value::<
-                u8,
-            >(stream, definition.get_entry("winner_rps"), "winner_rps")?,
+            winner_rps: read_value::<u8>(stream, definition.get_entry("winner_rps"), "winner_rps")?,
             loser: read_value::<u16>(stream, definition.get_entry("loser"), "loser")?,
-            loser_rps: read_value::<
-                u8,
-            >(stream, definition.get_entry("loser_rps"), "loser_rps")?,
+            loser_rps: read_value::<u8>(stream, definition.get_entry("loser_rps"), "loser_rps")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "winner" => Ok(self.winner.clone().into()),
             "winner_rps" => Ok(self.winner_rps.clone().into()),
             "loser" => Ok(self.loser.clone().into()),
             "loser_rps" => Ok(self.loser_rps.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RpsTauntEvent",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RpsTauntEvent",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14146,14 +13865,13 @@ impl CongaKillEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CongaKill",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CongaKill",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14185,14 +13903,13 @@ impl PlayerInitialSpawnEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerInitialSpawn",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerInitialSpawn",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14220,13 +13937,12 @@ impl CompetitiveVictoryEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CompetitiveVictory",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CompetitiveVictory",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14259,25 +13975,28 @@ impl CompetitiveStatsUpdateEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(CompetitiveStatsUpdateEvent {
             index: read_value::<u16>(stream, definition.get_entry("index"), "index")?,
-            kills_rank: read_value::<
-                u8,
-            >(stream, definition.get_entry("kills_rank"), "kills_rank")?,
-            score_rank: read_value::<
-                u8,
-            >(stream, definition.get_entry("score_rank"), "score_rank")?,
-            damage_rank: read_value::<
-                u8,
-            >(stream, definition.get_entry("damage_rank"), "damage_rank")?,
-            healing_rank: read_value::<
-                u8,
-            >(stream, definition.get_entry("healing_rank"), "healing_rank")?,
-            support_rank: read_value::<
-                u8,
-            >(stream, definition.get_entry("support_rank"), "support_rank")?,
+            kills_rank: read_value::<u8>(stream, definition.get_entry("kills_rank"), "kills_rank")?,
+            score_rank: read_value::<u8>(stream, definition.get_entry("score_rank"), "score_rank")?,
+            damage_rank: read_value::<u8>(
+                stream,
+                definition.get_entry("damage_rank"),
+                "damage_rank",
+            )?,
+            healing_rank: read_value::<u8>(
+                stream,
+                definition.get_entry("healing_rank"),
+                "healing_rank",
+            )?,
+            support_rank: read_value::<u8>(
+                stream,
+                definition.get_entry("support_rank"),
+                "support_rank",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "kills_rank" => Ok(self.kills_rank.clone().into()),
@@ -14285,12 +14004,10 @@ impl CompetitiveStatsUpdateEvent {
             "damage_rank" => Ok(self.damage_rank.clone().into()),
             "healing_rank" => Ok(self.healing_rank.clone().into()),
             "support_rank" => Ok(self.support_rank.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CompetitiveStatsUpdate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CompetitiveStatsUpdate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14324,15 +14041,14 @@ impl MiniGameWinEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "team" => Ok(self.team.clone().into()),
             "type" => Ok(self.kind.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MiniGameWin",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MiniGameWin",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14364,14 +14080,13 @@ impl SentryOnGoActiveEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SentryOnGoActive",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SentryOnGoActive",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14403,14 +14118,13 @@ impl DuckXpLevelUpEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "level" => Ok(self.level.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DuckXpLevelUp",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DuckXpLevelUp",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14438,13 +14152,12 @@ impl QuestLogOpenedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestLogOpened",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestLogOpened",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14472,13 +14185,12 @@ impl SchemaUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SchemaUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SchemaUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14506,13 +14218,12 @@ impl LocalPlayerPickupWeaponEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "LocalPlayerPickupWeapon",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "LocalPlayerPickupWeapon",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14548,16 +14259,15 @@ impl RdPlayerScorePointsEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "method" => Ok(self.method.clone().into()),
             "amount" => Ok(self.amount.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RdPlayerScorePoints",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RdPlayerScorePoints",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14589,14 +14299,13 @@ impl DemomanDetStickiesEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DemomanDetStickies",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DemomanDetStickies",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14626,33 +14335,40 @@ impl QuestObjectiveCompletedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(QuestObjectiveCompletedEvent {
-            quest_item_id_low: read_value::<
-                u32,
-            >(stream, definition.get_entry("quest_item_id_low"), "quest_item_id_low")?,
-            quest_item_id_hi: read_value::<
-                u32,
-            >(stream, definition.get_entry("quest_item_id_hi"), "quest_item_id_hi")?,
-            quest_objective_id: read_value::<
-                u32,
-            >(stream, definition.get_entry("quest_objective_id"), "quest_objective_id")?,
-            scorer_user_id: read_value::<
-                u16,
-            >(stream, definition.get_entry("scorer_user_id"), "scorer_user_id")?,
+            quest_item_id_low: read_value::<u32>(
+                stream,
+                definition.get_entry("quest_item_id_low"),
+                "quest_item_id_low",
+            )?,
+            quest_item_id_hi: read_value::<u32>(
+                stream,
+                definition.get_entry("quest_item_id_hi"),
+                "quest_item_id_hi",
+            )?,
+            quest_objective_id: read_value::<u32>(
+                stream,
+                definition.get_entry("quest_objective_id"),
+                "quest_objective_id",
+            )?,
+            scorer_user_id: read_value::<u16>(
+                stream,
+                definition.get_entry("scorer_user_id"),
+                "scorer_user_id",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "quest_item_id_low" => Ok(self.quest_item_id_low.clone().into()),
             "quest_item_id_hi" => Ok(self.quest_item_id_hi.clone().into()),
             "quest_objective_id" => Ok(self.quest_objective_id.clone().into()),
             "scorer_user_id" => Ok(self.scorer_user_id.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestObjectiveCompleted",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestObjectiveCompleted",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14686,15 +14402,14 @@ impl PlayerScoreChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "delta" => Ok(self.delta.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerScoreChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerScoreChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14727,24 +14442,21 @@ impl KilledCappingPlayerEvent {
             cp: read_value::<u8>(stream, definition.get_entry("cp"), "cp")?,
             killer: read_value::<u8>(stream, definition.get_entry("killer"), "killer")?,
             victim: read_value::<u8>(stream, definition.get_entry("victim"), "victim")?,
-            assister: read_value::<
-                u8,
-            >(stream, definition.get_entry("assister"), "assister")?,
+            assister: read_value::<u8>(stream, definition.get_entry("assister"), "assister")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "cp" => Ok(self.cp.clone().into()),
             "killer" => Ok(self.killer.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
             "assister" => Ok(self.assister.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "KilledCappingPlayer",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "KilledCappingPlayer",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14778,15 +14490,14 @@ impl EnvironmentalDeathEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "killer" => Ok(self.killer.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EnvironmentalDeath",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EnvironmentalDeath",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14815,27 +14526,26 @@ impl ProjectileDirectHitEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ProjectileDirectHitEvent {
-            attacker: read_value::<
-                u8,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
+            attacker: read_value::<u8>(stream, definition.get_entry("attacker"), "attacker")?,
             victim: read_value::<u8>(stream, definition.get_entry("victim"), "victim")?,
-            weapon_def_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("weapon_def_index"), "weapon_def_index")?,
+            weapon_def_index: read_value::<u32>(
+                stream,
+                definition.get_entry("weapon_def_index"),
+                "weapon_def_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "attacker" => Ok(self.attacker.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
             "weapon_def_index" => Ok(self.weapon_def_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ProjectileDirectHit",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ProjectileDirectHit",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14867,14 +14577,13 @@ impl PassGetEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "owner" => Ok(self.owner.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PassGet",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PassGet",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14904,24 +14613,21 @@ impl PassScoreEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PassScoreEvent {
             scorer: read_value::<u16>(stream, definition.get_entry("scorer"), "scorer")?,
-            assister: read_value::<
-                u16,
-            >(stream, definition.get_entry("assister"), "assister")?,
+            assister: read_value::<u16>(stream, definition.get_entry("assister"), "assister")?,
             points: read_value::<u8>(stream, definition.get_entry("points"), "points")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "scorer" => Ok(self.scorer.clone().into()),
             "assister" => Ok(self.assister.clone().into()),
             "points" => Ok(self.points.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PassScore",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PassScore",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14950,22 +14656,19 @@ impl PassFreeEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PassFreeEvent {
             owner: read_value::<u16>(stream, definition.get_entry("owner"), "owner")?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "owner" => Ok(self.owner.clone().into()),
             "attacker" => Ok(self.attacker.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PassFree",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PassFree",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -14996,28 +14699,23 @@ impl PassPassCaughtEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PassPassCaughtEvent {
             passer: read_value::<u16>(stream, definition.get_entry("passer"), "passer")?,
-            catcher: read_value::<
-                u16,
-            >(stream, definition.get_entry("catcher"), "catcher")?,
+            catcher: read_value::<u16>(stream, definition.get_entry("catcher"), "catcher")?,
             dist: read_value::<f32>(stream, definition.get_entry("dist"), "dist")?,
-            duration: read_value::<
-                f32,
-            >(stream, definition.get_entry("duration"), "duration")?,
+            duration: read_value::<f32>(stream, definition.get_entry("duration"), "duration")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "passer" => Ok(self.passer.clone().into()),
             "catcher" => Ok(self.catcher.clone().into()),
             "dist" => Ok(self.dist.clone().into()),
             "duration" => Ok(self.duration.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PassPassCaught",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PassPassCaught",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15046,22 +14744,19 @@ impl PassBallStolenEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PassBallStolenEvent {
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
-            attacker: read_value::<
-                u16,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
+            attacker: read_value::<u16>(stream, definition.get_entry("attacker"), "attacker")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "victim" => Ok(self.victim.clone().into()),
             "attacker" => Ok(self.attacker.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PassBallStolen",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PassBallStolen",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15090,22 +14785,19 @@ impl PassBallBlockedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PassBallBlockedEvent {
             owner: read_value::<u16>(stream, definition.get_entry("owner"), "owner")?,
-            blocker: read_value::<
-                u16,
-            >(stream, definition.get_entry("blocker"), "blocker")?,
+            blocker: read_value::<u16>(stream, definition.get_entry("blocker"), "blocker")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "owner" => Ok(self.owner.clone().into()),
             "blocker" => Ok(self.blocker.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PassBallBlocked",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PassBallBlocked",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15135,29 +14827,24 @@ impl DamagePreventedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(DamagePreventedEvent {
-            preventor: read_value::<
-                u16,
-            >(stream, definition.get_entry("preventor"), "preventor")?,
+            preventor: read_value::<u16>(stream, definition.get_entry("preventor"), "preventor")?,
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
             amount: read_value::<u16>(stream, definition.get_entry("amount"), "amount")?,
-            condition: read_value::<
-                u16,
-            >(stream, definition.get_entry("condition"), "condition")?,
+            condition: read_value::<u16>(stream, definition.get_entry("condition"), "condition")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "preventor" => Ok(self.preventor.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
             "amount" => Ok(self.amount.clone().into()),
             "condition" => Ok(self.condition.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DamagePrevented",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DamagePrevented",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15191,15 +14878,14 @@ impl HalloweenBossKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "boss" => Ok(self.boss.clone().into()),
             "killer" => Ok(self.killer.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HalloweenBossKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HalloweenBossKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15231,14 +14917,13 @@ impl EscapedLootIslandEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EscapedLootIsland",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EscapedLootIsland",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15270,14 +14955,13 @@ impl TaggedPlayerAsItEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TaggedPlayerAsIt",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TaggedPlayerAsIt",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15309,14 +14993,13 @@ impl MerasmusStunnedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MerasmusStunned",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MerasmusStunned",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15348,14 +15031,13 @@ impl MerasmusPropFoundEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MerasmusPropFound",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MerasmusPropFound",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15387,14 +15069,13 @@ impl HalloweenSkeletonKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HalloweenSkeletonKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HalloweenSkeletonKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15426,14 +15107,13 @@ impl SkeletonKilledQuestEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SkeletonKilledQuest",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SkeletonKilledQuest",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15465,14 +15145,13 @@ impl SkeletonKingKilledQuestEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SkeletonKingKilledQuest",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SkeletonKingKilledQuest",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15504,14 +15183,13 @@ impl EscapeHellEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "EscapeHell",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "EscapeHell",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15543,14 +15221,13 @@ impl CrossSpectralBridgeEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CrossSpectralBridge",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CrossSpectralBridge",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15584,15 +15261,14 @@ impl MiniGameWonEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "game" => Ok(self.game.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MiniGameWon",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MiniGameWon",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15620,23 +15296,20 @@ impl RespawnGhostEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RespawnGhostEvent {
-            reviver: read_value::<
-                u16,
-            >(stream, definition.get_entry("reviver"), "reviver")?,
+            reviver: read_value::<u16>(stream, definition.get_entry("reviver"), "reviver")?,
             ghost: read_value::<u16>(stream, definition.get_entry("ghost"), "ghost")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "reviver" => Ok(self.reviver.clone().into()),
             "ghost" => Ok(self.ghost.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RespawnGhost",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RespawnGhost",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15670,15 +15343,14 @@ impl KillInHellEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "killer" => Ok(self.killer.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "KillInHell",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "KillInHell",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15705,21 +15377,18 @@ impl HalloweenDuckCollectedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HalloweenDuckCollectedEvent {
-            collector: read_value::<
-                u16,
-            >(stream, definition.get_entry("collector"), "collector")?,
+            collector: read_value::<u16>(stream, definition.get_entry("collector"), "collector")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "collector" => Ok(self.collector.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HalloweenDuckCollected",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HalloweenDuckCollected",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15751,14 +15420,13 @@ impl SpecialScoreEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "SpecialScore",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "SpecialScore",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15792,15 +15460,14 @@ impl TeamLeaderKilledEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "killer" => Ok(self.killer.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TeamLeaderKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TeamLeaderKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15829,29 +15496,30 @@ impl HalloweenSoulCollectedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HalloweenSoulCollectedEvent {
-            intended_target: read_value::<
-                u8,
-            >(stream, definition.get_entry("intended_target"), "intended_target")?,
-            collecting_player: read_value::<
-                u8,
-            >(stream, definition.get_entry("collecting_player"), "collecting_player")?,
-            soul_count: read_value::<
-                u8,
-            >(stream, definition.get_entry("soul_count"), "soul_count")?,
+            intended_target: read_value::<u8>(
+                stream,
+                definition.get_entry("intended_target"),
+                "intended_target",
+            )?,
+            collecting_player: read_value::<u8>(
+                stream,
+                definition.get_entry("collecting_player"),
+                "collecting_player",
+            )?,
+            soul_count: read_value::<u8>(stream, definition.get_entry("soul_count"), "soul_count")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "intended_target" => Ok(self.intended_target.clone().into()),
             "collecting_player" => Ok(self.collecting_player.clone().into()),
             "soul_count" => Ok(self.soul_count.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HalloweenSoulCollected",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HalloweenSoulCollected",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15879,13 +15547,12 @@ impl RecalculateTruceEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RecalculateTruce",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RecalculateTruce",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15914,22 +15581,19 @@ impl DeadRingerCheatDeathEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(DeadRingerCheatDeathEvent {
             spy: read_value::<u8>(stream, definition.get_entry("spy"), "spy")?,
-            attacker: read_value::<
-                u8,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
+            attacker: read_value::<u8>(stream, definition.get_entry("attacker"), "attacker")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "spy" => Ok(self.spy.clone().into()),
             "attacker" => Ok(self.attacker.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DeadRingerCheatDeath",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DeadRingerCheatDeath",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -15965,16 +15629,15 @@ impl CrossbowHealEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "healer" => Ok(self.healer.clone().into()),
             "target" => Ok(self.target.clone().into()),
             "amount" => Ok(self.amount.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CrossbowHeal",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CrossbowHeal",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16004,31 +15667,28 @@ impl DamageMitigatedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(DamageMitigatedEvent {
-            mitigator: read_value::<
-                u8,
-            >(stream, definition.get_entry("mitigator"), "mitigator")?,
-            damaged: read_value::<
-                u8,
-            >(stream, definition.get_entry("damaged"), "damaged")?,
+            mitigator: read_value::<u8>(stream, definition.get_entry("mitigator"), "mitigator")?,
+            damaged: read_value::<u8>(stream, definition.get_entry("damaged"), "damaged")?,
             amount: read_value::<u16>(stream, definition.get_entry("amount"), "amount")?,
-            item_definition_index: read_value::<
-                u16,
-            >(stream, definition.get_entry("itemdefindex"), "item_definition_index")?,
+            item_definition_index: read_value::<u16>(
+                stream,
+                definition.get_entry("itemdefindex"),
+                "item_definition_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "mitigator" => Ok(self.mitigator.clone().into()),
             "damaged" => Ok(self.damaged.clone().into()),
             "amount" => Ok(self.amount.clone().into()),
             "itemdefindex" => Ok(self.item_definition_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DamageMitigated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DamageMitigated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16057,22 +15717,19 @@ impl PayloadPushedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PayloadPushedEvent {
             pusher: read_value::<u8>(stream, definition.get_entry("pusher"), "pusher")?,
-            distance: read_value::<
-                u16,
-            >(stream, definition.get_entry("distance"), "distance")?,
+            distance: read_value::<u16>(stream, definition.get_entry("distance"), "distance")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "pusher" => Ok(self.pusher.clone().into()),
             "distance" => Ok(self.distance.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PayloadPushed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PayloadPushed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16099,21 +15756,18 @@ impl PlayerAbandonedMatchEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerAbandonedMatchEvent {
-            game_over: read_value::<
-                bool,
-            >(stream, definition.get_entry("game_over"), "game_over")?,
+            game_over: read_value::<bool>(stream, definition.get_entry("game_over"), "game_over")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "game_over" => Ok(self.game_over.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerAbandonedMatch",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerAbandonedMatch",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16153,18 +15807,17 @@ impl ClDrawlineEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "player" => Ok(self.player.clone().into()),
             "panel" => Ok(self.panel.clone().into()),
             "line" => Ok(self.line.clone().into()),
             "x" => Ok(self.x.clone().into()),
             "y" => Ok(self.y.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ClDrawline",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ClDrawline",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16196,14 +15849,13 @@ impl RestartTimerTimeEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "time" => Ok(self.time.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RestartTimerTime",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RestartTimerTime",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16231,13 +15883,12 @@ impl WinLimitChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "WinLimitChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "WinLimitChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16265,13 +15916,12 @@ impl WinPanelShowScoresEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "WinPanelShowScores",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "WinPanelShowScores",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16299,13 +15949,12 @@ impl TopStreamsRequestFinishedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "TopStreamsRequestFinished",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "TopStreamsRequestFinished",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16333,13 +15982,12 @@ impl CompetitiveStateChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CompetitiveStateChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CompetitiveStateChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16367,13 +16015,12 @@ impl GlobalWarDataUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GlobalWarDataUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GlobalWarDataUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16401,13 +16048,12 @@ impl StopWatchChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "StopWatchChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "StopWatchChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16435,13 +16081,12 @@ impl DsStopEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DsStop",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DsStop",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16473,14 +16118,13 @@ impl DsScreenshotEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "delay" => Ok(self.delay.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "DsScreenshot",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "DsScreenshot",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16508,13 +16152,12 @@ impl ShowMatchSummaryEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ShowMatchSummary",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ShowMatchSummary",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16542,13 +16185,12 @@ impl ExperienceChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ExperienceChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ExperienceChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16576,13 +16218,12 @@ impl BeginXpLerpEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "BeginXpLerp",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "BeginXpLerp",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16610,13 +16251,12 @@ impl MatchmakerStatsUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MatchmakerStatsUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MatchmakerStatsUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16643,21 +16283,18 @@ impl RematchVotePeriodOverEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(RematchVotePeriodOverEvent {
-            success: read_value::<
-                bool,
-            >(stream, definition.get_entry("success"), "success")?,
+            success: read_value::<bool>(stream, definition.get_entry("success"), "success")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "success" => Ok(self.success.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RematchVotePeriodOver",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RematchVotePeriodOver",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16685,13 +16322,12 @@ impl RematchFailedToCreateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "RematchFailedToCreate",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "RematchFailedToCreate",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16719,13 +16355,12 @@ impl PlayerRematchChangeEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerRematchChange",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerRematchChange",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16753,13 +16388,12 @@ impl PingUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PingUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PingUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16787,13 +16421,12 @@ impl MMStatsUpdatedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MMStatsUpdated",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MMStatsUpdated",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16821,23 +16454,20 @@ impl PlayerNextMapVoteChangeEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerNextMapVoteChangeEvent {
-            map_index: read_value::<
-                u8,
-            >(stream, definition.get_entry("map_index"), "map_index")?,
+            map_index: read_value::<u8>(stream, definition.get_entry("map_index"), "map_index")?,
             vote: read_value::<u8>(stream, definition.get_entry("vote"), "vote")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "map_index" => Ok(self.map_index.clone().into()),
             "vote" => Ok(self.vote.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerNextMapVoteChange",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerNextMapVoteChange",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16865,13 +16495,12 @@ impl VoteMapsChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "VoteMapsChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "VoteMapsChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16903,34 +16532,33 @@ impl ProtoDefChangedEvent {
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ProtoDefChangedEvent {
             kind: read_value::<u8>(stream, definition.get_entry("type"), "kind")?,
-            definition_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("defindex"), "definition_index")?,
-            created: read_value::<
-                bool,
-            >(stream, definition.get_entry("created"), "created")?,
-            deleted: read_value::<
-                bool,
-            >(stream, definition.get_entry("deleted"), "deleted")?,
-            erase_history: read_value::<
-                bool,
-            >(stream, definition.get_entry("erase_history"), "erase_history")?,
+            definition_index: read_value::<u32>(
+                stream,
+                definition.get_entry("defindex"),
+                "definition_index",
+            )?,
+            created: read_value::<bool>(stream, definition.get_entry("created"), "created")?,
+            deleted: read_value::<bool>(stream, definition.get_entry("deleted"), "deleted")?,
+            erase_history: read_value::<bool>(
+                stream,
+                definition.get_entry("erase_history"),
+                "erase_history",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "type" => Ok(self.kind.clone().into()),
             "defindex" => Ok(self.definition_index.clone().into()),
             "created" => Ok(self.created.clone().into()),
             "deleted" => Ok(self.deleted.clone().into()),
             "erase_history" => Ok(self.erase_history.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ProtoDefChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ProtoDefChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -16959,29 +16587,26 @@ impl PlayerDominationEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(PlayerDominationEvent {
-            dominator: read_value::<
-                u16,
-            >(stream, definition.get_entry("dominator"), "dominator")?,
-            dominated: read_value::<
-                u16,
-            >(stream, definition.get_entry("dominated"), "dominated")?,
-            dominations: read_value::<
-                u16,
-            >(stream, definition.get_entry("dominations"), "dominations")?,
+            dominator: read_value::<u16>(stream, definition.get_entry("dominator"), "dominator")?,
+            dominated: read_value::<u16>(stream, definition.get_entry("dominated"), "dominated")?,
+            dominations: read_value::<u16>(
+                stream,
+                definition.get_entry("dominations"),
+                "dominations",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "dominator" => Ok(self.dominator.clone().into()),
             "dominated" => Ok(self.dominated.clone().into()),
             "dominations" => Ok(self.dominations.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerDomination",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerDomination",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17015,15 +16640,14 @@ impl PlayerRocketPackPushedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "pusher" => Ok(self.pusher.clone().into()),
             "pushed" => Ok(self.pushed.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "PlayerRocketPackPushed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "PlayerRocketPackPushed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17051,25 +16675,20 @@ impl QuestRequestEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(QuestRequestEvent {
-            request: read_value::<
-                u32,
-            >(stream, definition.get_entry("request"), "request")?,
-            msg: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("msg"), "msg")?,
+            request: read_value::<u32>(stream, definition.get_entry("request"), "request")?,
+            msg: read_value::<MaybeUtf8String>(stream, definition.get_entry("msg"), "msg")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "request" => Ok(self.request.clone().into()),
             "msg" => Ok(self.msg.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestRequest",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestRequest",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17098,29 +16717,22 @@ impl QuestResponseEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(QuestResponseEvent {
-            request: read_value::<
-                u32,
-            >(stream, definition.get_entry("request"), "request")?,
-            success: read_value::<
-                bool,
-            >(stream, definition.get_entry("success"), "success")?,
-            msg: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("msg"), "msg")?,
+            request: read_value::<u32>(stream, definition.get_entry("request"), "request")?,
+            success: read_value::<bool>(stream, definition.get_entry("success"), "success")?,
+            msg: read_value::<MaybeUtf8String>(stream, definition.get_entry("msg"), "msg")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "request" => Ok(self.request.clone().into()),
             "success" => Ok(self.success.clone().into()),
             "msg" => Ok(self.msg.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestResponse",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestResponse",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17154,28 +16766,27 @@ impl QuestProgressEvent {
             owner: read_value::<u16>(stream, definition.get_entry("owner"), "owner")?,
             scorer: read_value::<u16>(stream, definition.get_entry("scorer"), "scorer")?,
             kind: read_value::<u8>(stream, definition.get_entry("type"), "kind")?,
-            completed: read_value::<
-                bool,
-            >(stream, definition.get_entry("completed"), "completed")?,
-            quest_definition_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("quest_defindex"), "quest_definition_index")?,
+            completed: read_value::<bool>(stream, definition.get_entry("completed"), "completed")?,
+            quest_definition_index: read_value::<u32>(
+                stream,
+                definition.get_entry("quest_defindex"),
+                "quest_definition_index",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "owner" => Ok(self.owner.clone().into()),
             "scorer" => Ok(self.scorer.clone().into()),
             "type" => Ok(self.kind.clone().into()),
             "completed" => Ok(self.completed.clone().into()),
             "quest_defindex" => Ok(self.quest_definition_index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestProgress",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestProgress",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17205,33 +16816,32 @@ impl ProjectileRemovedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ProjectileRemovedEvent {
-            attacker: read_value::<
-                u8,
-            >(stream, definition.get_entry("attacker"), "attacker")?,
-            weapon_def_index: read_value::<
-                u32,
-            >(stream, definition.get_entry("weapon_def_index"), "weapon_def_index")?,
-            num_hit: read_value::<
-                u8,
-            >(stream, definition.get_entry("num_hit"), "num_hit")?,
-            num_direct_hit: read_value::<
-                u8,
-            >(stream, definition.get_entry("num_direct_hit"), "num_direct_hit")?,
+            attacker: read_value::<u8>(stream, definition.get_entry("attacker"), "attacker")?,
+            weapon_def_index: read_value::<u32>(
+                stream,
+                definition.get_entry("weapon_def_index"),
+                "weapon_def_index",
+            )?,
+            num_hit: read_value::<u8>(stream, definition.get_entry("num_hit"), "num_hit")?,
+            num_direct_hit: read_value::<u8>(
+                stream,
+                definition.get_entry("num_direct_hit"),
+                "num_direct_hit",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "attacker" => Ok(self.attacker.clone().into()),
             "weapon_def_index" => Ok(self.weapon_def_index.clone().into()),
             "num_hit" => Ok(self.num_hit.clone().into()),
             "num_direct_hit" => Ok(self.num_direct_hit.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ProjectileRemoved",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ProjectileRemoved",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17259,13 +16869,12 @@ impl QuestMapDataChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestMapDataChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestMapDataChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17294,25 +16903,22 @@ impl GasDousedPlayerIgnitedEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(GasDousedPlayerIgnitedEvent {
-            igniter: read_value::<
-                u16,
-            >(stream, definition.get_entry("igniter"), "igniter")?,
+            igniter: read_value::<u16>(stream, definition.get_entry("igniter"), "igniter")?,
             douser: read_value::<u16>(stream, definition.get_entry("douser"), "douser")?,
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "igniter" => Ok(self.igniter.clone().into()),
             "douser" => Ok(self.douser.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "GasDousedPlayerIgnited",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "GasDousedPlayerIgnited",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17344,14 +16950,13 @@ impl QuestTurnInStateEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "state" => Ok(self.state.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "QuestTurnInState",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "QuestTurnInState",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17379,13 +16984,12 @@ impl ItemsAcknowledgedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ItemsAcknowledged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ItemsAcknowledged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17413,23 +17017,20 @@ impl CapperKilledEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(CapperKilledEvent {
-            blocker: read_value::<
-                u16,
-            >(stream, definition.get_entry("blocker"), "blocker")?,
+            blocker: read_value::<u16>(stream, definition.get_entry("blocker"), "blocker")?,
             victim: read_value::<u16>(stream, definition.get_entry("victim"), "victim")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "blocker" => Ok(self.blocker.clone().into()),
             "victim" => Ok(self.victim.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "CapperKilled",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "CapperKilled",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17457,13 +17058,12 @@ impl MainMenuStabilizedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "MainMenuStabilized",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "MainMenuStabilized",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17491,13 +17091,12 @@ impl WorldStatusChangedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "WorldStatusChanged",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "WorldStatusChanged",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17527,31 +17126,28 @@ impl HLTVStatusEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVStatusEvent {
-            clients: read_value::<
-                u32,
-            >(stream, definition.get_entry("clients"), "clients")?,
+            clients: read_value::<u32>(stream, definition.get_entry("clients"), "clients")?,
             slots: read_value::<u32>(stream, definition.get_entry("slots"), "slots")?,
-            proxies: read_value::<
-                u16,
-            >(stream, definition.get_entry("proxies"), "proxies")?,
-            master: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("master"), "master")?,
+            proxies: read_value::<u16>(stream, definition.get_entry("proxies"), "proxies")?,
+            master: read_value::<MaybeUtf8String>(
+                stream,
+                definition.get_entry("master"),
+                "master",
+            )?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "clients" => Ok(self.clients.clone().into()),
             "slots" => Ok(self.slots.clone().into()),
             "proxies" => Ok(self.proxies.clone().into()),
             "master" => Ok(self.master.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVStatus",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVStatus",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17583,14 +17179,13 @@ impl HLTVCameramanEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVCameraman",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVCameraman",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17626,16 +17221,15 @@ impl HLTVRankCameraEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "rank" => Ok(self.rank.clone().into()),
             "target" => Ok(self.target.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVRankCamera",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVRankCamera",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17671,16 +17265,15 @@ impl HLTVRankEntityEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "index" => Ok(self.index.clone().into()),
             "rank" => Ok(self.rank.clone().into()),
             "target" => Ok(self.target.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVRankEntity",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVRankEntity",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17726,6 +17319,7 @@ impl HLTVFixedEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "posx" => Ok(self.pos_x.clone().into()),
             "posy" => Ok(self.pos_y.clone().into()),
@@ -17735,12 +17329,10 @@ impl HLTVFixedEvent {
             "offset" => Ok(self.offset.clone().into()),
             "fov" => Ok(self.fov.clone().into()),
             "target" => Ok(self.target.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVFixed",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVFixed",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17773,25 +17365,18 @@ impl HLTVChaseEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVChaseEvent {
-            target_1: read_value::<
-                u16,
-            >(stream, definition.get_entry("target1"), "target_1")?,
-            target_2: read_value::<
-                u16,
-            >(stream, definition.get_entry("target2"), "target_2")?,
-            distance: read_value::<
-                u16,
-            >(stream, definition.get_entry("distance"), "distance")?,
+            target_1: read_value::<u16>(stream, definition.get_entry("target1"), "target_1")?,
+            target_2: read_value::<u16>(stream, definition.get_entry("target2"), "target_2")?,
+            distance: read_value::<u16>(stream, definition.get_entry("distance"), "distance")?,
             theta: read_value::<u16>(stream, definition.get_entry("theta"), "theta")?,
             phi: read_value::<u16>(stream, definition.get_entry("phi"), "phi")?,
-            inertia: read_value::<
-                u8,
-            >(stream, definition.get_entry("inertia"), "inertia")?,
+            inertia: read_value::<u8>(stream, definition.get_entry("inertia"), "inertia")?,
             in_eye: read_value::<u8>(stream, definition.get_entry("ineye"), "in_eye")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "target1" => Ok(self.target_1.clone().into()),
             "target2" => Ok(self.target_2.clone().into()),
@@ -17800,12 +17385,10 @@ impl HLTVChaseEvent {
             "phi" => Ok(self.phi.clone().into()),
             "inertia" => Ok(self.inertia.clone().into()),
             "ineye" => Ok(self.in_eye.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVChase",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVChase",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17832,21 +17415,18 @@ impl HLTVMessageEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVMessageEvent {
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVMessage",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVMessage",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17873,21 +17453,18 @@ impl HLTVTitleEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVTitleEvent {
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVTitle",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVTitle",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17914,21 +17491,18 @@ impl HLTVChatEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(HLTVChatEvent {
-            text: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("text"), "text")?,
+            text: read_value::<MaybeUtf8String>(stream, definition.get_entry("text"), "text")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "text" => Ok(self.text.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "HLTVChat",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "HLTVChat",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -17956,13 +17530,12 @@ impl ReplayStartRecordEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplayStartRecord",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplayStartRecord",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -18000,17 +17573,16 @@ impl ReplaySessionInfoEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "sn" => Ok(self.sn.clone().into()),
             "di" => Ok(self.di.clone().into()),
             "cb" => Ok(self.cb.clone().into()),
             "st" => Ok(self.st.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplaySessionInfo",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplaySessionInfo",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -18038,13 +17610,12 @@ impl ReplayEndRecordEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplayEndRecord",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplayEndRecord",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -18072,13 +17643,12 @@ impl ReplayReplaysAvailableEvent {
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplayReplaysAvailable",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplayReplaysAvailable",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -18105,21 +17675,18 @@ impl ReplayServerErrorEvent {
     #[allow(unused_variables)]
     fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
         Ok(ReplayServerErrorEvent {
-            error: read_value::<
-                MaybeUtf8String,
-            >(stream, definition.get_entry("error"), "error")?,
+            error: read_value::<MaybeUtf8String>(stream, definition.get_entry("error"), "error")?,
         })
     }
     #[allow(unused_variables)]
     fn get_field(&self, field: &str) -> Result<GameEventValue> {
+        #[allow(clippy::clone_on_copy, clippy::match_single_binding)]
         match field {
             "error" => Ok(self.error.clone().into()),
-            _ => {
-                Err(ParseError::MissingGameEventValue {
-                    ty: "ReplayServerError",
-                    field: field.into(),
-                })
-            }
+            _ => Err(ParseError::MissingGameEventValue {
+                ty: "ReplayServerError",
+                field: field.into(),
+            }),
         }
     }
     #[allow(unused_variables)]
@@ -20177,1854 +19744,1210 @@ impl GameEventType {
 }
 impl GameEvent {
     pub fn read(stream: &mut Stream, definition: &GameEventDefinition) -> Result<Self> {
-        Ok(
-            match definition.event_type {
-                GameEventType::ServerSpawn => {
-                    GameEvent::ServerSpawn(
-                        Box::new(<ServerSpawnEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::ServerChangeLevelFailed => {
-                    GameEvent::ServerChangeLevelFailed(
-                        ServerChangeLevelFailedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ServerShutdown => {
-                    GameEvent::ServerShutdown(
-                        ServerShutdownEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ServerCvar => {
-                    GameEvent::ServerCvar(ServerCvarEvent::read(stream, definition)?)
-                }
-                GameEventType::ServerMessage => {
-                    GameEvent::ServerMessage(
-                        ServerMessageEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ServerAddBan => {
-                    GameEvent::ServerAddBan(
-                        Box::new(<ServerAddBanEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::ServerRemoveBan => {
-                    GameEvent::ServerRemoveBan(
-                        ServerRemoveBanEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerConnect => {
-                    GameEvent::PlayerConnect(
-                        PlayerConnectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerConnectClient => {
-                    GameEvent::PlayerConnectClient(
-                        PlayerConnectClientEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerInfo => {
-                    GameEvent::PlayerInfo(PlayerInfoEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerDisconnect => {
-                    GameEvent::PlayerDisconnect(
-                        PlayerDisconnectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerActivate => {
-                    GameEvent::PlayerActivate(
-                        PlayerActivateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerSay => {
-                    GameEvent::PlayerSay(PlayerSayEvent::read(stream, definition)?)
-                }
-                GameEventType::ClientDisconnect => {
-                    GameEvent::ClientDisconnect(
-                        ClientDisconnectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ClientBeginConnect => {
-                    GameEvent::ClientBeginConnect(
-                        ClientBeginConnectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ClientConnected => {
-                    GameEvent::ClientConnected(
-                        ClientConnectedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ClientFullConnect => {
-                    GameEvent::ClientFullConnect(
-                        ClientFullConnectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HostQuit => {
-                    GameEvent::HostQuit(HostQuitEvent::read(stream, definition)?)
-                }
-                GameEventType::TeamInfo => {
-                    GameEvent::TeamInfo(TeamInfoEvent::read(stream, definition)?)
-                }
-                GameEventType::TeamScore => {
-                    GameEvent::TeamScore(TeamScoreEvent::read(stream, definition)?)
-                }
-                GameEventType::TeamPlayBroadcastAudio => {
-                    GameEvent::TeamPlayBroadcastAudio(
-                        TeamPlayBroadcastAudioEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerTeam => {
-                    GameEvent::PlayerTeam(PlayerTeamEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerClass => {
-                    GameEvent::PlayerClass(PlayerClassEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerDeath => {
-                    GameEvent::PlayerDeath(
-                        Box::new(<PlayerDeathEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::PlayerHurt => {
-                    GameEvent::PlayerHurt(PlayerHurtEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerChat => {
-                    GameEvent::PlayerChat(PlayerChatEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerScore => {
-                    GameEvent::PlayerScore(PlayerScoreEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerSpawn => {
-                    GameEvent::PlayerSpawn(PlayerSpawnEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerShoot => {
-                    GameEvent::PlayerShoot(PlayerShootEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerUse => {
-                    GameEvent::PlayerUse(PlayerUseEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerChangeName => {
-                    GameEvent::PlayerChangeName(
-                        PlayerChangeNameEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHintMessage => {
-                    GameEvent::PlayerHintMessage(
-                        PlayerHintMessageEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::BasePlayerTeleported => {
-                    GameEvent::BasePlayerTeleported(
-                        BasePlayerTeleportedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::GameInit => {
-                    GameEvent::GameInit(GameInitEvent::read(stream, definition)?)
-                }
-                GameEventType::GameNewMap => {
-                    GameEvent::GameNewMap(GameNewMapEvent::read(stream, definition)?)
-                }
-                GameEventType::GameStart => {
-                    GameEvent::GameStart(GameStartEvent::read(stream, definition)?)
-                }
-                GameEventType::GameEnd => {
-                    GameEvent::GameEnd(GameEndEvent::read(stream, definition)?)
-                }
-                GameEventType::RoundStart => {
-                    GameEvent::RoundStart(RoundStartEvent::read(stream, definition)?)
-                }
-                GameEventType::RoundEnd => {
-                    GameEvent::RoundEnd(RoundEndEvent::read(stream, definition)?)
-                }
-                GameEventType::GameMessage => {
-                    GameEvent::GameMessage(GameMessageEvent::read(stream, definition)?)
-                }
-                GameEventType::BreakBreakable => {
-                    GameEvent::BreakBreakable(
-                        BreakBreakableEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::BreakProp => {
-                    GameEvent::BreakProp(BreakPropEvent::read(stream, definition)?)
-                }
-                GameEventType::EntityKilled => {
-                    GameEvent::EntityKilled(EntityKilledEvent::read(stream, definition)?)
-                }
-                GameEventType::BonusUpdated => {
-                    GameEvent::BonusUpdated(BonusUpdatedEvent::read(stream, definition)?)
-                }
-                GameEventType::AchievementEvent => {
-                    GameEvent::AchievementEvent(
-                        AchievementEventEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::AchievementIncrement => {
-                    GameEvent::AchievementIncrement(
-                        AchievementIncrementEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PhysgunPickup => {
-                    GameEvent::PhysgunPickup(
-                        PhysgunPickupEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::FlareIgniteNpc => {
-                    GameEvent::FlareIgniteNpc(
-                        FlareIgniteNpcEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HelicopterGrenadePuntMiss => {
-                    GameEvent::HelicopterGrenadePuntMiss(
-                        HelicopterGrenadePuntMissEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::UserDataDownloaded => {
-                    GameEvent::UserDataDownloaded(
-                        UserDataDownloadedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RagdollDissolved => {
-                    GameEvent::RagdollDissolved(
-                        RagdollDissolvedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HLTVChangedMode => {
-                    GameEvent::HLTVChangedMode(
-                        HLTVChangedModeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HLTVChangedTarget => {
-                    GameEvent::HLTVChangedTarget(
-                        HLTVChangedTargetEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::VoteEnded => {
-                    GameEvent::VoteEnded(VoteEndedEvent::read(stream, definition)?)
-                }
-                GameEventType::VoteStarted => {
-                    GameEvent::VoteStarted(VoteStartedEvent::read(stream, definition)?)
-                }
-                GameEventType::VoteChanged => {
-                    GameEvent::VoteChanged(VoteChangedEvent::read(stream, definition)?)
-                }
-                GameEventType::VotePassed => {
-                    GameEvent::VotePassed(VotePassedEvent::read(stream, definition)?)
-                }
-                GameEventType::VoteFailed => {
-                    GameEvent::VoteFailed(VoteFailedEvent::read(stream, definition)?)
-                }
-                GameEventType::VoteCast => {
-                    GameEvent::VoteCast(VoteCastEvent::read(stream, definition)?)
-                }
-                GameEventType::VoteOptions => {
-                    GameEvent::VoteOptions(
-                        Box::new(<VoteOptionsEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::ReplaySaved => {
-                    GameEvent::ReplaySaved(ReplaySavedEvent::read(stream, definition)?)
-                }
-                GameEventType::EnteredPerformanceMode => {
-                    GameEvent::EnteredPerformanceMode(
-                        EnteredPerformanceModeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::BrowseReplays => {
-                    GameEvent::BrowseReplays(
-                        BrowseReplaysEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ReplayYoutubeStats => {
-                    GameEvent::ReplayYoutubeStats(
-                        ReplayYoutubeStatsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::InventoryUpdated => {
-                    GameEvent::InventoryUpdated(
-                        InventoryUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CartUpdated => {
-                    GameEvent::CartUpdated(CartUpdatedEvent::read(stream, definition)?)
-                }
-                GameEventType::StorePriceSheetUpdated => {
-                    GameEvent::StorePriceSheetUpdated(
-                        StorePriceSheetUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EconInventoryConnected => {
-                    GameEvent::EconInventoryConnected(
-                        EconInventoryConnectedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ItemSchemaInitialized => {
-                    GameEvent::ItemSchemaInitialized(
-                        ItemSchemaInitializedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::GcNewSession => {
-                    GameEvent::GcNewSession(GcNewSessionEvent::read(stream, definition)?)
-                }
-                GameEventType::GcLostSession => {
-                    GameEvent::GcLostSession(
-                        GcLostSessionEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::IntroFinish => {
-                    GameEvent::IntroFinish(IntroFinishEvent::read(stream, definition)?)
-                }
-                GameEventType::IntroNextCamera => {
-                    GameEvent::IntroNextCamera(
-                        IntroNextCameraEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerChangeClass => {
-                    GameEvent::PlayerChangeClass(
-                        PlayerChangeClassEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TfMapTimeRemaining => {
-                    GameEvent::TfMapTimeRemaining(
-                        TfMapTimeRemainingEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TfGameOver => {
-                    GameEvent::TfGameOver(TfGameOverEvent::read(stream, definition)?)
-                }
-                GameEventType::CtfFlagCaptured => {
-                    GameEvent::CtfFlagCaptured(
-                        CtfFlagCapturedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointInitialized => {
-                    GameEvent::ControlPointInitialized(
-                        ControlPointInitializedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointUpdateImages => {
-                    GameEvent::ControlPointUpdateImages(
-                        ControlPointUpdateImagesEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointUpdateLayout => {
-                    GameEvent::ControlPointUpdateLayout(
-                        ControlPointUpdateLayoutEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointUpdateCapping => {
-                    GameEvent::ControlPointUpdateCapping(
-                        ControlPointUpdateCappingEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointUpdateOwner => {
-                    GameEvent::ControlPointUpdateOwner(
-                        ControlPointUpdateOwnerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointStartTouch => {
-                    GameEvent::ControlPointStartTouch(
-                        ControlPointStartTouchEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointEndTouch => {
-                    GameEvent::ControlPointEndTouch(
-                        ControlPointEndTouchEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointPulseElement => {
-                    GameEvent::ControlPointPulseElement(
-                        ControlPointPulseElementEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointFakeCapture => {
-                    GameEvent::ControlPointFakeCapture(
-                        ControlPointFakeCaptureEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointFakeCaptureMultiplier => {
-                    GameEvent::ControlPointFakeCaptureMultiplier(
-                        ControlPointFakeCaptureMultiplierEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRoundSelected => {
-                    GameEvent::TeamPlayRoundSelected(
-                        TeamPlayRoundSelectedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRoundStart => {
-                    GameEvent::TeamPlayRoundStart(
-                        TeamPlayRoundStartEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRoundActive => {
-                    GameEvent::TeamPlayRoundActive(
-                        TeamPlayRoundActiveEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayWaitingBegins => {
-                    GameEvent::TeamPlayWaitingBegins(
-                        TeamPlayWaitingBeginsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayWaitingEnds => {
-                    GameEvent::TeamPlayWaitingEnds(
-                        TeamPlayWaitingEndsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayWaitingAboutToEnd => {
-                    GameEvent::TeamPlayWaitingAboutToEnd(
-                        TeamPlayWaitingAboutToEndEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRestartRound => {
-                    GameEvent::TeamPlayRestartRound(
-                        TeamPlayRestartRoundEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayReadyRestart => {
-                    GameEvent::TeamPlayReadyRestart(
-                        TeamPlayReadyRestartEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRoundRestartSeconds => {
-                    GameEvent::TeamPlayRoundRestartSeconds(
-                        TeamPlayRoundRestartSecondsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayTeamReady => {
-                    GameEvent::TeamPlayTeamReady(
-                        TeamPlayTeamReadyEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRoundWin => {
-                    GameEvent::TeamPlayRoundWin(
-                        TeamPlayRoundWinEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayUpdateTimer => {
-                    GameEvent::TeamPlayUpdateTimer(
-                        TeamPlayUpdateTimerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayRoundStalemate => {
-                    GameEvent::TeamPlayRoundStalemate(
-                        TeamPlayRoundStalemateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayOvertimeBegin => {
-                    GameEvent::TeamPlayOvertimeBegin(
-                        TeamPlayOvertimeBeginEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayOvertimeEnd => {
-                    GameEvent::TeamPlayOvertimeEnd(
-                        TeamPlayOvertimeEndEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlaySuddenDeathBegin => {
-                    GameEvent::TeamPlaySuddenDeathBegin(
-                        TeamPlaySuddenDeathBeginEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlaySuddenDeathEnd => {
-                    GameEvent::TeamPlaySuddenDeathEnd(
-                        TeamPlaySuddenDeathEndEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayGameOver => {
-                    GameEvent::TeamPlayGameOver(
-                        TeamPlayGameOverEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayMapTimeRemaining => {
-                    GameEvent::TeamPlayMapTimeRemaining(
-                        TeamPlayMapTimeRemainingEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayTimerFlash => {
-                    GameEvent::TeamPlayTimerFlash(
-                        TeamPlayTimerFlashEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayTimerTimeAdded => {
-                    GameEvent::TeamPlayTimerTimeAdded(
-                        TeamPlayTimerTimeAddedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayPointStartCapture => {
-                    GameEvent::TeamPlayPointStartCapture(
-                        TeamPlayPointStartCaptureEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayPointCaptured => {
-                    GameEvent::TeamPlayPointCaptured(
-                        TeamPlayPointCapturedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayPointLocked => {
-                    GameEvent::TeamPlayPointLocked(
-                        TeamPlayPointLockedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayPointUnlocked => {
-                    GameEvent::TeamPlayPointUnlocked(
-                        TeamPlayPointUnlockedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayCaptureBroken => {
-                    GameEvent::TeamPlayCaptureBroken(
-                        TeamPlayCaptureBrokenEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayCaptureBlocked => {
-                    GameEvent::TeamPlayCaptureBlocked(
-                        TeamPlayCaptureBlockedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayFlagEvent => {
-                    GameEvent::TeamPlayFlagEvent(
-                        TeamPlayFlagEventEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayWinPanel => {
-                    GameEvent::TeamPlayWinPanel(
-                        TeamPlayWinPanelEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayTeamBalancedPlayer => {
-                    GameEvent::TeamPlayTeamBalancedPlayer(
-                        TeamPlayTeamBalancedPlayerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlaySetupFinished => {
-                    GameEvent::TeamPlaySetupFinished(
-                        TeamPlaySetupFinishedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayAlert => {
-                    GameEvent::TeamPlayAlert(
-                        TeamPlayAlertEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TrainingComplete => {
-                    GameEvent::TrainingComplete(
-                        TrainingCompleteEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ShowFreezePanel => {
-                    GameEvent::ShowFreezePanel(
-                        ShowFreezePanelEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HideFreezePanel => {
-                    GameEvent::HideFreezePanel(
-                        HideFreezePanelEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::FreezeCamStarted => {
-                    GameEvent::FreezeCamStarted(
-                        FreezeCamStartedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerChangeTeam => {
-                    GameEvent::LocalPlayerChangeTeam(
-                        LocalPlayerChangeTeamEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerScoreChanged => {
-                    GameEvent::LocalPlayerScoreChanged(
-                        LocalPlayerScoreChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerChangeClass => {
-                    GameEvent::LocalPlayerChangeClass(
-                        LocalPlayerChangeClassEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerRespawn => {
-                    GameEvent::LocalPlayerRespawn(
-                        LocalPlayerRespawnEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::BuildingInfoChanged => {
-                    GameEvent::BuildingInfoChanged(
-                        BuildingInfoChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerChangeDisguise => {
-                    GameEvent::LocalPlayerChangeDisguise(
-                        LocalPlayerChangeDisguiseEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerAccountChanged => {
-                    GameEvent::PlayerAccountChanged(
-                        PlayerAccountChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::SpyPdaReset => {
-                    GameEvent::SpyPdaReset(SpyPdaResetEvent::read(stream, definition)?)
-                }
-                GameEventType::FlagStatusUpdate => {
-                    GameEvent::FlagStatusUpdate(
-                        FlagStatusUpdateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerStatsUpdated => {
-                    GameEvent::PlayerStatsUpdated(
-                        PlayerStatsUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayingCommentary => {
-                    GameEvent::PlayingCommentary(
-                        PlayingCommentaryEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerChargeDeployed => {
-                    GameEvent::PlayerChargeDeployed(
-                        PlayerChargeDeployedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerBuiltObject => {
-                    GameEvent::PlayerBuiltObject(
-                        PlayerBuiltObjectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerUpgradedObject => {
-                    GameEvent::PlayerUpgradedObject(
-                        PlayerUpgradedObjectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerCarryObject => {
-                    GameEvent::PlayerCarryObject(
-                        PlayerCarryObjectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerDropObject => {
-                    GameEvent::PlayerDropObject(
-                        PlayerDropObjectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ObjectRemoved => {
-                    GameEvent::ObjectRemoved(
-                        ObjectRemovedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ObjectDestroyed => {
-                    GameEvent::ObjectDestroyed(
-                        ObjectDestroyedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ObjectDetonated => {
-                    GameEvent::ObjectDetonated(
-                        ObjectDetonatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::AchievementEarned => {
-                    GameEvent::AchievementEarned(
-                        AchievementEarnedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::SpecTargetUpdated => {
-                    GameEvent::SpecTargetUpdated(
-                        SpecTargetUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TournamentStateUpdate => {
-                    GameEvent::TournamentStateUpdate(
-                        TournamentStateUpdateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TournamentEnableCountdown => {
-                    GameEvent::TournamentEnableCountdown(
-                        TournamentEnableCountdownEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerCalledForMedic => {
-                    GameEvent::PlayerCalledForMedic(
-                        PlayerCalledForMedicEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerAskedForBall => {
-                    GameEvent::PlayerAskedForBall(
-                        PlayerAskedForBallEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerBecameObserver => {
-                    GameEvent::LocalPlayerBecameObserver(
-                        LocalPlayerBecameObserverEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerIgnitedInv => {
-                    GameEvent::PlayerIgnitedInv(
-                        PlayerIgnitedInvEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerIgnited => {
-                    GameEvent::PlayerIgnited(
-                        PlayerIgnitedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerExtinguished => {
-                    GameEvent::PlayerExtinguished(
-                        PlayerExtinguishedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerTeleported => {
-                    GameEvent::PlayerTeleported(
-                        PlayerTeleportedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHealedMedicCall => {
-                    GameEvent::PlayerHealedMedicCall(
-                        PlayerHealedMedicCallEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerChargeReady => {
-                    GameEvent::LocalPlayerChargeReady(
-                        LocalPlayerChargeReadyEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerWindDown => {
-                    GameEvent::LocalPlayerWindDown(
-                        LocalPlayerWindDownEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerInvulned => {
-                    GameEvent::PlayerInvulned(
-                        PlayerInvulnedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EscortSpeed => {
-                    GameEvent::EscortSpeed(EscortSpeedEvent::read(stream, definition)?)
-                }
-                GameEventType::EscortProgress => {
-                    GameEvent::EscortProgress(
-                        EscortProgressEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EscortRecede => {
-                    GameEvent::EscortRecede(EscortRecedeEvent::read(stream, definition)?)
-                }
-                GameEventType::GameUIActivated => {
-                    GameEvent::GameUIActivated(
-                        GameUIActivatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::GameUIHidden => {
-                    GameEvent::GameUIHidden(GameUIHiddenEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerEscortScore => {
-                    GameEvent::PlayerEscortScore(
-                        PlayerEscortScoreEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHealOnHit => {
-                    GameEvent::PlayerHealOnHit(
-                        PlayerHealOnHitEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerStealSandvich => {
-                    GameEvent::PlayerStealSandvich(
-                        PlayerStealSandvichEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ShowClassLayout => {
-                    GameEvent::ShowClassLayout(
-                        ShowClassLayoutEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ShowVsPanel => {
-                    GameEvent::ShowVsPanel(ShowVsPanelEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerDamaged => {
-                    GameEvent::PlayerDamaged(
-                        PlayerDamagedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ArenaPlayerNotification => {
-                    GameEvent::ArenaPlayerNotification(
-                        ArenaPlayerNotificationEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ArenaMatchMaxStreak => {
-                    GameEvent::ArenaMatchMaxStreak(
-                        ArenaMatchMaxStreakEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ArenaRoundStart => {
-                    GameEvent::ArenaRoundStart(
-                        ArenaRoundStartEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ArenaWinPanel => {
-                    GameEvent::ArenaWinPanel(
-                        ArenaWinPanelEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PveWinPanel => {
-                    GameEvent::PveWinPanel(PveWinPanelEvent::read(stream, definition)?)
-                }
-                GameEventType::AirDash => {
-                    GameEvent::AirDash(AirDashEvent::read(stream, definition)?)
-                }
-                GameEventType::Landed => {
-                    GameEvent::Landed(LandedEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerDamageDodged => {
-                    GameEvent::PlayerDamageDodged(
-                        PlayerDamageDodgedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerStunned => {
-                    GameEvent::PlayerStunned(
-                        PlayerStunnedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ScoutGrandSlam => {
-                    GameEvent::ScoutGrandSlam(
-                        ScoutGrandSlamEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ScoutSlamdollLanded => {
-                    GameEvent::ScoutSlamdollLanded(
-                        ScoutSlamdollLandedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ArrowImpact => {
-                    GameEvent::ArrowImpact(ArrowImpactEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerJarated => {
-                    GameEvent::PlayerJarated(
-                        PlayerJaratedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerJaratedFade => {
-                    GameEvent::PlayerJaratedFade(
-                        PlayerJaratedFadeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerShieldBlocked => {
-                    GameEvent::PlayerShieldBlocked(
-                        PlayerShieldBlockedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerPinned => {
-                    GameEvent::PlayerPinned(PlayerPinnedEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerHealedByMedic => {
-                    GameEvent::PlayerHealedByMedic(
-                        PlayerHealedByMedicEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerSappedObject => {
-                    GameEvent::PlayerSappedObject(
-                        PlayerSappedObjectEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ItemFound => {
-                    GameEvent::ItemFound(ItemFoundEvent::read(stream, definition)?)
-                }
-                GameEventType::ShowAnnotation => {
-                    GameEvent::ShowAnnotation(
-                        ShowAnnotationEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HideAnnotation => {
-                    GameEvent::HideAnnotation(
-                        HideAnnotationEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PostInventoryApplication => {
-                    GameEvent::PostInventoryApplication(
-                        PostInventoryApplicationEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ControlPointUnlockUpdated => {
-                    GameEvent::ControlPointUnlockUpdated(
-                        ControlPointUnlockUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DeployBuffBanner => {
-                    GameEvent::DeployBuffBanner(
-                        DeployBuffBannerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerBuff => {
-                    GameEvent::PlayerBuff(PlayerBuffEvent::read(stream, definition)?)
-                }
-                GameEventType::MedicDeath => {
-                    GameEvent::MedicDeath(MedicDeathEvent::read(stream, definition)?)
-                }
-                GameEventType::OvertimeNag => {
-                    GameEvent::OvertimeNag(OvertimeNagEvent::read(stream, definition)?)
-                }
-                GameEventType::TeamsChanged => {
-                    GameEvent::TeamsChanged(TeamsChangedEvent::read(stream, definition)?)
-                }
-                GameEventType::HalloweenPumpkinGrab => {
-                    GameEvent::HalloweenPumpkinGrab(
-                        HalloweenPumpkinGrabEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RocketJump => {
-                    GameEvent::RocketJump(RocketJumpEvent::read(stream, definition)?)
-                }
-                GameEventType::RocketJumpLanded => {
-                    GameEvent::RocketJumpLanded(
-                        RocketJumpLandedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::StickyJump => {
-                    GameEvent::StickyJump(StickyJumpEvent::read(stream, definition)?)
-                }
-                GameEventType::StickyJumpLanded => {
-                    GameEvent::StickyJumpLanded(
-                        StickyJumpLandedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RocketPackLaunch => {
-                    GameEvent::RocketPackLaunch(
-                        RocketPackLaunchEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RocketPackLanded => {
-                    GameEvent::RocketPackLanded(
-                        RocketPackLandedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MedicDefended => {
-                    GameEvent::MedicDefended(
-                        MedicDefendedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerHealed => {
-                    GameEvent::LocalPlayerHealed(
-                        LocalPlayerHealedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerDestroyedPipeBomb => {
-                    GameEvent::PlayerDestroyedPipeBomb(
-                        PlayerDestroyedPipeBombEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ObjectDeflected => {
-                    GameEvent::ObjectDeflected(
-                        ObjectDeflectedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerMvp => {
-                    GameEvent::PlayerMvp(PlayerMvpEvent::read(stream, definition)?)
-                }
-                GameEventType::RaidSpawnMob => {
-                    GameEvent::RaidSpawnMob(RaidSpawnMobEvent::read(stream, definition)?)
-                }
-                GameEventType::RaidSpawnSquad => {
-                    GameEvent::RaidSpawnSquad(
-                        RaidSpawnSquadEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::NavBlocked => {
-                    GameEvent::NavBlocked(NavBlockedEvent::read(stream, definition)?)
-                }
-                GameEventType::PathTrackPassed => {
-                    GameEvent::PathTrackPassed(
-                        PathTrackPassedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::NumCappersChanged => {
-                    GameEvent::NumCappersChanged(
-                        NumCappersChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerRegenerate => {
-                    GameEvent::PlayerRegenerate(
-                        PlayerRegenerateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::UpdateStatusItem => {
-                    GameEvent::UpdateStatusItem(
-                        UpdateStatusItemEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::StatsResetRound => {
-                    GameEvent::StatsResetRound(
-                        StatsResetRoundEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ScoreStatsAccumulatedUpdate => {
-                    GameEvent::ScoreStatsAccumulatedUpdate(
-                        ScoreStatsAccumulatedUpdateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ScoreStatsAccumulatedReset => {
-                    GameEvent::ScoreStatsAccumulatedReset(
-                        ScoreStatsAccumulatedResetEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::AchievementEarnedLocal => {
-                    GameEvent::AchievementEarnedLocal(
-                        AchievementEarnedLocalEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHealed => {
-                    GameEvent::PlayerHealed(PlayerHealedEvent::read(stream, definition)?)
-                }
-                GameEventType::BuildingHealed => {
-                    GameEvent::BuildingHealed(
-                        BuildingHealedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ItemPickup => {
-                    GameEvent::ItemPickup(ItemPickupEvent::read(stream, definition)?)
-                }
-                GameEventType::DuelStatus => {
-                    GameEvent::DuelStatus(DuelStatusEvent::read(stream, definition)?)
-                }
-                GameEventType::FishNotice => {
-                    GameEvent::FishNotice(
-                        Box::new(<FishNoticeEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::FishNoticeArm => {
-                    GameEvent::FishNoticeArm(
-                        Box::new(<FishNoticeArmEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::SlapNotice => {
-                    GameEvent::SlapNotice(
-                        Box::new(<SlapNoticeEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::ThrowableHit => {
-                    GameEvent::ThrowableHit(
-                        Box::new(<ThrowableHitEvent>::read(stream, definition)?),
-                    )
-                }
-                GameEventType::PumpkinLordSummoned => {
-                    GameEvent::PumpkinLordSummoned(
-                        PumpkinLordSummonedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PumpkinLordKilled => {
-                    GameEvent::PumpkinLordKilled(
-                        PumpkinLordKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MerasmusSummoned => {
-                    GameEvent::MerasmusSummoned(
-                        MerasmusSummonedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MerasmusKilled => {
-                    GameEvent::MerasmusKilled(
-                        MerasmusKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MerasmusEscapeWarning => {
-                    GameEvent::MerasmusEscapeWarning(
-                        MerasmusEscapeWarningEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MerasmusEscaped => {
-                    GameEvent::MerasmusEscaped(
-                        MerasmusEscapedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EyeballBossSummoned => {
-                    GameEvent::EyeballBossSummoned(
-                        EyeballBossSummonedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EyeballBossStunned => {
-                    GameEvent::EyeballBossStunned(
-                        EyeballBossStunnedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EyeballBossKilled => {
-                    GameEvent::EyeballBossKilled(
-                        EyeballBossKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EyeballBossKiller => {
-                    GameEvent::EyeballBossKiller(
-                        EyeballBossKillerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EyeballBossEscapeImminent => {
-                    GameEvent::EyeballBossEscapeImminent(
-                        EyeballBossEscapeImminentEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EyeballBossEscaped => {
-                    GameEvent::EyeballBossEscaped(
-                        EyeballBossEscapedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::NpcHurt => {
-                    GameEvent::NpcHurt(NpcHurtEvent::read(stream, definition)?)
-                }
-                GameEventType::ControlPointTimerUpdated => {
-                    GameEvent::ControlPointTimerUpdated(
-                        ControlPointTimerUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHighFiveStart => {
-                    GameEvent::PlayerHighFiveStart(
-                        PlayerHighFiveStartEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHighFiveCancel => {
-                    GameEvent::PlayerHighFiveCancel(
-                        PlayerHighFiveCancelEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerHighFiveSuccess => {
-                    GameEvent::PlayerHighFiveSuccess(
-                        PlayerHighFiveSuccessEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerBonusPoints => {
-                    GameEvent::PlayerBonusPoints(
-                        PlayerBonusPointsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerUpgraded => {
-                    GameEvent::PlayerUpgraded(
-                        PlayerUpgradedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerBuyback => {
-                    GameEvent::PlayerBuyback(
-                        PlayerBuybackEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerUsedPowerUpBottle => {
-                    GameEvent::PlayerUsedPowerUpBottle(
-                        PlayerUsedPowerUpBottleEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ChristmasGiftGrab => {
-                    GameEvent::ChristmasGiftGrab(
-                        ChristmasGiftGrabEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerKilledAchievementZone => {
-                    GameEvent::PlayerKilledAchievementZone(
-                        PlayerKilledAchievementZoneEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PartyUpdated => {
-                    GameEvent::PartyUpdated(PartyUpdatedEvent::read(stream, definition)?)
-                }
-                GameEventType::PartyPrefChanged => {
-                    GameEvent::PartyPrefChanged(
-                        PartyPrefChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PartyCriteriaChanged => {
-                    GameEvent::PartyCriteriaChanged(
-                        PartyCriteriaChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PartyInvitesChanged => {
-                    GameEvent::PartyInvitesChanged(
-                        PartyInvitesChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PartyQueueStateChanged => {
-                    GameEvent::PartyQueueStateChanged(
-                        PartyQueueStateChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PartyChat => {
-                    GameEvent::PartyChat(PartyChatEvent::read(stream, definition)?)
-                }
-                GameEventType::PartyMemberJoin => {
-                    GameEvent::PartyMemberJoin(
-                        PartyMemberJoinEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PartyMemberLeave => {
-                    GameEvent::PartyMemberLeave(
-                        PartyMemberLeaveEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MatchInvitesUpdated => {
-                    GameEvent::MatchInvitesUpdated(
-                        MatchInvitesUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LobbyUpdated => {
-                    GameEvent::LobbyUpdated(LobbyUpdatedEvent::read(stream, definition)?)
-                }
-                GameEventType::MvmMissionUpdate => {
-                    GameEvent::MvmMissionUpdate(
-                        MvmMissionUpdateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RecalculateHolidays => {
-                    GameEvent::RecalculateHolidays(
-                        RecalculateHolidaysEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerCurrencyChanged => {
-                    GameEvent::PlayerCurrencyChanged(
-                        PlayerCurrencyChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DoomsdayRocketOpen => {
-                    GameEvent::DoomsdayRocketOpen(
-                        DoomsdayRocketOpenEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RemoveNemesisRelationships => {
-                    GameEvent::RemoveNemesisRelationships(
-                        RemoveNemesisRelationshipsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmCreditBonusWave => {
-                    GameEvent::MvmCreditBonusWave(
-                        MvmCreditBonusWaveEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmCreditBonusAll => {
-                    GameEvent::MvmCreditBonusAll(
-                        MvmCreditBonusAllEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmCreditBonusAllAdvanced => {
-                    GameEvent::MvmCreditBonusAllAdvanced(
-                        MvmCreditBonusAllAdvancedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmQuickSentryUpgrade => {
-                    GameEvent::MvmQuickSentryUpgrade(
-                        MvmQuickSentryUpgradeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmTankDestroyedByPlayers => {
-                    GameEvent::MvmTankDestroyedByPlayers(
-                        MvmTankDestroyedByPlayersEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmKillRobotDeliveringBomb => {
-                    GameEvent::MvmKillRobotDeliveringBomb(
-                        MvmKillRobotDeliveringBombEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmPickupCurrency => {
-                    GameEvent::MvmPickupCurrency(
-                        MvmPickupCurrencyEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmBombCarrierKilled => {
-                    GameEvent::MvmBombCarrierKilled(
-                        MvmBombCarrierKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmSentryBusterDetonate => {
-                    GameEvent::MvmSentryBusterDetonate(
-                        MvmSentryBusterDetonateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmScoutMarkedForDeath => {
-                    GameEvent::MvmScoutMarkedForDeath(
-                        MvmScoutMarkedForDeathEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmMedicPowerUpShared => {
-                    GameEvent::MvmMedicPowerUpShared(
-                        MvmMedicPowerUpSharedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmBeginWave => {
-                    GameEvent::MvmBeginWave(MvmBeginWaveEvent::read(stream, definition)?)
-                }
-                GameEventType::MvmWaveComplete => {
-                    GameEvent::MvmWaveComplete(
-                        MvmWaveCompleteEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmMissionComplete => {
-                    GameEvent::MvmMissionComplete(
-                        MvmMissionCompleteEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmBombResetByPlayer => {
-                    GameEvent::MvmBombResetByPlayer(
-                        MvmBombResetByPlayerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmBombAlarmTriggered => {
-                    GameEvent::MvmBombAlarmTriggered(
-                        MvmBombAlarmTriggeredEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmBombDeployResetByPlayer => {
-                    GameEvent::MvmBombDeployResetByPlayer(
-                        MvmBombDeployResetByPlayerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmWaveFailed => {
-                    GameEvent::MvmWaveFailed(
-                        MvmWaveFailedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmResetStats => {
-                    GameEvent::MvmResetStats(
-                        MvmResetStatsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DamageResisted => {
-                    GameEvent::DamageResisted(
-                        DamageResistedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RevivePlayerNotify => {
-                    GameEvent::RevivePlayerNotify(
-                        RevivePlayerNotifyEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RevivePlayerStopped => {
-                    GameEvent::RevivePlayerStopped(
-                        RevivePlayerStoppedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RevivePlayerComplete => {
-                    GameEvent::RevivePlayerComplete(
-                        RevivePlayerCompleteEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerTurnedToGhost => {
-                    GameEvent::PlayerTurnedToGhost(
-                        PlayerTurnedToGhostEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MedigunShieldBlockedDamage => {
-                    GameEvent::MedigunShieldBlockedDamage(
-                        MedigunShieldBlockedDamageEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmAdvWaveCompleteNoGates => {
-                    GameEvent::MvmAdvWaveCompleteNoGates(
-                        MvmAdvWaveCompleteNoGatesEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmSniperHeadshotCurrency => {
-                    GameEvent::MvmSniperHeadshotCurrency(
-                        MvmSniperHeadshotCurrencyEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmMannhattanPit => {
-                    GameEvent::MvmMannhattanPit(
-                        MvmMannhattanPitEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::FlagCarriedInDetectionZone => {
-                    GameEvent::FlagCarriedInDetectionZone(
-                        FlagCarriedInDetectionZoneEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmAdvWaveKilledStunRadio => {
-                    GameEvent::MvmAdvWaveKilledStunRadio(
-                        MvmAdvWaveKilledStunRadioEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerDirectHitStun => {
-                    GameEvent::PlayerDirectHitStun(
-                        PlayerDirectHitStunEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MvmSentryBusterKilled => {
-                    GameEvent::MvmSentryBusterKilled(
-                        MvmSentryBusterKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::UpgradesFileChanged => {
-                    GameEvent::UpgradesFileChanged(
-                        UpgradesFileChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RdTeamPointsChanged => {
-                    GameEvent::RdTeamPointsChanged(
-                        RdTeamPointsChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RdRulesStateChanged => {
-                    GameEvent::RdRulesStateChanged(
-                        RdRulesStateChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RdRobotKilled => {
-                    GameEvent::RdRobotKilled(
-                        RdRobotKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RdRobotImpact => {
-                    GameEvent::RdRobotImpact(
-                        RdRobotImpactEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TeamPlayPreRoundTimeLeft => {
-                    GameEvent::TeamPlayPreRoundTimeLeft(
-                        TeamPlayPreRoundTimeLeftEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ParachuteDeploy => {
-                    GameEvent::ParachuteDeploy(
-                        ParachuteDeployEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ParachuteHolster => {
-                    GameEvent::ParachuteHolster(
-                        ParachuteHolsterEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::KillRefillsMeter => {
-                    GameEvent::KillRefillsMeter(
-                        KillRefillsMeterEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RpsTauntEvent => {
-                    GameEvent::RpsTauntEvent(
-                        RpsTauntEventEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CongaKill => {
-                    GameEvent::CongaKill(CongaKillEvent::read(stream, definition)?)
-                }
-                GameEventType::PlayerInitialSpawn => {
-                    GameEvent::PlayerInitialSpawn(
-                        PlayerInitialSpawnEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CompetitiveVictory => {
-                    GameEvent::CompetitiveVictory(
-                        CompetitiveVictoryEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CompetitiveStatsUpdate => {
-                    GameEvent::CompetitiveStatsUpdate(
-                        CompetitiveStatsUpdateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MiniGameWin => {
-                    GameEvent::MiniGameWin(MiniGameWinEvent::read(stream, definition)?)
-                }
-                GameEventType::SentryOnGoActive => {
-                    GameEvent::SentryOnGoActive(
-                        SentryOnGoActiveEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DuckXpLevelUp => {
-                    GameEvent::DuckXpLevelUp(
-                        DuckXpLevelUpEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::QuestLogOpened => {
-                    GameEvent::QuestLogOpened(
-                        QuestLogOpenedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::SchemaUpdated => {
-                    GameEvent::SchemaUpdated(
-                        SchemaUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::LocalPlayerPickupWeapon => {
-                    GameEvent::LocalPlayerPickupWeapon(
-                        LocalPlayerPickupWeaponEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RdPlayerScorePoints => {
-                    GameEvent::RdPlayerScorePoints(
-                        RdPlayerScorePointsEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DemomanDetStickies => {
-                    GameEvent::DemomanDetStickies(
-                        DemomanDetStickiesEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::QuestObjectiveCompleted => {
-                    GameEvent::QuestObjectiveCompleted(
-                        QuestObjectiveCompletedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerScoreChanged => {
-                    GameEvent::PlayerScoreChanged(
-                        PlayerScoreChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::KilledCappingPlayer => {
-                    GameEvent::KilledCappingPlayer(
-                        KilledCappingPlayerEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EnvironmentalDeath => {
-                    GameEvent::EnvironmentalDeath(
-                        EnvironmentalDeathEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ProjectileDirectHit => {
-                    GameEvent::ProjectileDirectHit(
-                        ProjectileDirectHitEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PassGet => {
-                    GameEvent::PassGet(PassGetEvent::read(stream, definition)?)
-                }
-                GameEventType::PassScore => {
-                    GameEvent::PassScore(PassScoreEvent::read(stream, definition)?)
-                }
-                GameEventType::PassFree => {
-                    GameEvent::PassFree(PassFreeEvent::read(stream, definition)?)
-                }
-                GameEventType::PassPassCaught => {
-                    GameEvent::PassPassCaught(
-                        PassPassCaughtEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PassBallStolen => {
-                    GameEvent::PassBallStolen(
-                        PassBallStolenEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PassBallBlocked => {
-                    GameEvent::PassBallBlocked(
-                        PassBallBlockedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DamagePrevented => {
-                    GameEvent::DamagePrevented(
-                        DamagePreventedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HalloweenBossKilled => {
-                    GameEvent::HalloweenBossKilled(
-                        HalloweenBossKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EscapedLootIsland => {
-                    GameEvent::EscapedLootIsland(
-                        EscapedLootIslandEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TaggedPlayerAsIt => {
-                    GameEvent::TaggedPlayerAsIt(
-                        TaggedPlayerAsItEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MerasmusStunned => {
-                    GameEvent::MerasmusStunned(
-                        MerasmusStunnedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MerasmusPropFound => {
-                    GameEvent::MerasmusPropFound(
-                        MerasmusPropFoundEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HalloweenSkeletonKilled => {
-                    GameEvent::HalloweenSkeletonKilled(
-                        HalloweenSkeletonKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::SkeletonKilledQuest => {
-                    GameEvent::SkeletonKilledQuest(
-                        SkeletonKilledQuestEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::SkeletonKingKilledQuest => {
-                    GameEvent::SkeletonKingKilledQuest(
-                        SkeletonKingKilledQuestEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::EscapeHell => {
-                    GameEvent::EscapeHell(EscapeHellEvent::read(stream, definition)?)
-                }
-                GameEventType::CrossSpectralBridge => {
-                    GameEvent::CrossSpectralBridge(
-                        CrossSpectralBridgeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::MiniGameWon => {
-                    GameEvent::MiniGameWon(MiniGameWonEvent::read(stream, definition)?)
-                }
-                GameEventType::RespawnGhost => {
-                    GameEvent::RespawnGhost(RespawnGhostEvent::read(stream, definition)?)
-                }
-                GameEventType::KillInHell => {
-                    GameEvent::KillInHell(KillInHellEvent::read(stream, definition)?)
-                }
-                GameEventType::HalloweenDuckCollected => {
-                    GameEvent::HalloweenDuckCollected(
-                        HalloweenDuckCollectedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::SpecialScore => {
-                    GameEvent::SpecialScore(SpecialScoreEvent::read(stream, definition)?)
-                }
-                GameEventType::TeamLeaderKilled => {
-                    GameEvent::TeamLeaderKilled(
-                        TeamLeaderKilledEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HalloweenSoulCollected => {
-                    GameEvent::HalloweenSoulCollected(
-                        HalloweenSoulCollectedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RecalculateTruce => {
-                    GameEvent::RecalculateTruce(
-                        RecalculateTruceEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DeadRingerCheatDeath => {
-                    GameEvent::DeadRingerCheatDeath(
-                        DeadRingerCheatDeathEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CrossbowHeal => {
-                    GameEvent::CrossbowHeal(CrossbowHealEvent::read(stream, definition)?)
-                }
-                GameEventType::DamageMitigated => {
-                    GameEvent::DamageMitigated(
-                        DamageMitigatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PayloadPushed => {
-                    GameEvent::PayloadPushed(
-                        PayloadPushedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerAbandonedMatch => {
-                    GameEvent::PlayerAbandonedMatch(
-                        PlayerAbandonedMatchEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ClDrawline => {
-                    GameEvent::ClDrawline(ClDrawlineEvent::read(stream, definition)?)
-                }
-                GameEventType::RestartTimerTime => {
-                    GameEvent::RestartTimerTime(
-                        RestartTimerTimeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::WinLimitChanged => {
-                    GameEvent::WinLimitChanged(
-                        WinLimitChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::WinPanelShowScores => {
-                    GameEvent::WinPanelShowScores(
-                        WinPanelShowScoresEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::TopStreamsRequestFinished => {
-                    GameEvent::TopStreamsRequestFinished(
-                        TopStreamsRequestFinishedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CompetitiveStateChanged => {
-                    GameEvent::CompetitiveStateChanged(
-                        CompetitiveStateChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::GlobalWarDataUpdated => {
-                    GameEvent::GlobalWarDataUpdated(
-                        GlobalWarDataUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::StopWatchChanged => {
-                    GameEvent::StopWatchChanged(
-                        StopWatchChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::DsStop => {
-                    GameEvent::DsStop(DsStopEvent::read(stream, definition)?)
-                }
-                GameEventType::DsScreenshot => {
-                    GameEvent::DsScreenshot(DsScreenshotEvent::read(stream, definition)?)
-                }
-                GameEventType::ShowMatchSummary => {
-                    GameEvent::ShowMatchSummary(
-                        ShowMatchSummaryEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ExperienceChanged => {
-                    GameEvent::ExperienceChanged(
-                        ExperienceChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::BeginXpLerp => {
-                    GameEvent::BeginXpLerp(BeginXpLerpEvent::read(stream, definition)?)
-                }
-                GameEventType::MatchmakerStatsUpdated => {
-                    GameEvent::MatchmakerStatsUpdated(
-                        MatchmakerStatsUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RematchVotePeriodOver => {
-                    GameEvent::RematchVotePeriodOver(
-                        RematchVotePeriodOverEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::RematchFailedToCreate => {
-                    GameEvent::RematchFailedToCreate(
-                        RematchFailedToCreateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerRematchChange => {
-                    GameEvent::PlayerRematchChange(
-                        PlayerRematchChangeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PingUpdated => {
-                    GameEvent::PingUpdated(PingUpdatedEvent::read(stream, definition)?)
-                }
-                GameEventType::MMStatsUpdated => {
-                    GameEvent::MMStatsUpdated(
-                        MMStatsUpdatedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerNextMapVoteChange => {
-                    GameEvent::PlayerNextMapVoteChange(
-                        PlayerNextMapVoteChangeEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::VoteMapsChanged => {
-                    GameEvent::VoteMapsChanged(
-                        VoteMapsChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ProtoDefChanged => {
-                    GameEvent::ProtoDefChanged(
-                        ProtoDefChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerDomination => {
-                    GameEvent::PlayerDomination(
-                        PlayerDominationEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::PlayerRocketPackPushed => {
-                    GameEvent::PlayerRocketPackPushed(
-                        PlayerRocketPackPushedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::QuestRequest => {
-                    GameEvent::QuestRequest(QuestRequestEvent::read(stream, definition)?)
-                }
-                GameEventType::QuestResponse => {
-                    GameEvent::QuestResponse(
-                        QuestResponseEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::QuestProgress => {
-                    GameEvent::QuestProgress(
-                        QuestProgressEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ProjectileRemoved => {
-                    GameEvent::ProjectileRemoved(
-                        ProjectileRemovedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::QuestMapDataChanged => {
-                    GameEvent::QuestMapDataChanged(
-                        QuestMapDataChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::GasDousedPlayerIgnited => {
-                    GameEvent::GasDousedPlayerIgnited(
-                        GasDousedPlayerIgnitedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::QuestTurnInState => {
-                    GameEvent::QuestTurnInState(
-                        QuestTurnInStateEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ItemsAcknowledged => {
-                    GameEvent::ItemsAcknowledged(
-                        ItemsAcknowledgedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::CapperKilled => {
-                    GameEvent::CapperKilled(CapperKilledEvent::read(stream, definition)?)
-                }
-                GameEventType::MainMenuStabilized => {
-                    GameEvent::MainMenuStabilized(
-                        MainMenuStabilizedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::WorldStatusChanged => {
-                    GameEvent::WorldStatusChanged(
-                        WorldStatusChangedEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HLTVStatus => {
-                    GameEvent::HLTVStatus(HLTVStatusEvent::read(stream, definition)?)
-                }
-                GameEventType::HLTVCameraman => {
-                    GameEvent::HLTVCameraman(
-                        HLTVCameramanEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HLTVRankCamera => {
-                    GameEvent::HLTVRankCamera(
-                        HLTVRankCameraEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HLTVRankEntity => {
-                    GameEvent::HLTVRankEntity(
-                        HLTVRankEntityEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::HLTVFixed => {
-                    GameEvent::HLTVFixed(HLTVFixedEvent::read(stream, definition)?)
-                }
-                GameEventType::HLTVChase => {
-                    GameEvent::HLTVChase(HLTVChaseEvent::read(stream, definition)?)
-                }
-                GameEventType::HLTVMessage => {
-                    GameEvent::HLTVMessage(HLTVMessageEvent::read(stream, definition)?)
-                }
-                GameEventType::HLTVTitle => {
-                    GameEvent::HLTVTitle(HLTVTitleEvent::read(stream, definition)?)
-                }
-                GameEventType::HLTVChat => {
-                    GameEvent::HLTVChat(HLTVChatEvent::read(stream, definition)?)
-                }
-                GameEventType::ReplayStartRecord => {
-                    GameEvent::ReplayStartRecord(
-                        ReplayStartRecordEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ReplaySessionInfo => {
-                    GameEvent::ReplaySessionInfo(
-                        ReplaySessionInfoEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ReplayEndRecord => {
-                    GameEvent::ReplayEndRecord(
-                        ReplayEndRecordEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ReplayReplaysAvailable => {
-                    GameEvent::ReplayReplaysAvailable(
-                        ReplayReplaysAvailableEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::ReplayServerError => {
-                    GameEvent::ReplayServerError(
-                        ReplayServerErrorEvent::read(stream, definition)?,
-                    )
-                }
-                GameEventType::Unknown(_) => {
-                    GameEvent::Unknown(RawGameEvent::read(stream, definition)?)
-                }
-            },
-        )
+        Ok(match definition.event_type {
+            GameEventType::ServerSpawn => {
+                GameEvent::ServerSpawn(Box::new(<ServerSpawnEvent>::read(stream, definition)?))
+            }
+            GameEventType::ServerChangeLevelFailed => GameEvent::ServerChangeLevelFailed(
+                ServerChangeLevelFailedEvent::read(stream, definition)?,
+            ),
+            GameEventType::ServerShutdown => {
+                GameEvent::ServerShutdown(ServerShutdownEvent::read(stream, definition)?)
+            }
+            GameEventType::ServerCvar => {
+                GameEvent::ServerCvar(ServerCvarEvent::read(stream, definition)?)
+            }
+            GameEventType::ServerMessage => {
+                GameEvent::ServerMessage(ServerMessageEvent::read(stream, definition)?)
+            }
+            GameEventType::ServerAddBan => {
+                GameEvent::ServerAddBan(Box::new(<ServerAddBanEvent>::read(stream, definition)?))
+            }
+            GameEventType::ServerRemoveBan => {
+                GameEvent::ServerRemoveBan(ServerRemoveBanEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerConnect => {
+                GameEvent::PlayerConnect(PlayerConnectEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerConnectClient => {
+                GameEvent::PlayerConnectClient(PlayerConnectClientEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerInfo => {
+                GameEvent::PlayerInfo(PlayerInfoEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerDisconnect => {
+                GameEvent::PlayerDisconnect(PlayerDisconnectEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerActivate => {
+                GameEvent::PlayerActivate(PlayerActivateEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerSay => {
+                GameEvent::PlayerSay(PlayerSayEvent::read(stream, definition)?)
+            }
+            GameEventType::ClientDisconnect => {
+                GameEvent::ClientDisconnect(ClientDisconnectEvent::read(stream, definition)?)
+            }
+            GameEventType::ClientBeginConnect => {
+                GameEvent::ClientBeginConnect(ClientBeginConnectEvent::read(stream, definition)?)
+            }
+            GameEventType::ClientConnected => {
+                GameEvent::ClientConnected(ClientConnectedEvent::read(stream, definition)?)
+            }
+            GameEventType::ClientFullConnect => {
+                GameEvent::ClientFullConnect(ClientFullConnectEvent::read(stream, definition)?)
+            }
+            GameEventType::HostQuit => {
+                GameEvent::HostQuit(HostQuitEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamInfo => {
+                GameEvent::TeamInfo(TeamInfoEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamScore => {
+                GameEvent::TeamScore(TeamScoreEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayBroadcastAudio => GameEvent::TeamPlayBroadcastAudio(
+                TeamPlayBroadcastAudioEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerTeam => {
+                GameEvent::PlayerTeam(PlayerTeamEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerClass => {
+                GameEvent::PlayerClass(PlayerClassEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerDeath => {
+                GameEvent::PlayerDeath(Box::new(<PlayerDeathEvent>::read(stream, definition)?))
+            }
+            GameEventType::PlayerHurt => {
+                GameEvent::PlayerHurt(PlayerHurtEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerChat => {
+                GameEvent::PlayerChat(PlayerChatEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerScore => {
+                GameEvent::PlayerScore(PlayerScoreEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerSpawn => {
+                GameEvent::PlayerSpawn(PlayerSpawnEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerShoot => {
+                GameEvent::PlayerShoot(PlayerShootEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerUse => {
+                GameEvent::PlayerUse(PlayerUseEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerChangeName => {
+                GameEvent::PlayerChangeName(PlayerChangeNameEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerHintMessage => {
+                GameEvent::PlayerHintMessage(PlayerHintMessageEvent::read(stream, definition)?)
+            }
+            GameEventType::BasePlayerTeleported => GameEvent::BasePlayerTeleported(
+                BasePlayerTeleportedEvent::read(stream, definition)?,
+            ),
+            GameEventType::GameInit => {
+                GameEvent::GameInit(GameInitEvent::read(stream, definition)?)
+            }
+            GameEventType::GameNewMap => {
+                GameEvent::GameNewMap(GameNewMapEvent::read(stream, definition)?)
+            }
+            GameEventType::GameStart => {
+                GameEvent::GameStart(GameStartEvent::read(stream, definition)?)
+            }
+            GameEventType::GameEnd => GameEvent::GameEnd(GameEndEvent::read(stream, definition)?),
+            GameEventType::RoundStart => {
+                GameEvent::RoundStart(RoundStartEvent::read(stream, definition)?)
+            }
+            GameEventType::RoundEnd => {
+                GameEvent::RoundEnd(RoundEndEvent::read(stream, definition)?)
+            }
+            GameEventType::GameMessage => {
+                GameEvent::GameMessage(GameMessageEvent::read(stream, definition)?)
+            }
+            GameEventType::BreakBreakable => {
+                GameEvent::BreakBreakable(BreakBreakableEvent::read(stream, definition)?)
+            }
+            GameEventType::BreakProp => {
+                GameEvent::BreakProp(BreakPropEvent::read(stream, definition)?)
+            }
+            GameEventType::EntityKilled => {
+                GameEvent::EntityKilled(EntityKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::BonusUpdated => {
+                GameEvent::BonusUpdated(BonusUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::AchievementEvent => {
+                GameEvent::AchievementEvent(AchievementEventEvent::read(stream, definition)?)
+            }
+            GameEventType::AchievementIncrement => GameEvent::AchievementIncrement(
+                AchievementIncrementEvent::read(stream, definition)?,
+            ),
+            GameEventType::PhysgunPickup => {
+                GameEvent::PhysgunPickup(PhysgunPickupEvent::read(stream, definition)?)
+            }
+            GameEventType::FlareIgniteNpc => {
+                GameEvent::FlareIgniteNpc(FlareIgniteNpcEvent::read(stream, definition)?)
+            }
+            GameEventType::HelicopterGrenadePuntMiss => GameEvent::HelicopterGrenadePuntMiss(
+                HelicopterGrenadePuntMissEvent::read(stream, definition)?,
+            ),
+            GameEventType::UserDataDownloaded => {
+                GameEvent::UserDataDownloaded(UserDataDownloadedEvent::read(stream, definition)?)
+            }
+            GameEventType::RagdollDissolved => {
+                GameEvent::RagdollDissolved(RagdollDissolvedEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVChangedMode => {
+                GameEvent::HLTVChangedMode(HLTVChangedModeEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVChangedTarget => {
+                GameEvent::HLTVChangedTarget(HLTVChangedTargetEvent::read(stream, definition)?)
+            }
+            GameEventType::VoteEnded => {
+                GameEvent::VoteEnded(VoteEndedEvent::read(stream, definition)?)
+            }
+            GameEventType::VoteStarted => {
+                GameEvent::VoteStarted(VoteStartedEvent::read(stream, definition)?)
+            }
+            GameEventType::VoteChanged => {
+                GameEvent::VoteChanged(VoteChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::VotePassed => {
+                GameEvent::VotePassed(VotePassedEvent::read(stream, definition)?)
+            }
+            GameEventType::VoteFailed => {
+                GameEvent::VoteFailed(VoteFailedEvent::read(stream, definition)?)
+            }
+            GameEventType::VoteCast => {
+                GameEvent::VoteCast(VoteCastEvent::read(stream, definition)?)
+            }
+            GameEventType::VoteOptions => {
+                GameEvent::VoteOptions(Box::new(<VoteOptionsEvent>::read(stream, definition)?))
+            }
+            GameEventType::ReplaySaved => {
+                GameEvent::ReplaySaved(ReplaySavedEvent::read(stream, definition)?)
+            }
+            GameEventType::EnteredPerformanceMode => GameEvent::EnteredPerformanceMode(
+                EnteredPerformanceModeEvent::read(stream, definition)?,
+            ),
+            GameEventType::BrowseReplays => {
+                GameEvent::BrowseReplays(BrowseReplaysEvent::read(stream, definition)?)
+            }
+            GameEventType::ReplayYoutubeStats => {
+                GameEvent::ReplayYoutubeStats(ReplayYoutubeStatsEvent::read(stream, definition)?)
+            }
+            GameEventType::InventoryUpdated => {
+                GameEvent::InventoryUpdated(InventoryUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::CartUpdated => {
+                GameEvent::CartUpdated(CartUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::StorePriceSheetUpdated => GameEvent::StorePriceSheetUpdated(
+                StorePriceSheetUpdatedEvent::read(stream, definition)?,
+            ),
+            GameEventType::EconInventoryConnected => GameEvent::EconInventoryConnected(
+                EconInventoryConnectedEvent::read(stream, definition)?,
+            ),
+            GameEventType::ItemSchemaInitialized => GameEvent::ItemSchemaInitialized(
+                ItemSchemaInitializedEvent::read(stream, definition)?,
+            ),
+            GameEventType::GcNewSession => {
+                GameEvent::GcNewSession(GcNewSessionEvent::read(stream, definition)?)
+            }
+            GameEventType::GcLostSession => {
+                GameEvent::GcLostSession(GcLostSessionEvent::read(stream, definition)?)
+            }
+            GameEventType::IntroFinish => {
+                GameEvent::IntroFinish(IntroFinishEvent::read(stream, definition)?)
+            }
+            GameEventType::IntroNextCamera => {
+                GameEvent::IntroNextCamera(IntroNextCameraEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerChangeClass => {
+                GameEvent::PlayerChangeClass(PlayerChangeClassEvent::read(stream, definition)?)
+            }
+            GameEventType::TfMapTimeRemaining => {
+                GameEvent::TfMapTimeRemaining(TfMapTimeRemainingEvent::read(stream, definition)?)
+            }
+            GameEventType::TfGameOver => {
+                GameEvent::TfGameOver(TfGameOverEvent::read(stream, definition)?)
+            }
+            GameEventType::CtfFlagCaptured => {
+                GameEvent::CtfFlagCaptured(CtfFlagCapturedEvent::read(stream, definition)?)
+            }
+            GameEventType::ControlPointInitialized => GameEvent::ControlPointInitialized(
+                ControlPointInitializedEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointUpdateImages => GameEvent::ControlPointUpdateImages(
+                ControlPointUpdateImagesEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointUpdateLayout => GameEvent::ControlPointUpdateLayout(
+                ControlPointUpdateLayoutEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointUpdateCapping => GameEvent::ControlPointUpdateCapping(
+                ControlPointUpdateCappingEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointUpdateOwner => GameEvent::ControlPointUpdateOwner(
+                ControlPointUpdateOwnerEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointStartTouch => GameEvent::ControlPointStartTouch(
+                ControlPointStartTouchEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointEndTouch => GameEvent::ControlPointEndTouch(
+                ControlPointEndTouchEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointPulseElement => GameEvent::ControlPointPulseElement(
+                ControlPointPulseElementEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointFakeCapture => GameEvent::ControlPointFakeCapture(
+                ControlPointFakeCaptureEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointFakeCaptureMultiplier => {
+                GameEvent::ControlPointFakeCaptureMultiplier(
+                    ControlPointFakeCaptureMultiplierEvent::read(stream, definition)?,
+                )
+            }
+            GameEventType::TeamPlayRoundSelected => GameEvent::TeamPlayRoundSelected(
+                TeamPlayRoundSelectedEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayRoundStart => {
+                GameEvent::TeamPlayRoundStart(TeamPlayRoundStartEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayRoundActive => {
+                GameEvent::TeamPlayRoundActive(TeamPlayRoundActiveEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayWaitingBegins => GameEvent::TeamPlayWaitingBegins(
+                TeamPlayWaitingBeginsEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayWaitingEnds => {
+                GameEvent::TeamPlayWaitingEnds(TeamPlayWaitingEndsEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayWaitingAboutToEnd => GameEvent::TeamPlayWaitingAboutToEnd(
+                TeamPlayWaitingAboutToEndEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayRestartRound => GameEvent::TeamPlayRestartRound(
+                TeamPlayRestartRoundEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayReadyRestart => GameEvent::TeamPlayReadyRestart(
+                TeamPlayReadyRestartEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayRoundRestartSeconds => GameEvent::TeamPlayRoundRestartSeconds(
+                TeamPlayRoundRestartSecondsEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayTeamReady => {
+                GameEvent::TeamPlayTeamReady(TeamPlayTeamReadyEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayRoundWin => {
+                GameEvent::TeamPlayRoundWin(TeamPlayRoundWinEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayUpdateTimer => {
+                GameEvent::TeamPlayUpdateTimer(TeamPlayUpdateTimerEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayRoundStalemate => GameEvent::TeamPlayRoundStalemate(
+                TeamPlayRoundStalemateEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayOvertimeBegin => GameEvent::TeamPlayOvertimeBegin(
+                TeamPlayOvertimeBeginEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayOvertimeEnd => {
+                GameEvent::TeamPlayOvertimeEnd(TeamPlayOvertimeEndEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlaySuddenDeathBegin => GameEvent::TeamPlaySuddenDeathBegin(
+                TeamPlaySuddenDeathBeginEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlaySuddenDeathEnd => GameEvent::TeamPlaySuddenDeathEnd(
+                TeamPlaySuddenDeathEndEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayGameOver => {
+                GameEvent::TeamPlayGameOver(TeamPlayGameOverEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayMapTimeRemaining => GameEvent::TeamPlayMapTimeRemaining(
+                TeamPlayMapTimeRemainingEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayTimerFlash => {
+                GameEvent::TeamPlayTimerFlash(TeamPlayTimerFlashEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayTimerTimeAdded => GameEvent::TeamPlayTimerTimeAdded(
+                TeamPlayTimerTimeAddedEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayPointStartCapture => GameEvent::TeamPlayPointStartCapture(
+                TeamPlayPointStartCaptureEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayPointCaptured => GameEvent::TeamPlayPointCaptured(
+                TeamPlayPointCapturedEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayPointLocked => {
+                GameEvent::TeamPlayPointLocked(TeamPlayPointLockedEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayPointUnlocked => GameEvent::TeamPlayPointUnlocked(
+                TeamPlayPointUnlockedEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayCaptureBroken => GameEvent::TeamPlayCaptureBroken(
+                TeamPlayCaptureBrokenEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayCaptureBlocked => GameEvent::TeamPlayCaptureBlocked(
+                TeamPlayCaptureBlockedEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayFlagEvent => {
+                GameEvent::TeamPlayFlagEvent(TeamPlayFlagEventEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayWinPanel => {
+                GameEvent::TeamPlayWinPanel(TeamPlayWinPanelEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayTeamBalancedPlayer => GameEvent::TeamPlayTeamBalancedPlayer(
+                TeamPlayTeamBalancedPlayerEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlaySetupFinished => GameEvent::TeamPlaySetupFinished(
+                TeamPlaySetupFinishedEvent::read(stream, definition)?,
+            ),
+            GameEventType::TeamPlayAlert => {
+                GameEvent::TeamPlayAlert(TeamPlayAlertEvent::read(stream, definition)?)
+            }
+            GameEventType::TrainingComplete => {
+                GameEvent::TrainingComplete(TrainingCompleteEvent::read(stream, definition)?)
+            }
+            GameEventType::ShowFreezePanel => {
+                GameEvent::ShowFreezePanel(ShowFreezePanelEvent::read(stream, definition)?)
+            }
+            GameEventType::HideFreezePanel => {
+                GameEvent::HideFreezePanel(HideFreezePanelEvent::read(stream, definition)?)
+            }
+            GameEventType::FreezeCamStarted => {
+                GameEvent::FreezeCamStarted(FreezeCamStartedEvent::read(stream, definition)?)
+            }
+            GameEventType::LocalPlayerChangeTeam => GameEvent::LocalPlayerChangeTeam(
+                LocalPlayerChangeTeamEvent::read(stream, definition)?,
+            ),
+            GameEventType::LocalPlayerScoreChanged => GameEvent::LocalPlayerScoreChanged(
+                LocalPlayerScoreChangedEvent::read(stream, definition)?,
+            ),
+            GameEventType::LocalPlayerChangeClass => GameEvent::LocalPlayerChangeClass(
+                LocalPlayerChangeClassEvent::read(stream, definition)?,
+            ),
+            GameEventType::LocalPlayerRespawn => {
+                GameEvent::LocalPlayerRespawn(LocalPlayerRespawnEvent::read(stream, definition)?)
+            }
+            GameEventType::BuildingInfoChanged => {
+                GameEvent::BuildingInfoChanged(BuildingInfoChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::LocalPlayerChangeDisguise => GameEvent::LocalPlayerChangeDisguise(
+                LocalPlayerChangeDisguiseEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerAccountChanged => GameEvent::PlayerAccountChanged(
+                PlayerAccountChangedEvent::read(stream, definition)?,
+            ),
+            GameEventType::SpyPdaReset => {
+                GameEvent::SpyPdaReset(SpyPdaResetEvent::read(stream, definition)?)
+            }
+            GameEventType::FlagStatusUpdate => {
+                GameEvent::FlagStatusUpdate(FlagStatusUpdateEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerStatsUpdated => {
+                GameEvent::PlayerStatsUpdated(PlayerStatsUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayingCommentary => {
+                GameEvent::PlayingCommentary(PlayingCommentaryEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerChargeDeployed => GameEvent::PlayerChargeDeployed(
+                PlayerChargeDeployedEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerBuiltObject => {
+                GameEvent::PlayerBuiltObject(PlayerBuiltObjectEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerUpgradedObject => GameEvent::PlayerUpgradedObject(
+                PlayerUpgradedObjectEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerCarryObject => {
+                GameEvent::PlayerCarryObject(PlayerCarryObjectEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerDropObject => {
+                GameEvent::PlayerDropObject(PlayerDropObjectEvent::read(stream, definition)?)
+            }
+            GameEventType::ObjectRemoved => {
+                GameEvent::ObjectRemoved(ObjectRemovedEvent::read(stream, definition)?)
+            }
+            GameEventType::ObjectDestroyed => {
+                GameEvent::ObjectDestroyed(ObjectDestroyedEvent::read(stream, definition)?)
+            }
+            GameEventType::ObjectDetonated => {
+                GameEvent::ObjectDetonated(ObjectDetonatedEvent::read(stream, definition)?)
+            }
+            GameEventType::AchievementEarned => {
+                GameEvent::AchievementEarned(AchievementEarnedEvent::read(stream, definition)?)
+            }
+            GameEventType::SpecTargetUpdated => {
+                GameEvent::SpecTargetUpdated(SpecTargetUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::TournamentStateUpdate => GameEvent::TournamentStateUpdate(
+                TournamentStateUpdateEvent::read(stream, definition)?,
+            ),
+            GameEventType::TournamentEnableCountdown => GameEvent::TournamentEnableCountdown(
+                TournamentEnableCountdownEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerCalledForMedic => GameEvent::PlayerCalledForMedic(
+                PlayerCalledForMedicEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerAskedForBall => {
+                GameEvent::PlayerAskedForBall(PlayerAskedForBallEvent::read(stream, definition)?)
+            }
+            GameEventType::LocalPlayerBecameObserver => GameEvent::LocalPlayerBecameObserver(
+                LocalPlayerBecameObserverEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerIgnitedInv => {
+                GameEvent::PlayerIgnitedInv(PlayerIgnitedInvEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerIgnited => {
+                GameEvent::PlayerIgnited(PlayerIgnitedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerExtinguished => {
+                GameEvent::PlayerExtinguished(PlayerExtinguishedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerTeleported => {
+                GameEvent::PlayerTeleported(PlayerTeleportedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerHealedMedicCall => GameEvent::PlayerHealedMedicCall(
+                PlayerHealedMedicCallEvent::read(stream, definition)?,
+            ),
+            GameEventType::LocalPlayerChargeReady => GameEvent::LocalPlayerChargeReady(
+                LocalPlayerChargeReadyEvent::read(stream, definition)?,
+            ),
+            GameEventType::LocalPlayerWindDown => {
+                GameEvent::LocalPlayerWindDown(LocalPlayerWindDownEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerInvulned => {
+                GameEvent::PlayerInvulned(PlayerInvulnedEvent::read(stream, definition)?)
+            }
+            GameEventType::EscortSpeed => {
+                GameEvent::EscortSpeed(EscortSpeedEvent::read(stream, definition)?)
+            }
+            GameEventType::EscortProgress => {
+                GameEvent::EscortProgress(EscortProgressEvent::read(stream, definition)?)
+            }
+            GameEventType::EscortRecede => {
+                GameEvent::EscortRecede(EscortRecedeEvent::read(stream, definition)?)
+            }
+            GameEventType::GameUIActivated => {
+                GameEvent::GameUIActivated(GameUIActivatedEvent::read(stream, definition)?)
+            }
+            GameEventType::GameUIHidden => {
+                GameEvent::GameUIHidden(GameUIHiddenEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerEscortScore => {
+                GameEvent::PlayerEscortScore(PlayerEscortScoreEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerHealOnHit => {
+                GameEvent::PlayerHealOnHit(PlayerHealOnHitEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerStealSandvich => {
+                GameEvent::PlayerStealSandvich(PlayerStealSandvichEvent::read(stream, definition)?)
+            }
+            GameEventType::ShowClassLayout => {
+                GameEvent::ShowClassLayout(ShowClassLayoutEvent::read(stream, definition)?)
+            }
+            GameEventType::ShowVsPanel => {
+                GameEvent::ShowVsPanel(ShowVsPanelEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerDamaged => {
+                GameEvent::PlayerDamaged(PlayerDamagedEvent::read(stream, definition)?)
+            }
+            GameEventType::ArenaPlayerNotification => GameEvent::ArenaPlayerNotification(
+                ArenaPlayerNotificationEvent::read(stream, definition)?,
+            ),
+            GameEventType::ArenaMatchMaxStreak => {
+                GameEvent::ArenaMatchMaxStreak(ArenaMatchMaxStreakEvent::read(stream, definition)?)
+            }
+            GameEventType::ArenaRoundStart => {
+                GameEvent::ArenaRoundStart(ArenaRoundStartEvent::read(stream, definition)?)
+            }
+            GameEventType::ArenaWinPanel => {
+                GameEvent::ArenaWinPanel(ArenaWinPanelEvent::read(stream, definition)?)
+            }
+            GameEventType::PveWinPanel => {
+                GameEvent::PveWinPanel(PveWinPanelEvent::read(stream, definition)?)
+            }
+            GameEventType::AirDash => GameEvent::AirDash(AirDashEvent::read(stream, definition)?),
+            GameEventType::Landed => GameEvent::Landed(LandedEvent::read(stream, definition)?),
+            GameEventType::PlayerDamageDodged => {
+                GameEvent::PlayerDamageDodged(PlayerDamageDodgedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerStunned => {
+                GameEvent::PlayerStunned(PlayerStunnedEvent::read(stream, definition)?)
+            }
+            GameEventType::ScoutGrandSlam => {
+                GameEvent::ScoutGrandSlam(ScoutGrandSlamEvent::read(stream, definition)?)
+            }
+            GameEventType::ScoutSlamdollLanded => {
+                GameEvent::ScoutSlamdollLanded(ScoutSlamdollLandedEvent::read(stream, definition)?)
+            }
+            GameEventType::ArrowImpact => {
+                GameEvent::ArrowImpact(ArrowImpactEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerJarated => {
+                GameEvent::PlayerJarated(PlayerJaratedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerJaratedFade => {
+                GameEvent::PlayerJaratedFade(PlayerJaratedFadeEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerShieldBlocked => {
+                GameEvent::PlayerShieldBlocked(PlayerShieldBlockedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerPinned => {
+                GameEvent::PlayerPinned(PlayerPinnedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerHealedByMedic => {
+                GameEvent::PlayerHealedByMedic(PlayerHealedByMedicEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerSappedObject => {
+                GameEvent::PlayerSappedObject(PlayerSappedObjectEvent::read(stream, definition)?)
+            }
+            GameEventType::ItemFound => {
+                GameEvent::ItemFound(ItemFoundEvent::read(stream, definition)?)
+            }
+            GameEventType::ShowAnnotation => {
+                GameEvent::ShowAnnotation(ShowAnnotationEvent::read(stream, definition)?)
+            }
+            GameEventType::HideAnnotation => {
+                GameEvent::HideAnnotation(HideAnnotationEvent::read(stream, definition)?)
+            }
+            GameEventType::PostInventoryApplication => GameEvent::PostInventoryApplication(
+                PostInventoryApplicationEvent::read(stream, definition)?,
+            ),
+            GameEventType::ControlPointUnlockUpdated => GameEvent::ControlPointUnlockUpdated(
+                ControlPointUnlockUpdatedEvent::read(stream, definition)?,
+            ),
+            GameEventType::DeployBuffBanner => {
+                GameEvent::DeployBuffBanner(DeployBuffBannerEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerBuff => {
+                GameEvent::PlayerBuff(PlayerBuffEvent::read(stream, definition)?)
+            }
+            GameEventType::MedicDeath => {
+                GameEvent::MedicDeath(MedicDeathEvent::read(stream, definition)?)
+            }
+            GameEventType::OvertimeNag => {
+                GameEvent::OvertimeNag(OvertimeNagEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamsChanged => {
+                GameEvent::TeamsChanged(TeamsChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::HalloweenPumpkinGrab => GameEvent::HalloweenPumpkinGrab(
+                HalloweenPumpkinGrabEvent::read(stream, definition)?,
+            ),
+            GameEventType::RocketJump => {
+                GameEvent::RocketJump(RocketJumpEvent::read(stream, definition)?)
+            }
+            GameEventType::RocketJumpLanded => {
+                GameEvent::RocketJumpLanded(RocketJumpLandedEvent::read(stream, definition)?)
+            }
+            GameEventType::StickyJump => {
+                GameEvent::StickyJump(StickyJumpEvent::read(stream, definition)?)
+            }
+            GameEventType::StickyJumpLanded => {
+                GameEvent::StickyJumpLanded(StickyJumpLandedEvent::read(stream, definition)?)
+            }
+            GameEventType::RocketPackLaunch => {
+                GameEvent::RocketPackLaunch(RocketPackLaunchEvent::read(stream, definition)?)
+            }
+            GameEventType::RocketPackLanded => {
+                GameEvent::RocketPackLanded(RocketPackLandedEvent::read(stream, definition)?)
+            }
+            GameEventType::MedicDefended => {
+                GameEvent::MedicDefended(MedicDefendedEvent::read(stream, definition)?)
+            }
+            GameEventType::LocalPlayerHealed => {
+                GameEvent::LocalPlayerHealed(LocalPlayerHealedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerDestroyedPipeBomb => GameEvent::PlayerDestroyedPipeBomb(
+                PlayerDestroyedPipeBombEvent::read(stream, definition)?,
+            ),
+            GameEventType::ObjectDeflected => {
+                GameEvent::ObjectDeflected(ObjectDeflectedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerMvp => {
+                GameEvent::PlayerMvp(PlayerMvpEvent::read(stream, definition)?)
+            }
+            GameEventType::RaidSpawnMob => {
+                GameEvent::RaidSpawnMob(RaidSpawnMobEvent::read(stream, definition)?)
+            }
+            GameEventType::RaidSpawnSquad => {
+                GameEvent::RaidSpawnSquad(RaidSpawnSquadEvent::read(stream, definition)?)
+            }
+            GameEventType::NavBlocked => {
+                GameEvent::NavBlocked(NavBlockedEvent::read(stream, definition)?)
+            }
+            GameEventType::PathTrackPassed => {
+                GameEvent::PathTrackPassed(PathTrackPassedEvent::read(stream, definition)?)
+            }
+            GameEventType::NumCappersChanged => {
+                GameEvent::NumCappersChanged(NumCappersChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerRegenerate => {
+                GameEvent::PlayerRegenerate(PlayerRegenerateEvent::read(stream, definition)?)
+            }
+            GameEventType::UpdateStatusItem => {
+                GameEvent::UpdateStatusItem(UpdateStatusItemEvent::read(stream, definition)?)
+            }
+            GameEventType::StatsResetRound => {
+                GameEvent::StatsResetRound(StatsResetRoundEvent::read(stream, definition)?)
+            }
+            GameEventType::ScoreStatsAccumulatedUpdate => GameEvent::ScoreStatsAccumulatedUpdate(
+                ScoreStatsAccumulatedUpdateEvent::read(stream, definition)?,
+            ),
+            GameEventType::ScoreStatsAccumulatedReset => GameEvent::ScoreStatsAccumulatedReset(
+                ScoreStatsAccumulatedResetEvent::read(stream, definition)?,
+            ),
+            GameEventType::AchievementEarnedLocal => GameEvent::AchievementEarnedLocal(
+                AchievementEarnedLocalEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerHealed => {
+                GameEvent::PlayerHealed(PlayerHealedEvent::read(stream, definition)?)
+            }
+            GameEventType::BuildingHealed => {
+                GameEvent::BuildingHealed(BuildingHealedEvent::read(stream, definition)?)
+            }
+            GameEventType::ItemPickup => {
+                GameEvent::ItemPickup(ItemPickupEvent::read(stream, definition)?)
+            }
+            GameEventType::DuelStatus => {
+                GameEvent::DuelStatus(DuelStatusEvent::read(stream, definition)?)
+            }
+            GameEventType::FishNotice => {
+                GameEvent::FishNotice(Box::new(<FishNoticeEvent>::read(stream, definition)?))
+            }
+            GameEventType::FishNoticeArm => {
+                GameEvent::FishNoticeArm(Box::new(<FishNoticeArmEvent>::read(stream, definition)?))
+            }
+            GameEventType::SlapNotice => {
+                GameEvent::SlapNotice(Box::new(<SlapNoticeEvent>::read(stream, definition)?))
+            }
+            GameEventType::ThrowableHit => {
+                GameEvent::ThrowableHit(Box::new(<ThrowableHitEvent>::read(stream, definition)?))
+            }
+            GameEventType::PumpkinLordSummoned => {
+                GameEvent::PumpkinLordSummoned(PumpkinLordSummonedEvent::read(stream, definition)?)
+            }
+            GameEventType::PumpkinLordKilled => {
+                GameEvent::PumpkinLordKilled(PumpkinLordKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::MerasmusSummoned => {
+                GameEvent::MerasmusSummoned(MerasmusSummonedEvent::read(stream, definition)?)
+            }
+            GameEventType::MerasmusKilled => {
+                GameEvent::MerasmusKilled(MerasmusKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::MerasmusEscapeWarning => GameEvent::MerasmusEscapeWarning(
+                MerasmusEscapeWarningEvent::read(stream, definition)?,
+            ),
+            GameEventType::MerasmusEscaped => {
+                GameEvent::MerasmusEscaped(MerasmusEscapedEvent::read(stream, definition)?)
+            }
+            GameEventType::EyeballBossSummoned => {
+                GameEvent::EyeballBossSummoned(EyeballBossSummonedEvent::read(stream, definition)?)
+            }
+            GameEventType::EyeballBossStunned => {
+                GameEvent::EyeballBossStunned(EyeballBossStunnedEvent::read(stream, definition)?)
+            }
+            GameEventType::EyeballBossKilled => {
+                GameEvent::EyeballBossKilled(EyeballBossKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::EyeballBossKiller => {
+                GameEvent::EyeballBossKiller(EyeballBossKillerEvent::read(stream, definition)?)
+            }
+            GameEventType::EyeballBossEscapeImminent => GameEvent::EyeballBossEscapeImminent(
+                EyeballBossEscapeImminentEvent::read(stream, definition)?,
+            ),
+            GameEventType::EyeballBossEscaped => {
+                GameEvent::EyeballBossEscaped(EyeballBossEscapedEvent::read(stream, definition)?)
+            }
+            GameEventType::NpcHurt => GameEvent::NpcHurt(NpcHurtEvent::read(stream, definition)?),
+            GameEventType::ControlPointTimerUpdated => GameEvent::ControlPointTimerUpdated(
+                ControlPointTimerUpdatedEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerHighFiveStart => {
+                GameEvent::PlayerHighFiveStart(PlayerHighFiveStartEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerHighFiveCancel => GameEvent::PlayerHighFiveCancel(
+                PlayerHighFiveCancelEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerHighFiveSuccess => GameEvent::PlayerHighFiveSuccess(
+                PlayerHighFiveSuccessEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerBonusPoints => {
+                GameEvent::PlayerBonusPoints(PlayerBonusPointsEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerUpgraded => {
+                GameEvent::PlayerUpgraded(PlayerUpgradedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerBuyback => {
+                GameEvent::PlayerBuyback(PlayerBuybackEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerUsedPowerUpBottle => GameEvent::PlayerUsedPowerUpBottle(
+                PlayerUsedPowerUpBottleEvent::read(stream, definition)?,
+            ),
+            GameEventType::ChristmasGiftGrab => {
+                GameEvent::ChristmasGiftGrab(ChristmasGiftGrabEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerKilledAchievementZone => GameEvent::PlayerKilledAchievementZone(
+                PlayerKilledAchievementZoneEvent::read(stream, definition)?,
+            ),
+            GameEventType::PartyUpdated => {
+                GameEvent::PartyUpdated(PartyUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::PartyPrefChanged => {
+                GameEvent::PartyPrefChanged(PartyPrefChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::PartyCriteriaChanged => GameEvent::PartyCriteriaChanged(
+                PartyCriteriaChangedEvent::read(stream, definition)?,
+            ),
+            GameEventType::PartyInvitesChanged => {
+                GameEvent::PartyInvitesChanged(PartyInvitesChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::PartyQueueStateChanged => GameEvent::PartyQueueStateChanged(
+                PartyQueueStateChangedEvent::read(stream, definition)?,
+            ),
+            GameEventType::PartyChat => {
+                GameEvent::PartyChat(PartyChatEvent::read(stream, definition)?)
+            }
+            GameEventType::PartyMemberJoin => {
+                GameEvent::PartyMemberJoin(PartyMemberJoinEvent::read(stream, definition)?)
+            }
+            GameEventType::PartyMemberLeave => {
+                GameEvent::PartyMemberLeave(PartyMemberLeaveEvent::read(stream, definition)?)
+            }
+            GameEventType::MatchInvitesUpdated => {
+                GameEvent::MatchInvitesUpdated(MatchInvitesUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::LobbyUpdated => {
+                GameEvent::LobbyUpdated(LobbyUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmMissionUpdate => {
+                GameEvent::MvmMissionUpdate(MvmMissionUpdateEvent::read(stream, definition)?)
+            }
+            GameEventType::RecalculateHolidays => {
+                GameEvent::RecalculateHolidays(RecalculateHolidaysEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerCurrencyChanged => GameEvent::PlayerCurrencyChanged(
+                PlayerCurrencyChangedEvent::read(stream, definition)?,
+            ),
+            GameEventType::DoomsdayRocketOpen => {
+                GameEvent::DoomsdayRocketOpen(DoomsdayRocketOpenEvent::read(stream, definition)?)
+            }
+            GameEventType::RemoveNemesisRelationships => GameEvent::RemoveNemesisRelationships(
+                RemoveNemesisRelationshipsEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmCreditBonusWave => {
+                GameEvent::MvmCreditBonusWave(MvmCreditBonusWaveEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmCreditBonusAll => {
+                GameEvent::MvmCreditBonusAll(MvmCreditBonusAllEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmCreditBonusAllAdvanced => GameEvent::MvmCreditBonusAllAdvanced(
+                MvmCreditBonusAllAdvancedEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmQuickSentryUpgrade => GameEvent::MvmQuickSentryUpgrade(
+                MvmQuickSentryUpgradeEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmTankDestroyedByPlayers => GameEvent::MvmTankDestroyedByPlayers(
+                MvmTankDestroyedByPlayersEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmKillRobotDeliveringBomb => GameEvent::MvmKillRobotDeliveringBomb(
+                MvmKillRobotDeliveringBombEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmPickupCurrency => {
+                GameEvent::MvmPickupCurrency(MvmPickupCurrencyEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmBombCarrierKilled => GameEvent::MvmBombCarrierKilled(
+                MvmBombCarrierKilledEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmSentryBusterDetonate => GameEvent::MvmSentryBusterDetonate(
+                MvmSentryBusterDetonateEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmScoutMarkedForDeath => GameEvent::MvmScoutMarkedForDeath(
+                MvmScoutMarkedForDeathEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmMedicPowerUpShared => GameEvent::MvmMedicPowerUpShared(
+                MvmMedicPowerUpSharedEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmBeginWave => {
+                GameEvent::MvmBeginWave(MvmBeginWaveEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmWaveComplete => {
+                GameEvent::MvmWaveComplete(MvmWaveCompleteEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmMissionComplete => {
+                GameEvent::MvmMissionComplete(MvmMissionCompleteEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmBombResetByPlayer => GameEvent::MvmBombResetByPlayer(
+                MvmBombResetByPlayerEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmBombAlarmTriggered => GameEvent::MvmBombAlarmTriggered(
+                MvmBombAlarmTriggeredEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmBombDeployResetByPlayer => GameEvent::MvmBombDeployResetByPlayer(
+                MvmBombDeployResetByPlayerEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmWaveFailed => {
+                GameEvent::MvmWaveFailed(MvmWaveFailedEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmResetStats => {
+                GameEvent::MvmResetStats(MvmResetStatsEvent::read(stream, definition)?)
+            }
+            GameEventType::DamageResisted => {
+                GameEvent::DamageResisted(DamageResistedEvent::read(stream, definition)?)
+            }
+            GameEventType::RevivePlayerNotify => {
+                GameEvent::RevivePlayerNotify(RevivePlayerNotifyEvent::read(stream, definition)?)
+            }
+            GameEventType::RevivePlayerStopped => {
+                GameEvent::RevivePlayerStopped(RevivePlayerStoppedEvent::read(stream, definition)?)
+            }
+            GameEventType::RevivePlayerComplete => GameEvent::RevivePlayerComplete(
+                RevivePlayerCompleteEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerTurnedToGhost => {
+                GameEvent::PlayerTurnedToGhost(PlayerTurnedToGhostEvent::read(stream, definition)?)
+            }
+            GameEventType::MedigunShieldBlockedDamage => GameEvent::MedigunShieldBlockedDamage(
+                MedigunShieldBlockedDamageEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmAdvWaveCompleteNoGates => GameEvent::MvmAdvWaveCompleteNoGates(
+                MvmAdvWaveCompleteNoGatesEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmSniperHeadshotCurrency => GameEvent::MvmSniperHeadshotCurrency(
+                MvmSniperHeadshotCurrencyEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmMannhattanPit => {
+                GameEvent::MvmMannhattanPit(MvmMannhattanPitEvent::read(stream, definition)?)
+            }
+            GameEventType::FlagCarriedInDetectionZone => GameEvent::FlagCarriedInDetectionZone(
+                FlagCarriedInDetectionZoneEvent::read(stream, definition)?,
+            ),
+            GameEventType::MvmAdvWaveKilledStunRadio => GameEvent::MvmAdvWaveKilledStunRadio(
+                MvmAdvWaveKilledStunRadioEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerDirectHitStun => {
+                GameEvent::PlayerDirectHitStun(PlayerDirectHitStunEvent::read(stream, definition)?)
+            }
+            GameEventType::MvmSentryBusterKilled => GameEvent::MvmSentryBusterKilled(
+                MvmSentryBusterKilledEvent::read(stream, definition)?,
+            ),
+            GameEventType::UpgradesFileChanged => {
+                GameEvent::UpgradesFileChanged(UpgradesFileChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::RdTeamPointsChanged => {
+                GameEvent::RdTeamPointsChanged(RdTeamPointsChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::RdRulesStateChanged => {
+                GameEvent::RdRulesStateChanged(RdRulesStateChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::RdRobotKilled => {
+                GameEvent::RdRobotKilled(RdRobotKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::RdRobotImpact => {
+                GameEvent::RdRobotImpact(RdRobotImpactEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamPlayPreRoundTimeLeft => GameEvent::TeamPlayPreRoundTimeLeft(
+                TeamPlayPreRoundTimeLeftEvent::read(stream, definition)?,
+            ),
+            GameEventType::ParachuteDeploy => {
+                GameEvent::ParachuteDeploy(ParachuteDeployEvent::read(stream, definition)?)
+            }
+            GameEventType::ParachuteHolster => {
+                GameEvent::ParachuteHolster(ParachuteHolsterEvent::read(stream, definition)?)
+            }
+            GameEventType::KillRefillsMeter => {
+                GameEvent::KillRefillsMeter(KillRefillsMeterEvent::read(stream, definition)?)
+            }
+            GameEventType::RpsTauntEvent => {
+                GameEvent::RpsTauntEvent(RpsTauntEventEvent::read(stream, definition)?)
+            }
+            GameEventType::CongaKill => {
+                GameEvent::CongaKill(CongaKillEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerInitialSpawn => {
+                GameEvent::PlayerInitialSpawn(PlayerInitialSpawnEvent::read(stream, definition)?)
+            }
+            GameEventType::CompetitiveVictory => {
+                GameEvent::CompetitiveVictory(CompetitiveVictoryEvent::read(stream, definition)?)
+            }
+            GameEventType::CompetitiveStatsUpdate => GameEvent::CompetitiveStatsUpdate(
+                CompetitiveStatsUpdateEvent::read(stream, definition)?,
+            ),
+            GameEventType::MiniGameWin => {
+                GameEvent::MiniGameWin(MiniGameWinEvent::read(stream, definition)?)
+            }
+            GameEventType::SentryOnGoActive => {
+                GameEvent::SentryOnGoActive(SentryOnGoActiveEvent::read(stream, definition)?)
+            }
+            GameEventType::DuckXpLevelUp => {
+                GameEvent::DuckXpLevelUp(DuckXpLevelUpEvent::read(stream, definition)?)
+            }
+            GameEventType::QuestLogOpened => {
+                GameEvent::QuestLogOpened(QuestLogOpenedEvent::read(stream, definition)?)
+            }
+            GameEventType::SchemaUpdated => {
+                GameEvent::SchemaUpdated(SchemaUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::LocalPlayerPickupWeapon => GameEvent::LocalPlayerPickupWeapon(
+                LocalPlayerPickupWeaponEvent::read(stream, definition)?,
+            ),
+            GameEventType::RdPlayerScorePoints => {
+                GameEvent::RdPlayerScorePoints(RdPlayerScorePointsEvent::read(stream, definition)?)
+            }
+            GameEventType::DemomanDetStickies => {
+                GameEvent::DemomanDetStickies(DemomanDetStickiesEvent::read(stream, definition)?)
+            }
+            GameEventType::QuestObjectiveCompleted => GameEvent::QuestObjectiveCompleted(
+                QuestObjectiveCompletedEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerScoreChanged => {
+                GameEvent::PlayerScoreChanged(PlayerScoreChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::KilledCappingPlayer => {
+                GameEvent::KilledCappingPlayer(KilledCappingPlayerEvent::read(stream, definition)?)
+            }
+            GameEventType::EnvironmentalDeath => {
+                GameEvent::EnvironmentalDeath(EnvironmentalDeathEvent::read(stream, definition)?)
+            }
+            GameEventType::ProjectileDirectHit => {
+                GameEvent::ProjectileDirectHit(ProjectileDirectHitEvent::read(stream, definition)?)
+            }
+            GameEventType::PassGet => GameEvent::PassGet(PassGetEvent::read(stream, definition)?),
+            GameEventType::PassScore => {
+                GameEvent::PassScore(PassScoreEvent::read(stream, definition)?)
+            }
+            GameEventType::PassFree => {
+                GameEvent::PassFree(PassFreeEvent::read(stream, definition)?)
+            }
+            GameEventType::PassPassCaught => {
+                GameEvent::PassPassCaught(PassPassCaughtEvent::read(stream, definition)?)
+            }
+            GameEventType::PassBallStolen => {
+                GameEvent::PassBallStolen(PassBallStolenEvent::read(stream, definition)?)
+            }
+            GameEventType::PassBallBlocked => {
+                GameEvent::PassBallBlocked(PassBallBlockedEvent::read(stream, definition)?)
+            }
+            GameEventType::DamagePrevented => {
+                GameEvent::DamagePrevented(DamagePreventedEvent::read(stream, definition)?)
+            }
+            GameEventType::HalloweenBossKilled => {
+                GameEvent::HalloweenBossKilled(HalloweenBossKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::EscapedLootIsland => {
+                GameEvent::EscapedLootIsland(EscapedLootIslandEvent::read(stream, definition)?)
+            }
+            GameEventType::TaggedPlayerAsIt => {
+                GameEvent::TaggedPlayerAsIt(TaggedPlayerAsItEvent::read(stream, definition)?)
+            }
+            GameEventType::MerasmusStunned => {
+                GameEvent::MerasmusStunned(MerasmusStunnedEvent::read(stream, definition)?)
+            }
+            GameEventType::MerasmusPropFound => {
+                GameEvent::MerasmusPropFound(MerasmusPropFoundEvent::read(stream, definition)?)
+            }
+            GameEventType::HalloweenSkeletonKilled => GameEvent::HalloweenSkeletonKilled(
+                HalloweenSkeletonKilledEvent::read(stream, definition)?,
+            ),
+            GameEventType::SkeletonKilledQuest => {
+                GameEvent::SkeletonKilledQuest(SkeletonKilledQuestEvent::read(stream, definition)?)
+            }
+            GameEventType::SkeletonKingKilledQuest => GameEvent::SkeletonKingKilledQuest(
+                SkeletonKingKilledQuestEvent::read(stream, definition)?,
+            ),
+            GameEventType::EscapeHell => {
+                GameEvent::EscapeHell(EscapeHellEvent::read(stream, definition)?)
+            }
+            GameEventType::CrossSpectralBridge => {
+                GameEvent::CrossSpectralBridge(CrossSpectralBridgeEvent::read(stream, definition)?)
+            }
+            GameEventType::MiniGameWon => {
+                GameEvent::MiniGameWon(MiniGameWonEvent::read(stream, definition)?)
+            }
+            GameEventType::RespawnGhost => {
+                GameEvent::RespawnGhost(RespawnGhostEvent::read(stream, definition)?)
+            }
+            GameEventType::KillInHell => {
+                GameEvent::KillInHell(KillInHellEvent::read(stream, definition)?)
+            }
+            GameEventType::HalloweenDuckCollected => GameEvent::HalloweenDuckCollected(
+                HalloweenDuckCollectedEvent::read(stream, definition)?,
+            ),
+            GameEventType::SpecialScore => {
+                GameEvent::SpecialScore(SpecialScoreEvent::read(stream, definition)?)
+            }
+            GameEventType::TeamLeaderKilled => {
+                GameEvent::TeamLeaderKilled(TeamLeaderKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::HalloweenSoulCollected => GameEvent::HalloweenSoulCollected(
+                HalloweenSoulCollectedEvent::read(stream, definition)?,
+            ),
+            GameEventType::RecalculateTruce => {
+                GameEvent::RecalculateTruce(RecalculateTruceEvent::read(stream, definition)?)
+            }
+            GameEventType::DeadRingerCheatDeath => GameEvent::DeadRingerCheatDeath(
+                DeadRingerCheatDeathEvent::read(stream, definition)?,
+            ),
+            GameEventType::CrossbowHeal => {
+                GameEvent::CrossbowHeal(CrossbowHealEvent::read(stream, definition)?)
+            }
+            GameEventType::DamageMitigated => {
+                GameEvent::DamageMitigated(DamageMitigatedEvent::read(stream, definition)?)
+            }
+            GameEventType::PayloadPushed => {
+                GameEvent::PayloadPushed(PayloadPushedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerAbandonedMatch => GameEvent::PlayerAbandonedMatch(
+                PlayerAbandonedMatchEvent::read(stream, definition)?,
+            ),
+            GameEventType::ClDrawline => {
+                GameEvent::ClDrawline(ClDrawlineEvent::read(stream, definition)?)
+            }
+            GameEventType::RestartTimerTime => {
+                GameEvent::RestartTimerTime(RestartTimerTimeEvent::read(stream, definition)?)
+            }
+            GameEventType::WinLimitChanged => {
+                GameEvent::WinLimitChanged(WinLimitChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::WinPanelShowScores => {
+                GameEvent::WinPanelShowScores(WinPanelShowScoresEvent::read(stream, definition)?)
+            }
+            GameEventType::TopStreamsRequestFinished => GameEvent::TopStreamsRequestFinished(
+                TopStreamsRequestFinishedEvent::read(stream, definition)?,
+            ),
+            GameEventType::CompetitiveStateChanged => GameEvent::CompetitiveStateChanged(
+                CompetitiveStateChangedEvent::read(stream, definition)?,
+            ),
+            GameEventType::GlobalWarDataUpdated => GameEvent::GlobalWarDataUpdated(
+                GlobalWarDataUpdatedEvent::read(stream, definition)?,
+            ),
+            GameEventType::StopWatchChanged => {
+                GameEvent::StopWatchChanged(StopWatchChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::DsStop => GameEvent::DsStop(DsStopEvent::read(stream, definition)?),
+            GameEventType::DsScreenshot => {
+                GameEvent::DsScreenshot(DsScreenshotEvent::read(stream, definition)?)
+            }
+            GameEventType::ShowMatchSummary => {
+                GameEvent::ShowMatchSummary(ShowMatchSummaryEvent::read(stream, definition)?)
+            }
+            GameEventType::ExperienceChanged => {
+                GameEvent::ExperienceChanged(ExperienceChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::BeginXpLerp => {
+                GameEvent::BeginXpLerp(BeginXpLerpEvent::read(stream, definition)?)
+            }
+            GameEventType::MatchmakerStatsUpdated => GameEvent::MatchmakerStatsUpdated(
+                MatchmakerStatsUpdatedEvent::read(stream, definition)?,
+            ),
+            GameEventType::RematchVotePeriodOver => GameEvent::RematchVotePeriodOver(
+                RematchVotePeriodOverEvent::read(stream, definition)?,
+            ),
+            GameEventType::RematchFailedToCreate => GameEvent::RematchFailedToCreate(
+                RematchFailedToCreateEvent::read(stream, definition)?,
+            ),
+            GameEventType::PlayerRematchChange => {
+                GameEvent::PlayerRematchChange(PlayerRematchChangeEvent::read(stream, definition)?)
+            }
+            GameEventType::PingUpdated => {
+                GameEvent::PingUpdated(PingUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::MMStatsUpdated => {
+                GameEvent::MMStatsUpdated(MMStatsUpdatedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerNextMapVoteChange => GameEvent::PlayerNextMapVoteChange(
+                PlayerNextMapVoteChangeEvent::read(stream, definition)?,
+            ),
+            GameEventType::VoteMapsChanged => {
+                GameEvent::VoteMapsChanged(VoteMapsChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::ProtoDefChanged => {
+                GameEvent::ProtoDefChanged(ProtoDefChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerDomination => {
+                GameEvent::PlayerDomination(PlayerDominationEvent::read(stream, definition)?)
+            }
+            GameEventType::PlayerRocketPackPushed => GameEvent::PlayerRocketPackPushed(
+                PlayerRocketPackPushedEvent::read(stream, definition)?,
+            ),
+            GameEventType::QuestRequest => {
+                GameEvent::QuestRequest(QuestRequestEvent::read(stream, definition)?)
+            }
+            GameEventType::QuestResponse => {
+                GameEvent::QuestResponse(QuestResponseEvent::read(stream, definition)?)
+            }
+            GameEventType::QuestProgress => {
+                GameEvent::QuestProgress(QuestProgressEvent::read(stream, definition)?)
+            }
+            GameEventType::ProjectileRemoved => {
+                GameEvent::ProjectileRemoved(ProjectileRemovedEvent::read(stream, definition)?)
+            }
+            GameEventType::QuestMapDataChanged => {
+                GameEvent::QuestMapDataChanged(QuestMapDataChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::GasDousedPlayerIgnited => GameEvent::GasDousedPlayerIgnited(
+                GasDousedPlayerIgnitedEvent::read(stream, definition)?,
+            ),
+            GameEventType::QuestTurnInState => {
+                GameEvent::QuestTurnInState(QuestTurnInStateEvent::read(stream, definition)?)
+            }
+            GameEventType::ItemsAcknowledged => {
+                GameEvent::ItemsAcknowledged(ItemsAcknowledgedEvent::read(stream, definition)?)
+            }
+            GameEventType::CapperKilled => {
+                GameEvent::CapperKilled(CapperKilledEvent::read(stream, definition)?)
+            }
+            GameEventType::MainMenuStabilized => {
+                GameEvent::MainMenuStabilized(MainMenuStabilizedEvent::read(stream, definition)?)
+            }
+            GameEventType::WorldStatusChanged => {
+                GameEvent::WorldStatusChanged(WorldStatusChangedEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVStatus => {
+                GameEvent::HLTVStatus(HLTVStatusEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVCameraman => {
+                GameEvent::HLTVCameraman(HLTVCameramanEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVRankCamera => {
+                GameEvent::HLTVRankCamera(HLTVRankCameraEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVRankEntity => {
+                GameEvent::HLTVRankEntity(HLTVRankEntityEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVFixed => {
+                GameEvent::HLTVFixed(HLTVFixedEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVChase => {
+                GameEvent::HLTVChase(HLTVChaseEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVMessage => {
+                GameEvent::HLTVMessage(HLTVMessageEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVTitle => {
+                GameEvent::HLTVTitle(HLTVTitleEvent::read(stream, definition)?)
+            }
+            GameEventType::HLTVChat => {
+                GameEvent::HLTVChat(HLTVChatEvent::read(stream, definition)?)
+            }
+            GameEventType::ReplayStartRecord => {
+                GameEvent::ReplayStartRecord(ReplayStartRecordEvent::read(stream, definition)?)
+            }
+            GameEventType::ReplaySessionInfo => {
+                GameEvent::ReplaySessionInfo(ReplaySessionInfoEvent::read(stream, definition)?)
+            }
+            GameEventType::ReplayEndRecord => {
+                GameEvent::ReplayEndRecord(ReplayEndRecordEvent::read(stream, definition)?)
+            }
+            GameEventType::ReplayReplaysAvailable => GameEvent::ReplayReplaysAvailable(
+                ReplayReplaysAvailableEvent::read(stream, definition)?,
+            ),
+            GameEventType::ReplayServerError => {
+                GameEvent::ReplayServerError(ReplayServerErrorEvent::read(stream, definition)?)
+            }
+            GameEventType::Unknown(_) => {
+                GameEvent::Unknown(RawGameEvent::read(stream, definition)?)
+            }
+        })
     }
     pub fn write(
         &self,
@@ -22080,9 +21003,7 @@ impl GameEvent {
             GameEvent::AchievementIncrement(event) => event.write(stream, definition),
             GameEvent::PhysgunPickup(event) => event.write(stream, definition),
             GameEvent::FlareIgniteNpc(event) => event.write(stream, definition),
-            GameEvent::HelicopterGrenadePuntMiss(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::HelicopterGrenadePuntMiss(event) => event.write(stream, definition),
             GameEvent::UserDataDownloaded(event) => event.write(stream, definition),
             GameEvent::RagdollDissolved(event) => event.write(stream, definition),
             GameEvent::HLTVChangedMode(event) => event.write(stream, definition),
@@ -22114,30 +21035,22 @@ impl GameEvent {
             GameEvent::ControlPointInitialized(event) => event.write(stream, definition),
             GameEvent::ControlPointUpdateImages(event) => event.write(stream, definition),
             GameEvent::ControlPointUpdateLayout(event) => event.write(stream, definition),
-            GameEvent::ControlPointUpdateCapping(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::ControlPointUpdateCapping(event) => event.write(stream, definition),
             GameEvent::ControlPointUpdateOwner(event) => event.write(stream, definition),
             GameEvent::ControlPointStartTouch(event) => event.write(stream, definition),
             GameEvent::ControlPointEndTouch(event) => event.write(stream, definition),
             GameEvent::ControlPointPulseElement(event) => event.write(stream, definition),
             GameEvent::ControlPointFakeCapture(event) => event.write(stream, definition),
-            GameEvent::ControlPointFakeCaptureMultiplier(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::ControlPointFakeCaptureMultiplier(event) => event.write(stream, definition),
             GameEvent::TeamPlayRoundSelected(event) => event.write(stream, definition),
             GameEvent::TeamPlayRoundStart(event) => event.write(stream, definition),
             GameEvent::TeamPlayRoundActive(event) => event.write(stream, definition),
             GameEvent::TeamPlayWaitingBegins(event) => event.write(stream, definition),
             GameEvent::TeamPlayWaitingEnds(event) => event.write(stream, definition),
-            GameEvent::TeamPlayWaitingAboutToEnd(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::TeamPlayWaitingAboutToEnd(event) => event.write(stream, definition),
             GameEvent::TeamPlayRestartRound(event) => event.write(stream, definition),
             GameEvent::TeamPlayReadyRestart(event) => event.write(stream, definition),
-            GameEvent::TeamPlayRoundRestartSeconds(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::TeamPlayRoundRestartSeconds(event) => event.write(stream, definition),
             GameEvent::TeamPlayTeamReady(event) => event.write(stream, definition),
             GameEvent::TeamPlayRoundWin(event) => event.write(stream, definition),
             GameEvent::TeamPlayUpdateTimer(event) => event.write(stream, definition),
@@ -22150,9 +21063,7 @@ impl GameEvent {
             GameEvent::TeamPlayMapTimeRemaining(event) => event.write(stream, definition),
             GameEvent::TeamPlayTimerFlash(event) => event.write(stream, definition),
             GameEvent::TeamPlayTimerTimeAdded(event) => event.write(stream, definition),
-            GameEvent::TeamPlayPointStartCapture(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::TeamPlayPointStartCapture(event) => event.write(stream, definition),
             GameEvent::TeamPlayPointCaptured(event) => event.write(stream, definition),
             GameEvent::TeamPlayPointLocked(event) => event.write(stream, definition),
             GameEvent::TeamPlayPointUnlocked(event) => event.write(stream, definition),
@@ -22160,9 +21071,7 @@ impl GameEvent {
             GameEvent::TeamPlayCaptureBlocked(event) => event.write(stream, definition),
             GameEvent::TeamPlayFlagEvent(event) => event.write(stream, definition),
             GameEvent::TeamPlayWinPanel(event) => event.write(stream, definition),
-            GameEvent::TeamPlayTeamBalancedPlayer(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::TeamPlayTeamBalancedPlayer(event) => event.write(stream, definition),
             GameEvent::TeamPlaySetupFinished(event) => event.write(stream, definition),
             GameEvent::TeamPlayAlert(event) => event.write(stream, definition),
             GameEvent::TrainingComplete(event) => event.write(stream, definition),
@@ -22174,9 +21083,7 @@ impl GameEvent {
             GameEvent::LocalPlayerChangeClass(event) => event.write(stream, definition),
             GameEvent::LocalPlayerRespawn(event) => event.write(stream, definition),
             GameEvent::BuildingInfoChanged(event) => event.write(stream, definition),
-            GameEvent::LocalPlayerChangeDisguise(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::LocalPlayerChangeDisguise(event) => event.write(stream, definition),
             GameEvent::PlayerAccountChanged(event) => event.write(stream, definition),
             GameEvent::SpyPdaReset(event) => event.write(stream, definition),
             GameEvent::FlagStatusUpdate(event) => event.write(stream, definition),
@@ -22193,14 +21100,10 @@ impl GameEvent {
             GameEvent::AchievementEarned(event) => event.write(stream, definition),
             GameEvent::SpecTargetUpdated(event) => event.write(stream, definition),
             GameEvent::TournamentStateUpdate(event) => event.write(stream, definition),
-            GameEvent::TournamentEnableCountdown(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::TournamentEnableCountdown(event) => event.write(stream, definition),
             GameEvent::PlayerCalledForMedic(event) => event.write(stream, definition),
             GameEvent::PlayerAskedForBall(event) => event.write(stream, definition),
-            GameEvent::LocalPlayerBecameObserver(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::LocalPlayerBecameObserver(event) => event.write(stream, definition),
             GameEvent::PlayerIgnitedInv(event) => event.write(stream, definition),
             GameEvent::PlayerIgnited(event) => event.write(stream, definition),
             GameEvent::PlayerExtinguished(event) => event.write(stream, definition),
@@ -22242,9 +21145,7 @@ impl GameEvent {
             GameEvent::ShowAnnotation(event) => event.write(stream, definition),
             GameEvent::HideAnnotation(event) => event.write(stream, definition),
             GameEvent::PostInventoryApplication(event) => event.write(stream, definition),
-            GameEvent::ControlPointUnlockUpdated(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::ControlPointUnlockUpdated(event) => event.write(stream, definition),
             GameEvent::DeployBuffBanner(event) => event.write(stream, definition),
             GameEvent::PlayerBuff(event) => event.write(stream, definition),
             GameEvent::MedicDeath(event) => event.write(stream, definition),
@@ -22270,12 +21171,8 @@ impl GameEvent {
             GameEvent::PlayerRegenerate(event) => event.write(stream, definition),
             GameEvent::UpdateStatusItem(event) => event.write(stream, definition),
             GameEvent::StatsResetRound(event) => event.write(stream, definition),
-            GameEvent::ScoreStatsAccumulatedUpdate(event) => {
-                event.write(stream, definition)
-            }
-            GameEvent::ScoreStatsAccumulatedReset(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::ScoreStatsAccumulatedUpdate(event) => event.write(stream, definition),
+            GameEvent::ScoreStatsAccumulatedReset(event) => event.write(stream, definition),
             GameEvent::AchievementEarnedLocal(event) => event.write(stream, definition),
             GameEvent::PlayerHealed(event) => event.write(stream, definition),
             GameEvent::BuildingHealed(event) => event.write(stream, definition),
@@ -22295,9 +21192,7 @@ impl GameEvent {
             GameEvent::EyeballBossStunned(event) => event.write(stream, definition),
             GameEvent::EyeballBossKilled(event) => event.write(stream, definition),
             GameEvent::EyeballBossKiller(event) => event.write(stream, definition),
-            GameEvent::EyeballBossEscapeImminent(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::EyeballBossEscapeImminent(event) => event.write(stream, definition),
             GameEvent::EyeballBossEscaped(event) => event.write(stream, definition),
             GameEvent::NpcHurt(event) => event.write(stream, definition),
             GameEvent::ControlPointTimerUpdated(event) => event.write(stream, definition),
@@ -22309,9 +21204,7 @@ impl GameEvent {
             GameEvent::PlayerBuyback(event) => event.write(stream, definition),
             GameEvent::PlayerUsedPowerUpBottle(event) => event.write(stream, definition),
             GameEvent::ChristmasGiftGrab(event) => event.write(stream, definition),
-            GameEvent::PlayerKilledAchievementZone(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::PlayerKilledAchievementZone(event) => event.write(stream, definition),
             GameEvent::PartyUpdated(event) => event.write(stream, definition),
             GameEvent::PartyPrefChanged(event) => event.write(stream, definition),
             GameEvent::PartyCriteriaChanged(event) => event.write(stream, definition),
@@ -22326,21 +21219,13 @@ impl GameEvent {
             GameEvent::RecalculateHolidays(event) => event.write(stream, definition),
             GameEvent::PlayerCurrencyChanged(event) => event.write(stream, definition),
             GameEvent::DoomsdayRocketOpen(event) => event.write(stream, definition),
-            GameEvent::RemoveNemesisRelationships(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::RemoveNemesisRelationships(event) => event.write(stream, definition),
             GameEvent::MvmCreditBonusWave(event) => event.write(stream, definition),
             GameEvent::MvmCreditBonusAll(event) => event.write(stream, definition),
-            GameEvent::MvmCreditBonusAllAdvanced(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::MvmCreditBonusAllAdvanced(event) => event.write(stream, definition),
             GameEvent::MvmQuickSentryUpgrade(event) => event.write(stream, definition),
-            GameEvent::MvmTankDestroyedByPlayers(event) => {
-                event.write(stream, definition)
-            }
-            GameEvent::MvmKillRobotDeliveringBomb(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::MvmTankDestroyedByPlayers(event) => event.write(stream, definition),
+            GameEvent::MvmKillRobotDeliveringBomb(event) => event.write(stream, definition),
             GameEvent::MvmPickupCurrency(event) => event.write(stream, definition),
             GameEvent::MvmBombCarrierKilled(event) => event.write(stream, definition),
             GameEvent::MvmSentryBusterDetonate(event) => event.write(stream, definition),
@@ -22351,9 +21236,7 @@ impl GameEvent {
             GameEvent::MvmMissionComplete(event) => event.write(stream, definition),
             GameEvent::MvmBombResetByPlayer(event) => event.write(stream, definition),
             GameEvent::MvmBombAlarmTriggered(event) => event.write(stream, definition),
-            GameEvent::MvmBombDeployResetByPlayer(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::MvmBombDeployResetByPlayer(event) => event.write(stream, definition),
             GameEvent::MvmWaveFailed(event) => event.write(stream, definition),
             GameEvent::MvmResetStats(event) => event.write(stream, definition),
             GameEvent::DamageResisted(event) => event.write(stream, definition),
@@ -22361,22 +21244,12 @@ impl GameEvent {
             GameEvent::RevivePlayerStopped(event) => event.write(stream, definition),
             GameEvent::RevivePlayerComplete(event) => event.write(stream, definition),
             GameEvent::PlayerTurnedToGhost(event) => event.write(stream, definition),
-            GameEvent::MedigunShieldBlockedDamage(event) => {
-                event.write(stream, definition)
-            }
-            GameEvent::MvmAdvWaveCompleteNoGates(event) => {
-                event.write(stream, definition)
-            }
-            GameEvent::MvmSniperHeadshotCurrency(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::MedigunShieldBlockedDamage(event) => event.write(stream, definition),
+            GameEvent::MvmAdvWaveCompleteNoGates(event) => event.write(stream, definition),
+            GameEvent::MvmSniperHeadshotCurrency(event) => event.write(stream, definition),
             GameEvent::MvmMannhattanPit(event) => event.write(stream, definition),
-            GameEvent::FlagCarriedInDetectionZone(event) => {
-                event.write(stream, definition)
-            }
-            GameEvent::MvmAdvWaveKilledStunRadio(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::FlagCarriedInDetectionZone(event) => event.write(stream, definition),
+            GameEvent::MvmAdvWaveKilledStunRadio(event) => event.write(stream, definition),
             GameEvent::PlayerDirectHitStun(event) => event.write(stream, definition),
             GameEvent::MvmSentryBusterKilled(event) => event.write(stream, definition),
             GameEvent::UpgradesFileChanged(event) => event.write(stream, definition),
@@ -22440,9 +21313,7 @@ impl GameEvent {
             GameEvent::RestartTimerTime(event) => event.write(stream, definition),
             GameEvent::WinLimitChanged(event) => event.write(stream, definition),
             GameEvent::WinPanelShowScores(event) => event.write(stream, definition),
-            GameEvent::TopStreamsRequestFinished(event) => {
-                event.write(stream, definition)
-            }
+            GameEvent::TopStreamsRequestFinished(event) => event.write(stream, definition),
             GameEvent::CompetitiveStateChanged(event) => event.write(stream, definition),
             GameEvent::GlobalWarDataUpdated(event) => event.write(stream, definition),
             GameEvent::StopWatchChanged(event) => event.write(stream, definition),
@@ -22830,13 +21701,9 @@ impl GameEvent {
             GameEvent::TaggedPlayerAsIt(_) => GameEventType::TaggedPlayerAsIt,
             GameEvent::MerasmusStunned(_) => GameEventType::MerasmusStunned,
             GameEvent::MerasmusPropFound(_) => GameEventType::MerasmusPropFound,
-            GameEvent::HalloweenSkeletonKilled(_) => {
-                GameEventType::HalloweenSkeletonKilled
-            }
+            GameEvent::HalloweenSkeletonKilled(_) => GameEventType::HalloweenSkeletonKilled,
             GameEvent::SkeletonKilledQuest(_) => GameEventType::SkeletonKilledQuest,
-            GameEvent::SkeletonKingKilledQuest(_) => {
-                GameEventType::SkeletonKingKilledQuest
-            }
+            GameEvent::SkeletonKingKilledQuest(_) => GameEventType::SkeletonKingKilledQuest,
             GameEvent::EscapeHell(_) => GameEventType::EscapeHell,
             GameEvent::CrossSpectralBridge(_) => GameEventType::CrossSpectralBridge,
             GameEvent::MiniGameWon(_) => GameEventType::MiniGameWon,
@@ -23881,16 +22748,46 @@ pub fn get_sizes() -> fnv::FnvHashMap<&'static str, usize> {
         ("PassFree", std::mem::size_of::<PassFreeEvent>()),
         ("PassPassCaught", std::mem::size_of::<PassPassCaughtEvent>()),
         ("PassBallStolen", std::mem::size_of::<PassBallStolenEvent>()),
-        ("PassBallBlocked", std::mem::size_of::<PassBallBlockedEvent>()),
-        ("DamagePrevented", std::mem::size_of::<DamagePreventedEvent>()),
-        ("HalloweenBossKilled", std::mem::size_of::<HalloweenBossKilledEvent>()),
-        ("EscapedLootIsland", std::mem::size_of::<EscapedLootIslandEvent>()),
-        ("TaggedPlayerAsIt", std::mem::size_of::<TaggedPlayerAsItEvent>()),
-        ("MerasmusStunned", std::mem::size_of::<MerasmusStunnedEvent>()),
-        ("MerasmusPropFound", std::mem::size_of::<MerasmusPropFoundEvent>()),
-        ("HalloweenSkeletonKilled", std::mem::size_of::<HalloweenSkeletonKilledEvent>()),
-        ("SkeletonKilledQuest", std::mem::size_of::<SkeletonKilledQuestEvent>()),
-        ("SkeletonKingKilledQuest", std::mem::size_of::<SkeletonKingKilledQuestEvent>()),
+        (
+            "PassBallBlocked",
+            std::mem::size_of::<PassBallBlockedEvent>(),
+        ),
+        (
+            "DamagePrevented",
+            std::mem::size_of::<DamagePreventedEvent>(),
+        ),
+        (
+            "HalloweenBossKilled",
+            std::mem::size_of::<HalloweenBossKilledEvent>(),
+        ),
+        (
+            "EscapedLootIsland",
+            std::mem::size_of::<EscapedLootIslandEvent>(),
+        ),
+        (
+            "TaggedPlayerAsIt",
+            std::mem::size_of::<TaggedPlayerAsItEvent>(),
+        ),
+        (
+            "MerasmusStunned",
+            std::mem::size_of::<MerasmusStunnedEvent>(),
+        ),
+        (
+            "MerasmusPropFound",
+            std::mem::size_of::<MerasmusPropFoundEvent>(),
+        ),
+        (
+            "HalloweenSkeletonKilled",
+            std::mem::size_of::<HalloweenSkeletonKilledEvent>(),
+        ),
+        (
+            "SkeletonKilledQuest",
+            std::mem::size_of::<SkeletonKilledQuestEvent>(),
+        ),
+        (
+            "SkeletonKingKilledQuest",
+            std::mem::size_of::<SkeletonKingKilledQuestEvent>(),
+        ),
         ("EscapeHell", std::mem::size_of::<EscapeHellEvent>()),
         (
             "CrossSpectralBridge",

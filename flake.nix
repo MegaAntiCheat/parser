@@ -24,7 +24,7 @@
   in (eachDefaultSystem (system: let
       overlays = [
         (import rust-overlay)
-        (import ./overlay.nix)
+        (import ./nix/overlay.nix)
       ];
       pkgs = (import nixpkgs) {
         inherit system overlays;
@@ -87,6 +87,7 @@
           };
         };
       };
+      overlayPackages = builtins.attrNames ((import ./nix/overlay.nix) {} {});
     in rec {
       packages =
         lib.attrsets.genAttrs targets (target:
@@ -101,7 +102,7 @@
                 };
             }))
         // rec {
-          inherit (pkgs) demostf-parser demostf-parser-codegen demostf-parser-codegen-events demostf-parser-codegen-props;
+          inherit (pkgs) demostf-parser demostf-parser-codegen demostf-parser-codegen-events demostf-parser-codegen-props demostf-parser-schema;
           check = hostNaersk.buildPackage (nearskOpt
             // {
               mode = "check";
@@ -151,12 +152,14 @@
         };
       };
 
+      formatter = pkgs.alejandra;
+
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [rust-bin.stable.latest.default bacon cargo-edit cargo-outdated rustfmt clippy cargo-audit hyperfine valgrind cargo-insta cargo-semver-checks];
       };
     })
     // {
-      overlays.default = import ./overlay.nix;
+      overlays.default = import ./nix/overlay.nix;
       hydraJobs = eachSystem ["x86_64-linux" "aarch64-linux"] (system: {
         parser = self.packages.${system}.demostf-parser;
       });
